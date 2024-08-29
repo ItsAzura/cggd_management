@@ -20,8 +20,29 @@ const getAllProduct = asyncHandler(async (req, res) => {
   const limit = 10;
   const offset = (page - 1) * limit;
 
-  let query = 'SELECT * FROM products WHERE 1=1';
-  let countQuery = 'SELECT COUNT(*) as total_products FROM products WHERE 1=1';
+  let query = `
+    SELECT 
+      products.*, 
+      colors.color_name, 
+      sizes.size_name, 
+      categories.cate_name, 
+      suppliers.supplier_name 
+    FROM products
+    LEFT JOIN colors ON products.color_id = colors.id
+    LEFT JOIN sizes ON products.size_id = sizes.id
+    LEFT JOIN categories ON products.category_id = categories.id
+    LEFT JOIN suppliers ON products.supplier_id = suppliers.id
+    WHERE 1=1`;
+
+  let countQuery = `
+    SELECT COUNT(*) as total_products 
+    FROM products
+    LEFT JOIN colors ON products.color_id = colors.id
+    LEFT JOIN sizes ON products.size_id = sizes.id
+    LEFT JOIN categories ON products.category_id = categories.id
+    LEFT JOIN suppliers ON products.supplier_id = suppliers.id
+    WHERE 1=1`;
+
   const values = [];
 
   if (name) {
