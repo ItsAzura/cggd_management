@@ -16,4 +16,9 @@ const getAllCategory = asyncHandler(async (req, res) => {
   res.json(rows);
 });
 
-export { getAllColor, getAllSize, getAllCategory };
+const getAllInvertoryLocation = asyncHandler(async (req, res) => {
+  const [rows] = await db.query('SELECT * FROM inventory_location');
+  res.json(rows);
+});
+
+export { getAllColor, getAllSize, getAllCategory, getAllInvertoryLocation };
