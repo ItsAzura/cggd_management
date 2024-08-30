@@ -9,11 +9,19 @@ import {
 } from '../services/customer.service.js';
 const router = express.Router();
 
-router.get('/', getAllCustomer);
-router.get('/count_customer', getCountCustomer);
-router.get('/customer_by_address', getCustomerByAddress);
-router.post('/', createCustomer);
-router.put('/:id', updateCustomer);
-router.delete('/:id', deleteCustomer);
+router.route('/').get(getAllCustomer).post(createCustomer);
+
+router.route('/:id').put(updateCustomer).delete(deleteCustomer);
+
+router.route('/count_customer').get(getCountCustomer);
+
+router.route('/customer_by_address').get(getCustomerByAddress);
+
+// router.get('/', getAllCustomer);
+// router.get('/count_customer', getCountCustomer);
+// router.get('/customer_by_address', getCustomerByAddress);
+// router.post('/', createCustomer);
+// router.put('/:id', updateCustomer);
+// router.delete('/:id', deleteCustomer);
 
 export default router;

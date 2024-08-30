@@ -7,9 +7,13 @@ import {
 } from '../services/supplier.service.js';
 const router = express.Router();
 
-router.get('/', getAllSupplier);
-router.post('/', createSupplier);
-router.put('/:id', updateSupplier);
-router.delete('/:id', deleteSupplier);
+router.route('/').get(getAllSupplier).post(createSupplier);
+
+router.route('/:id').put(updateSupplier).delete(deleteSupplier);
+
+// router.get('/', getAllSupplier);
+// router.post('/', createSupplier);
+// router.put('/:id', updateSupplier);
+// router.delete('/:id', deleteSupplier);
 
 export default router;
