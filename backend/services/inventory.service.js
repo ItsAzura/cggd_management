@@ -251,6 +251,124 @@ const createProductsExport = asyncHandler(async (req, res) => {
   }
 });
 
+const acceptProductsIncoming = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const existingProduct = await db.query(
+    'SELECT * FROM inventory_logs WHERE id = ? AND type_id = 1 AND status_id = 1',
+    [id]
+  );
+
+  if (existingProduct[0].length === 0) {
+    return res.status(404).json({ message: 'Incoming product not found' });
+  }
+
+  const query = 'UPDATE inventory_logs SET status_id = 2 WHERE id = ?';
+
+  const [result] = await db.query(query, [id]);
+
+  if (result.affectedRows === 0) {
+    res.status(404);
+    throw new Error('Incoming product not found');
+  }
+
+  const products = await db.query(
+    'SELECT * FROM inventory_logitem WHERE inventory_logsId = ?',
+    [id]
+  );
+
+  for (const product of products[0]) {
+    const existingInventory = await db.query(
+      'SELECT * FROM inventory WHERE product_id = ?',
+      [product.product_id]
+    );
+
+    if (existingInventory[0].length > 0) {
+      const query =
+        'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ?';
+
+      await db.query(query, [product.quantity, product.product_id]);
+    } else {
+      const query =
+        'INSERT INTO inventory (product_id, quantity) VALUES (?, ?)';
+
+      await db.query(query, [product.product_id, product.quantity]);
+    }
+  }
+
+  res.status(200).json({ message: 'Incoming product accepted' });
+});
+
+const acceptProductsExport = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const existingProduct = await db.query(
+    'SELECT * FROM inventory_logs WHERE id = ? AND type_id = 2 AND status_id = 1',
+    [id]
+  );
+
+  if (existingProduct[0].length === 0) {
+    return res.status(404).json({ message: 'Export product not found' });
+  }
+
+  const query = 'UPDATE inventory_logs SET status_id = 2 WHERE id = ?';
+
+  const [result] = await db.query(query, [id]);
+
+  if (result.affectedRows === 0) {
+    res.status(404);
+    throw new Error('Export product not found');
+  }
+
+  const products = await db.query(
+    'SELECT * FROM inventory_logitem WHERE inventory_logsId = ?',
+    [id]
+  );
+
+  for (const product of products[0]) {
+    const existingInventory = await db.query(
+      'SELECT * FROM inventory WHERE product_id = ?',
+      [product.product_id]
+    );
+
+    if (existingInventory[0].length > 0) {
+      const query =
+        'UPDATE inventory SET quantity = quantity - ? WHERE product_id = ?';
+
+      await db.query(query, [product.quantity, product.product_id]);
+    } else {
+      res.status(404);
+      throw new Error('Product not found in inventory');
+    }
+  }
+
+  res.status(200).json({ message: 'Export product accepted' });
+});
+
+const refuseProductsIncomingExport = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const existingProduct = await db.query(
+    'SELECT * FROM inventory_logs WHERE id = ? AND status_id = 1',
+    [id]
+  );
+
+  if (existingProduct[0].length === 0) {
+    return res.status(404).json({ message: 'Incoming product not found' });
+  }
+
+  const query = 'UPDATE inventory_logs SET status_id = 3 WHERE id = ?';
+
+  const [result] = await db.query(query, [id]);
+
+  if (result.affectedRows === 0) {
+    res.status(404);
+    throw new Error('Incoming product not found');
+  }
+
+  res.status(200).json({ message: 'Incoming product refused' });
+});
+
 const updateProductsLog = asyncHandler(async (req, res) => {
   const id = req.params.id;
   const { products, user_id } = req.body;
@@ -263,7 +381,7 @@ const updateProductsLog = asyncHandler(async (req, res) => {
   try {
     const update = await db.query(
       `
-    UPDATE inventory_logs SET  user_id = ? WHERE id = ?`,
+    UPDATE inventory_logs SET  user_id = ? WHERE id = ? AND status_id = 1`,
       [user_id, id]
     );
 
@@ -322,6 +440,262 @@ const deleteProductsIncomingExport = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Incoming/Export product removed' });
 });
 
+const getAllProductInventoryIncoming = asyncHandler(async (req, res) => {
+  const { page } = req.query;
+  if (!page) {
+    return res.status(400).json({ message: 'Page number is required' });
+  }
+
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  let query = `
+    SELECT 
+      inventory_logs.*, 
+      users.username AS user_name,
+      inventory_type.type_name AS type_name,
+      inventory_status.status_name AS status_name
+    FROM inventory_logs
+    JOIN users ON inventory_logs.user_id = users.id
+    JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
+    JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
+    WHERE 1=1 AND inventory_logs.type_id = 1 AND inventory_logs.status_id = 1`;
+
+  let countQuery = `
+    SELECT COUNT(*) as total_inventory 
+    FROM inventory_logs
+    JOIN users ON inventory_logs.user_id = users.id
+    JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
+    JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
+    WHERE 1=1 AND inventory_logs.type_id = 1 AND inventory_logs.status_id = 1`;
+
+  const values = [];
+
+  query += ' LIMIT ? OFFSET ?';
+
+  try {
+    const [count] = await db.query(countQuery, values);
+    const total = count[0].total_inventory;
+    const totalPages = Math.ceil(total / limit);
+    const [rows] = await db.query(query, [...values, limit, offset]);
+
+    res.json({
+      page: parseInt(page, 10),
+      per_page: limit,
+      total_inventory: total,
+      total_pages: totalPages,
+      data: rows,
+    });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+const getProductInventoryIncomingById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const query = ` 
+    SELECT * FROM inventory_logs WHERE id = ?
+  `;
+
+  const [rows] = await db.query(query, [id]);
+
+  if (rows.length === 0) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  const queryItem = `
+    SELECT * FROM inventory_logitem WHERE inventory_logsId = ?`;
+
+  const [rowsItem] = await db.query(queryItem, [id]);
+
+  res.json({
+    data: rows[0],
+    items: rowsItem,
+  });
+});
+
+const getProductInventoryExportById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const query = ` 
+    SELECT * FROM inventory_logs WHERE id = ?
+  `;
+
+  const [rows] = await db.query(query, [id]);
+
+  if (rows.length === 0) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  const queryItem = `
+    SELECT * FROM inventory_logitem WHERE inventory_logsId = ?`;
+
+  const [rowsItem] = await db.query(queryItem, [id]);
+
+  res.json({
+    data: rows[0],
+    items: rowsItem,
+  });
+});
+
+const getAllProductInventoryExport = asyncHandler(async (req, res) => {
+  const { page } = req.query;
+  if (!page) {
+    return res.status(400).json({ message: 'Page number is required' });
+  }
+
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  let query = `
+    SELECT 
+      inventory_logs.*, 
+      users.username AS user_name,
+      inventory_type.type_name AS type_name,
+      inventory_status.status_name AS status_name
+    FROM inventory_logs
+    JOIN users ON inventory_logs.user_id = users.id
+    JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
+    JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
+    WHERE 1=1 AND inventory_logs.type_id = 2 AND inventory_logs.status_id = 1`;
+
+  let countQuery = `
+    SELECT COUNT(*) as total_inventory 
+    FROM inventory_logs
+    JOIN users ON inventory_logs.user_id = users.id
+    JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
+    JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
+    WHERE 1=1 AND inventory_logs.type_id = 2 AND inventory_logs.status_id = 1`;
+
+  const values = [];
+
+  query += ' LIMIT ? OFFSET ?';
+
+  try {
+    const [count] = await db.query(countQuery, values);
+    const total = count[0].total_inventory;
+    const totalPages = Math.ceil(total / limit);
+    const [rows] = await db.query(query, [...values, limit, offset]);
+
+    res.json({
+      page: parseInt(page, 10),
+      per_page: limit,
+      total_inventory: total,
+      total_pages: totalPages,
+      data: rows,
+    });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+const getAllHistoryProductInventoryIncoming = asyncHandler(async (req, res) => {
+  const { page } = req.query;
+  if (!page) {
+    return res.status(400).json({ message: 'Page number is required' });
+  }
+
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  let query = `
+    SELECT 
+      inventory_logs.*, 
+      users.username AS user_name,
+      inventory_type.type_name AS type_name,
+      inventory_status.status_name AS status_name
+    FROM inventory_logs
+    JOIN users ON inventory_logs.user_id = users.id
+    JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
+    JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
+    WHERE 1=1 AND inventory_logs.type_id = 1 AND inventory_logs.status_id = 2`;
+
+  let countQuery = `
+    SELECT COUNT(*) as total_inventory 
+    FROM inventory_logs
+    JOIN users ON inventory_logs.user_id = users.id
+    JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
+    JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
+    WHERE 1=1 AND inventory_logs.type_id = 1 AND inventory_logs.status_id = 2`;
+
+  const values = [];
+
+  query += ' LIMIT ? OFFSET ?';
+
+  try {
+    const [count] = await db.query(countQuery, values);
+    const total = count[0].total_inventory;
+    const totalPages = Math.ceil(total / limit);
+    const [rows] = await db.query(query, [...values, limit, offset]);
+
+    res.json({
+      page: parseInt(page, 10),
+      per_page: limit,
+      total_inventory: total,
+      total_pages: totalPages,
+      data: rows,
+    });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+const getAllHistoryProductInventoryExport = asyncHandler(async (req, res) => {
+  const { page } = req.query;
+  if (!page) {
+    return res.status(400).json({ message: 'Page number is required' });
+  }
+
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  let query = `
+    SELECT 
+      inventory_logs.*, 
+      users.username AS user_name,
+      inventory_type.type_name AS type_name,
+      inventory_status.status_name AS status_name
+    FROM inventory_logs
+    JOIN users ON inventory_logs.user_id = users.id
+    JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
+    JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
+    WHERE 1=1 AND inventory_logs.type_id = 2 AND inventory_logs.status_id = 2`;
+
+  let countQuery = `
+    SELECT COUNT(*) as total_inventory 
+    FROM inventory_logs
+    JOIN users ON inventory_logs.user_id = users.id
+    JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
+    JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
+    WHERE 1=1 AND inventory_logs.type_id = 2 AND inventory_logs.status_id = 2`;
+
+  const values = [];
+
+  query += ' LIMIT ? OFFSET ?';
+
+  try {
+    const [count] = await db.query(countQuery, values);
+    const total = count[0].total_inventory;
+    const totalPages = Math.ceil(total / limit);
+    const [rows] = await db.query(query, [...values, limit, offset]);
+
+    res.json({
+      page: parseInt(page, 10),
+      per_page: limit,
+      total_inventory: total,
+      total_pages: totalPages,
+      data: rows,
+    });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 export {
   getAllProductInventory,
   createProductInventory,
@@ -331,4 +705,13 @@ export {
   updateProductsLog,
   createProductsExport,
   deleteProductsIncomingExport,
+  acceptProductsIncoming,
+  acceptProductsExport,
+  refuseProductsIncomingExport,
+  getAllProductInventoryIncoming,
+  getAllProductInventoryExport,
+  getAllHistoryProductInventoryIncoming,
+  getAllHistoryProductInventoryExport,
+  getProductInventoryIncomingById,
+  getProductInventoryExportById,
 };
