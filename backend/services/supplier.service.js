@@ -75,6 +75,15 @@ const createSupplier = asyncHandler(async (req, res) => {
     throw new Error('All fields are required');
   }
 
+  const existingSupplier = await db.query(
+    'SELECT * FROM suppliers WHERE email = ? AND phone = ? ',
+    [email, phone]
+  );
+
+  if (existingSupplier.length > 0) {
+    res.status(400).json({ message: 'Supplier already exists' });
+  }
+
   const query =
     'INSERT INTO suppliers (supplier_name, contact_person, phone, email, address) VALUES (?, ?, ?, ?, ?)';
 
@@ -105,6 +114,15 @@ const updateSupplier = asyncHandler(async (req, res) => {
     throw new Error('All fields are required');
   }
 
+  const existingSupplier = await db.query(
+    'SELECT * FROM suppliers WHERE email = ? AND phone = ? ',
+    [email, phone]
+  );
+
+  if (existingSupplier.length > 0) {
+    res.status(400).json({ message: 'Supplier already exists' });
+  }
+
   const query =
     'UPDATE suppliers SET supplier_name = ?, contact_person = ?, phone = ?, email = ?, address = ? WHERE id = ?';
 
@@ -129,6 +147,14 @@ const updateSupplier = asyncHandler(async (req, res) => {
 
 const deleteSupplier = asyncHandler(async (req, res) => {
   const { id } = req.params;
+
+  const exitingUser = await db.query('SELECT * FROM suppliers WHERE id = ?', [
+    id,
+  ]);
+
+  if (exitingUser.length === 0) {
+    res.status(404).json({ message: 'Supplier not found' });
+  }
 
   const query = 'DELETE FROM suppliers WHERE id = ?';
   const [result] = await db.query(query, [id]);

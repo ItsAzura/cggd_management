@@ -168,6 +168,15 @@ const createProduct = asyncHandler(async (req, res) => {
     description,
   } = req.body;
 
+  const existingProduct = await db.query(
+    'SELECT * FROM products WHERE sku = ?',
+    [sku]
+  );
+
+  if (existingProduct[0].length > 0) {
+    return res.status(400).json({ message: 'Product already exists' });
+  }
+
   const newProduct = {
     name,
     sku,
@@ -201,6 +210,15 @@ const updateProduct = asyncHandler(async (req, res) => {
     description,
   } = req.body;
 
+  const existingProduct = await db.query(
+    'SELECT * FROM products WHERE sku = ?',
+    [sku]
+  );
+
+  if (existingProduct[0].length > 0) {
+    return res.status(400).json({ message: 'Product already exists' });
+  }
+
   const updatedProduct = {
     name,
     sku,
@@ -228,10 +246,17 @@ const updateProduct = asyncHandler(async (req, res) => {
 });
 
 const deleteProduct = asyncHandler(async (req, res) => {
-  const [result] = await db.query(
-    'DELETE FROM products WHERE id = ?',
-    req.params.id
-  );
+  const id = req.params.id;
+
+  const exitingProduct = await db.query('SELECT * FROM products WHERE id = ?', [
+    id,
+  ]);
+
+  if (exitingProduct[0].length === 0) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  const [result] = await db.query('DELETE FROM products WHERE id = ?', [id]);
 
   if (result.affectedRows === 0) {
     res.status(404);

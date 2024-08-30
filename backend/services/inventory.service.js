@@ -82,6 +82,17 @@ const createProductInventory = asyncHandler(async (req, res) => {
     throw new Error('All fields are required');
   }
 
+  const existingProductInventory = await db.query(
+    'SELECT * FROM inventory WHERE product_id = ? AND location_id = ?',
+    [product_id, location_id]
+  );
+
+  if (existingProductInventory[0].length > 0) {
+    res
+      .status(400)
+      .json({ message: 'Product already exists in this location' });
+  }
+
   const query =
     'INSERT INTO inventory (product_id, quantity, min_quantity, location_id) VALUES (?, ?, ?, ?)';
 
@@ -103,6 +114,17 @@ const createProductInventory = asyncHandler(async (req, res) => {
 const updateProductInventory = asyncHandler(async (req, res) => {
   const { product_id, quantity, min_quantity, location_id } = req.body;
   const { id } = req.params;
+
+  const existingProduct = await db.query(
+    'SELECT * FROM inventory WHERE product_id = ? AND location_id = ?',
+    [product_id, location_id]
+  );
+
+  if (existingProduct[0].length > 0) {
+    res
+      .status(400)
+      .json({ message: 'Product already exists in this location' });
+  }
 
   if (!product_id || !quantity || !min_quantity || !location_id) {
     res.status(400);
@@ -136,6 +158,15 @@ const updateProductInventory = asyncHandler(async (req, res) => {
 
 const deleteProductInventory = asyncHandler(async (req, res) => {
   const { id } = req.params;
+
+  const exitingProduct = await db.query(
+    'SELECT * FROM inventory WHERE id = ?',
+    [id]
+  );
+
+  if (exitingProduct[0].length === 0) {
+    return res.status(404).json({ message: 'Customer not found' });
+  }
 
   const query = 'DELETE FROM inventory WHERE id = ?';
   const [result] = await db.query(query, [id]);

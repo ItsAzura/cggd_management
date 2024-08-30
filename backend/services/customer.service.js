@@ -87,6 +87,16 @@ GROUP BY
 
 const createCustomer = asyncHandler(async (req, res) => {
   const { customer_name, email, phone, address } = req.body;
+
+  const existingCustomer = await db.query(
+    'SELECT * FROM customers WHERE email = ?',
+    [email]
+  );
+
+  if (existingCustomer[0].length > 0) {
+    return res.status(400).json({ message: 'Customer already exists' });
+  }
+
   const query =
     'INSERT INTO customers (customer_name, email, phone, address) VALUES (?, ?, ?, ?)';
 
@@ -96,14 +106,31 @@ const createCustomer = asyncHandler(async (req, res) => {
     phone,
     address,
   ]);
-  res
-    .status(201)
-    .json({ id: result.insertId, customer_name, email, phone, address });
+  res.status(201).json({
+    message: 'Customer created',
+    id: result.insertId,
+    customer_name,
+    email,
+    phone,
+    address,
+  });
 });
 
 const updateCustomer = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { customer_name, email, phone, address } = req.body;
+
+  const existingCustomer = await db.query(
+    'SELECT * FROM customers WHERE email = ?',
+    [email]
+  );
+
+  if (existingCustomer[0].length > 0) {
+    return res
+      .status(400)
+      .json({ message: 'Customer already exists with this email' });
+  }
+
   const query =
     'UPDATE customers SET customer_name = ?, email = ?, phone = ?, address = ? WHERE id = ?';
 
@@ -113,6 +140,16 @@ const updateCustomer = asyncHandler(async (req, res) => {
 
 const deleteCustomer = asyncHandler(async (req, res) => {
   const { id } = req.params;
+
+  const exitingCustomer = await db.query(
+    'SELECT * FROM customers WHERE id = ?',
+    [id]
+  );
+
+  if (exitingCustomer[0].length === 0) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
   const query = 'DELETE FROM customers WHERE id = ?';
 
   await db.query(query, [id]);
