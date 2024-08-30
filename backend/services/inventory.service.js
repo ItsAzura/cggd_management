@@ -179,9 +179,156 @@ const deleteProductInventory = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Product removed' });
 });
 
+const createProductsIncoming = asyncHandler(async (req, res) => {
+  const { products, user_id } = req.body;
+
+  if (!products || products.length === 0) {
+    res.status(400);
+    return res.status(400).json({ message: 'Products are required' });
+  }
+
+  const type_id = 1;
+  const status_id = 1;
+
+  try {
+    const [inventoryLogsResult] = await db.query(
+      `INSERT INTO inventory_logs (type_id,status_id, user_id) VALUES (?,?,?)`,
+      [type_id, status_id, user_id]
+    );
+
+    const inventoryLogsId = inventoryLogsResult.insertId;
+
+    for (const product of products) {
+      const { product_id, quantity, note } = product;
+
+      const query = `
+      INSERT INTO inventory_logItem (product_id, quantity, note, inventory_logsId) 
+      VALUES (?, ?, ?, ?)`;
+
+      await db.query(query, [product_id, quantity, note, inventoryLogsId]);
+    }
+
+    res.status(201).json({ message: 'Incoming products created' });
+  } catch (error) {
+    console.error('Error creating incoming products:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+const createProductsExport = asyncHandler(async (req, res) => {
+  const { products, user_id } = req.body;
+
+  if (!products || products.length === 0) {
+    res.status(400);
+    return res.status(400).json({ message: 'Products are required' });
+  }
+
+  const type_id = 2;
+  const status_id = 1;
+
+  try {
+    const [inventoryLogsResult] = await db.query(
+      `INSERT INTO inventory_logs (type_id,status_id, user_id) VALUES (?,?,?)`,
+      [type_id, status_id, user_id]
+    );
+
+    const inventoryLogsId = inventoryLogsResult.insertId;
+
+    for (const product of products) {
+      const { product_id, quantity, note } = product;
+
+      const query = `
+      INSERT INTO inventory_logItem (product_id, quantity, note, inventory_logsId) 
+      VALUES (?, ?, ?, ?)`;
+
+      await db.query(query, [product_id, quantity, note, inventoryLogsId]);
+    }
+
+    res.status(201).json({ message: 'Export products created' });
+  } catch (error) {
+    console.error('Error creating incoming products:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+const updateProductsLog = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const { products, user_id } = req.body;
+
+  if (!products || products.length === 0) {
+    res.status(400);
+    return res.status(400).json({ message: 'Products are required' });
+  }
+
+  try {
+    const update = await db.query(
+      `
+    UPDATE inventory_logs SET  user_id = ? WHERE id = ?`,
+      [user_id, id]
+    );
+
+    if (update[0].affectedRows === 0) {
+      res.status(404);
+      throw new Error('Incoming product not found');
+    }
+
+    for (const product of products) {
+      const { logs_id, product_id, quantity, note } = product;
+
+      const query = `UPDATE inventory_logitem SET product_id = ?, quantity = ?, note = ? WHERE inventory_logsId = ? And id = ?`;
+
+      await db.query(query, [product_id, quantity, note, id, logs_id]);
+    }
+
+    res.status(200).json({ message: 'Log product updated' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+const deleteProductsIncomingExport = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const exitingProduct = await db.query(
+    'SELECT * FROM inventory_logs WHERE id = ?',
+    [id]
+  );
+
+  if (exitingProduct[0].length === 0) {
+    return res.status(404).json({ message: 'Incoming product not found' });
+  }
+
+  const exitingProductItem = await db.query(
+    `SELECT * FROM inventory_logitem WHERE inventory_logsId = ?`,
+    [id]
+  );
+
+  if (exitingProductItem[0].length > 0) {
+    const query = 'DELETE FROM inventory_logitem WHERE inventory_logsId = ?';
+
+    await db.query(query, [id]);
+  }
+
+  const query = 'DELETE FROM inventory_logs WHERE id = ?';
+
+  const [result] = await db.query(query, [id]);
+
+  if (result.affectedRows === 0) {
+    res.status(404);
+    throw new Error('Incoming/Export product not found');
+  }
+
+  res.status(200).json({ message: 'Incoming/Export product removed' });
+});
+
 export {
   getAllProductInventory,
   createProductInventory,
   updateProductInventory,
   deleteProductInventory,
+  createProductsIncoming,
+  updateProductsLog,
+  createProductsExport,
+  deleteProductsIncomingExport,
 };
