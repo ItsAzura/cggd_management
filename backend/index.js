@@ -2,6 +2,8 @@ import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import compression from 'compression';
+import rateLimit from 'express-rate-limit';
 import orderController from './controllers/order.controller.js';
 import customerController from './controllers/customer.controller.js';
 import productController from './controllers/product.controller.js';
@@ -15,10 +17,17 @@ const port = process.env.PORT || 5000;
 dotenv.config();
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 1000,
+  max: 30,
+});
+
+app.use(limiter);
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(compression());
 app.use('/api/orders', orderController);
 app.use('/api/customers', customerController);
 app.use('/api/products', productController);
