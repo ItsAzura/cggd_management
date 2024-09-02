@@ -1,0 +1,9 @@
+export const BASE_URL = '';
+export const USERS_URL = '/api/users';
+export const CUSTOMERS_URL = '/api/customers';
+export const PRODUCTS_URL = '/api/products';
+export const SELECTORS_URL = '/api/selectors';
+export const SUPPLIERS_URL = '/api/suppliers';
+export const INVENTORY_URL = '/api/inventory';
+export const ORDERS_URL = '/api/orders';
+export const REPORTS_URL = '/api/reports';
