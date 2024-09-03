@@ -87,16 +87,16 @@ const getCountOrder = asyncHandler(async (req, res) => {
 const getTotalAmountEveryMonth = asyncHandler(async (req, res) => {
   const total_amount_every_month = `
   SELECT 
-    DATE_FORMAT(created_at, '%Y-%m') AS month_year, 
+    DATE_FORMAT(created_at, '%M') AS month, 
     SUM(CAST(total_amount AS UNSIGNED)) AS total_amount_sum
 FROM 
     orders
 WHERE 
     status_id = 2
 GROUP BY 
-    DATE_FORMAT(created_at, '%Y-%m')
+    DATE_FORMAT(created_at, '%M')
 ORDER BY 
-    month_year;
+    month;
   `;
 
   const [rows] = await db.query(total_amount_every_month);
