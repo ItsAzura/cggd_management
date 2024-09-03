@@ -1,11 +1,19 @@
 import './App.css';
+import { Outlet } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Navigation from '../pages/Navigation/Navigation';
+import Footer from '../pages/Navigation/Footer';
 
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline text-red-400">
-        Hello world!
-      </h1>
+      <ToastContainer />
+      <Navigation />
+      <main className="">
+        <Outlet />
+      </main>
+      <Footer />
     </>
   );
 }
