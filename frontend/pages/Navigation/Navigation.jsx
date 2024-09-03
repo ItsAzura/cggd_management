@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Navigation = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [userInfo, setUserInfo] = useState(true);
+  const [userInfo, setUserInfo] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
-    <div className="h-screen w-64 bg-white shadow-md flex flex-col justify-between p-4 rounded-xl sm:w-20 md:w-64 lg:w-64 xl:w-64">
-      <div>
-        <div className="text-3xl font-bold text-[#297DCC] mb-6 sm:text-xl md:text-2xl lg:text-3xl">
+    <div
+      style={{ zIndex: 9999 }}
+      className="h-auto w-64 bg-white shadow-md flex flex-col justify-between p-4 mt-4 ml-4 sm:w-20 md:w-64 lg:w-64 xl:w-64 fixed rounded"
+    >
+      <div className="mb-14">
+        <div className="ml-3 text-3xl font-bold text-[#297DCC] mb-6 sm:text-xl md:text-2xl lg:text-3xl">
           Azura Store
         </div>
         <div className="flex flex-col space-y-2">
@@ -185,28 +190,79 @@ const Navigation = () => {
             </span>
           </Link>
 
-          <Link
-            to={`/dashboard`}
-            className="flex items-center text-gray-900 hover:bg-gray-100 p-2 rounded gap-2"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="2rem"
-              height="2rem"
-              viewBox="0 0 24 24"
-              className="text-[#297DCC]"
+          {isAdmin && (
+            <Link
+              to={`/dashboard`}
+              className="flex items-center text-gray-900 hover:bg-gray-100 p-2 rounded gap-2"
             >
-              <path
-                fill="currentColor"
-                d="M15.71 12.71a6 6 0 1 0-7.42 0a10 10 0 0 0-6.22 8.18a1 1 0 0 0 2 .22a8 8 0 0 1 15.9 0a1 1 0 0 0 1 .89h.11a1 1 0 0 0 .88-1.1a10 10 0 0 0-6.25-8.19M12 12a4 4 0 1 1 4-4a4 4 0 0 1-4 4"
-              />
-            </svg>
-            <span className="hidden sm:hidden md:hidden lg:inline font-semibold">
-              User
-            </span>
-          </Link>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="2rem"
+                height="2rem"
+                viewBox="0 0 24 24"
+                className="text-[#297DCC]"
+              >
+                <path
+                  fill="currentColor"
+                  d="M15.71 12.71a6 6 0 1 0-7.42 0a10 10 0 0 0-6.22 8.18a1 1 0 0 0 2 .22a8 8 0 0 1 15.9 0a1 1 0 0 0 1 .89h.11a1 1 0 0 0 .88-1.1a10 10 0 0 0-6.25-8.19M12 12a4 4 0 1 1 4-4a4 4 0 0 1-4 4"
+                />
+              </svg>
+              <span className="hidden sm:hidden md:hidden lg:inline font-semibold">
+                User
+              </span>
+            </Link>
+          )}
         </div>
       </div>
+      {!userInfo && (
+        <ul className="flex flex-col gap-y-4">
+          {/* Login */}
+          <li>
+            <Link
+              to="/login"
+              className="flex items-center transition-transform transform hover:translate-x-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="2rem"
+                height="2rem"
+                viewBox="0 0 24 24"
+                className="text-[#297DCC]"
+              >
+                <path
+                  fill="currentColor"
+                  d="M12 21v-2h7V5h-7V3h7q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm-2-4l-1.375-1.45l2.55-2.55H3v-2h8.175l-2.55-2.55L10 7l5 5z"
+                />
+              </svg>
+              <span className="nav-item-name ml-3">Login</span>
+              {''}
+            </Link>
+          </li>
+
+          {/* Register */}
+          <li>
+            <Link
+              to="/register"
+              className="flex items-center transition-transform transform hover:translate-x-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="2rem"
+                height="2rem"
+                viewBox="0 0 24 24"
+                className="text-[#297DCC]"
+              >
+                <path
+                  fill="currentColor"
+                  d="M20 12a1 1 0 0 0-1-1h-7.59l2.3-2.29a1 1 0 1 0-1.42-1.42l-4 4a1 1 0 0 0-.21.33a1 1 0 0 0 0 .76a1 1 0 0 0 .21.33l4 4a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.42L11.41 13H19a1 1 0 0 0 1-1M17 2H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-3a1 1 0 0 0-2 0v3a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3a1 1 0 0 0 2 0V5a3 3 0 0 0-3-3"
+                />
+              </svg>
+              <span className=" nav-item-name ml-3">Register</span>
+              {''}
+            </Link>
+          </li>
+        </ul>
+      )}
 
       {userInfo && (
         <div className="flex items-center p-4">
