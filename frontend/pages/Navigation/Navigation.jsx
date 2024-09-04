@@ -14,23 +14,23 @@ const Navigation = () => {
   return (
     <div
       style={{ zIndex: 9999 }}
-      className="h-auto w-64 bg-white shadow-md flex flex-col justify-between p-4 mt-4 ml-4 sm:w-20 md:w-64 lg:w-64 xl:w-64 fixed rounded"
+      className="h-auto w-64 border-[rgba(41,125,204,0.2)] bg-[rgba(41,125,204,0.1)] border shadow-md flex flex-col justify-between p-4 mt-4 ml-4 sm:w-20 md:w-64 lg:w-64 xl:w-64 fixed rounded"
     >
       <div className="mb-14">
-        <div className="ml-3 text-3xl font-bold text-[#297DCC] mb-6 sm:text-xl md:text-2xl lg:text-3xl">
+        <div className="ml-3 text-3xl font-bold text-[#e7e7ea] mb-6 sm:text-xl md:text-2xl lg:text-3xl">
           Azura Store
         </div>
         <div className="flex flex-col space-y-2">
           <Link
             to={`/dashboard`}
-            className="flex items-center text-gray-900 hover:bg-gray-100 p-2 rounded gap-2 "
+            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2 "
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 36 36"
-              className="text-[#297DCC]"
+              className="text-[#e7e7ea]"
             >
               <path
                 fill="currentColor"
@@ -50,14 +50,14 @@ const Navigation = () => {
           </Link>
           <Link
             to={`/dashboard`}
-            className="flex items-center text-gray-900 hover:bg-gray-100 p-2 rounded gap-2 font-semibold"
+            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2 font-semibold"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 2048 2048"
-              className="text-[#297DCC]"
+              className="text-[#e7e7ea]"
             >
               <path
                 fill="currentColor"
@@ -71,14 +71,14 @@ const Navigation = () => {
 
           <Link
             to={`/dashboard`}
-            className="flex items-center text-gray-900 hover:bg-gray-100 p-2 rounded gap-2"
+            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 48 48"
-              className="text-[#297DCC]"
+              className="text-[#e7e7ea]"
             >
               <g
                 fill="none"
@@ -100,14 +100,14 @@ const Navigation = () => {
 
           <Link
             to={`/dashboard`}
-            className="flex items-center text-gray-900 hover:bg-gray-100 p-2 rounded gap-2"
+            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 32 32"
-              className="text-[#297DCC]"
+              className="text-[#e7e7ea]"
             >
               <path
                 fill="currentColor"
@@ -125,14 +125,14 @@ const Navigation = () => {
 
           <Link
             to={`/dashboard`}
-            className="flex items-center text-gray-900 hover:bg-gray-100 p-2 rounded gap-2"
+            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 32 32"
-              className="text-[#297DCC]"
+              className="text-[#e7e7ea]"
             >
               <path
                 fill="currentColor"
@@ -150,14 +150,14 @@ const Navigation = () => {
 
           <Link
             to={`/dashboard`}
-            className="flex items-center text-gray-900 hover:bg-gray-100 p-2 rounded gap-2"
+            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 24 24"
-              className="text-[#297DCC]"
+              className="text-[#e7e7ea]"
             >
               <g fill="none" stroke="currentColor" stroke-width="2">
                 <rect width="14" height="17" x="5" y="4" rx="2" />
@@ -171,14 +171,14 @@ const Navigation = () => {
 
           <Link
             to={`/dashboard`}
-            className="flex items-center text-gray-900 hover:bg-gray-100 p-2 rounded gap-2"
+            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 24 24"
-              className="text-[#297DCC]"
+              className="text-[#e7e7ea]"
             >
               <path
                 fill="currentColor"
@@ -193,14 +193,14 @@ const Navigation = () => {
           {isAdmin && (
             <Link
               to={`/dashboard`}
-              className="flex items-center text-gray-900 hover:bg-gray-100 p-2 rounded gap-2"
+              className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="2rem"
                 height="2rem"
                 viewBox="0 0 24 24"
-                className="text-[#297DCC]"
+                className="text-[#e7e7ea]"
               >
                 <path
                   fill="currentColor"
@@ -227,14 +227,14 @@ const Navigation = () => {
                 width="2rem"
                 height="2rem"
                 viewBox="0 0 24 24"
-                className="text-[#297DCC]"
+                className="text-[#e7e7ea]"
               >
                 <path
                   fill="currentColor"
                   d="M12 21v-2h7V5h-7V3h7q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm-2-4l-1.375-1.45l2.55-2.55H3v-2h8.175l-2.55-2.55L10 7l5 5z"
                 />
               </svg>
-              <span className="nav-item-name ml-3">Login</span>
+              <span className="nav-item-name ml-3 text-[#e7e7ea]">Login</span>
               {''}
             </Link>
           </li>
@@ -250,14 +250,16 @@ const Navigation = () => {
                 width="2rem"
                 height="2rem"
                 viewBox="0 0 24 24"
-                className="text-[#297DCC]"
+                className="text-[#e7e7ea]"
               >
                 <path
                   fill="currentColor"
                   d="M20 12a1 1 0 0 0-1-1h-7.59l2.3-2.29a1 1 0 1 0-1.42-1.42l-4 4a1 1 0 0 0-.21.33a1 1 0 0 0 0 .76a1 1 0 0 0 .21.33l4 4a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.42L11.41 13H19a1 1 0 0 0 1-1M17 2H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-3a1 1 0 0 0-2 0v3a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3a1 1 0 0 0 2 0V5a3 3 0 0 0-3-3"
                 />
               </svg>
-              <span className=" nav-item-name ml-3">Register</span>
+              <span className=" nav-item-name ml-3 text-[#e7e7ea]">
+                Register
+              </span>
               {''}
             </Link>
           </li>
