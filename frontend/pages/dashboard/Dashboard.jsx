@@ -103,7 +103,7 @@ const Dashboard = () => {
           <TopProducts />
         </div>
       </div>
-      <div className="flex flex-row my-6 ml-4">
+      <div className="flex flex-row my-10 ml-4">
         <div className="w-1/3">
           <SpiderChart />
         </div>
