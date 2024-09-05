@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Navigation = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userInfo, setUserInfo] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const getLinkClass = (path) => {
+    return location.pathname === path
+      ? 'flex items-center text-[#e7e7ea] p-2 rounded gap-2 transition-transform duration-300 group bg-blue-500'
+      : 'flex items-center text-[#e7e7ea] p-2 rounded gap-2 transition-transform duration-300 group';
   };
 
   return (
@@ -17,20 +24,17 @@ const Navigation = () => {
       className="h-auto w-64 border-[rgba(41,125,204,0.2)] bg-[rgba(41,125,204,0.1)] border shadow-md flex flex-col justify-between p-4 mt-4 ml-4 sm:w-20 md:w-64 lg:w-64 xl:w-64 fixed rounded"
     >
       <div className="mb-14">
-        <div className="ml-3 text-3xl font-bold text-[#e7e7ea] mb-6 sm:text-xl md:text-2xl lg:text-3xl">
-          Azura Store
+        <div className="ml-3 text-3xl font-bold text-[#e7e7ea] mb-6 sm:text-xl md:text-2xl lg:text-3xl filter drop-shadow-[0px_0px_3px_rgba(41,125,204,1)] transition-shadow">
+          <Link to={`/`}>Azura Store</Link>
         </div>
         <div className="flex flex-col space-y-2">
-          <Link
-            to={`/dashboard`}
-            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2 "
-          >
+          <Link to={`/dashboard`} className={getLinkClass('/dashboard')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 36 36"
-              className="text-[#e7e7ea]"
+              className="text-[#e7e7ea] group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow"
             >
               <path
                 fill="currentColor"
@@ -44,41 +48,35 @@ const Navigation = () => {
               />
               <path fill="none" d="M0 0h36v36H0z" />
             </svg>
-            <span className="hidden sm:hidden md:hidden lg:inline font-semibold">
+            <span className="hidden sm:hidden md:hidden lg:inline font-semibold group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow">
               Dashboard
             </span>
           </Link>
-          <Link
-            to={`/dashboard`}
-            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2 font-semibold"
-          >
+          <Link to={`/product`} className={getLinkClass('/product')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 2048 2048"
-              className="text-[#e7e7ea]"
+              className="text-[#e7e7ea] group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow"
             >
               <path
                 fill="currentColor"
                 d="m960 120l832 416v1040l-832 415l-832-415V536zm625 456L960 264L719 384l621 314zM960 888l238-118l-622-314l-241 120zM256 680v816l640 320v-816zm768 1136l640-320V680l-640 320z"
               />
             </svg>
-            <span className="hidden sm:hidden md:hidden lg:inline font-semibold">
+            <span className="hidden sm:hidden md:hidden lg:inline font-semibold group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow">
               Product
             </span>
           </Link>
 
-          <Link
-            to={`/dashboard`}
-            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
-          >
+          <Link to={`/supplier`} className={getLinkClass('/supplier')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 48 48"
-              className="text-[#e7e7ea]"
+              className="text-[#e7e7ea] group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow"
             >
               <g
                 fill="none"
@@ -93,21 +91,18 @@ const Navigation = () => {
                 />
               </g>
             </svg>
-            <span className="hidden sm:hidden md:hidden lg:inline font-semibold">
+            <span className="hidden sm:hidden md:hidden lg:inline font-semibold group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow">
               Supplier
             </span>
           </Link>
 
-          <Link
-            to={`/dashboard`}
-            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
-          >
+          <Link to={`/inventory`} className={getLinkClass('/inventory')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 32 32"
-              className="text-[#e7e7ea]"
+              className="text-[#e7e7ea] group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow"
             >
               <path
                 fill="currentColor"
@@ -118,21 +113,18 @@ const Navigation = () => {
                 d="M17 24H4V10h24v5h2v-5a2 2 0 0 0-2-2h-6V4a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h13ZM12 4h8v4h-8Z"
               />
             </svg>
-            <span className="hidden sm:hidden md:hidden lg:inline font-semibold">
+            <span className="hidden sm:hidden md:hidden lg:inline font-semibold group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow">
               Inventory
             </span>
           </Link>
 
-          <Link
-            to={`/dashboard`}
-            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
-          >
+          <Link to={`/customer`} className={getLinkClass('/customer')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 32 32"
-              className="text-[#e7e7ea]"
+              className="text-[#e7e7ea] group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow"
             >
               <path
                 fill="currentColor"
@@ -143,71 +135,62 @@ const Navigation = () => {
                 d="m16.78 17.875l-1.906-2.384l-1.442-3.605A2.99 2.99 0 0 0 10.646 10H5c-1.654 0-3 1.346-3 3v7c0 1.103.897 2 2 2h1v8h2V20H4v-7a1 1 0 0 1 1-1h5.646c.411 0 .776.247.928.629l1.645 3.996l2 2.5zM4 5c0-2.206 1.794-4 4-4s4 1.794 4 4s-1.794 4-4 4s-4-1.794-4-4m2 0c0 1.103.897 2 2 2s2-.897 2-2s-.897-2-2-2s-2 .897-2 2"
               />
             </svg>
-            <span className="hidden sm:hidden md:hidden lg:inline font-semibold">
+            <span className="hidden sm:hidden md:hidden lg:inline font-semibold group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow">
               Customers
             </span>
           </Link>
 
-          <Link
-            to={`/dashboard`}
-            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
-          >
+          <Link to={`/order`} className={getLinkClass('/order')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 24 24"
-              className="text-[#e7e7ea]"
+              className="text-[#e7e7ea] group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow"
             >
               <g fill="none" stroke="currentColor" stroke-width="2">
                 <rect width="14" height="17" x="5" y="4" rx="2" />
                 <path stroke-linecap="round" d="M9 9h6m-6 4h6m-6 4h4" />
               </g>
             </svg>
-            <span className="hidden sm:hidden md:hidden lg:inline font-semibold">
+            <span className="hidden sm:hidden md:hidden lg:inline font-semibold group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow">
               Order
             </span>
           </Link>
 
-          <Link
-            to={`/dashboard`}
-            className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
-          >
+          <Link to={`/reports`} className={getLinkClass('/reports')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
               viewBox="0 0 24 24"
-              className="text-[#e7e7ea]"
+              className="text-[#e7e7ea] group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow"
             >
               <path
                 fill="currentColor"
                 d="M22 16v2H6V2h2v11.57l5.71-9l3.16 2.11l2.42-2.42l1.42 1.42l-3.58 3.61l-2.84-1.89L8.82 16M4 20V4H2v18h20v-2Z"
               />
             </svg>
-            <span className="hidden sm:hidden md:hidden lg:inline font-semibold">
+            <span className="hidden sm:hidden md:hidden lg:inline font-semibold group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow">
               Reports
             </span>
           </Link>
 
           {isAdmin && (
-            <Link
-              to={`/dashboard`}
-              className="flex items-center text-[#e7e7ea]   p-2 rounded gap-2"
-            >
+            <Link to={`/user`} className={getLinkClass('/user')}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="2rem"
                 height="2rem"
                 viewBox="0 0 24 24"
-                className="text-[#e7e7ea]"
+                className="text-[#e7e7ea] group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow"
               >
                 <path
                   fill="currentColor"
                   d="M15.71 12.71a6 6 0 1 0-7.42 0a10 10 0 0 0-6.22 8.18a1 1 0 0 0 2 .22a8 8 0 0 1 15.9 0a1 1 0 0 0 1 .89h.11a1 1 0 0 0 .88-1.1a10 10 0 0 0-6.25-8.19M12 12a4 4 0 1 1 4-4a4 4 0 0 1-4 4"
                 />
               </svg>
-              <span className="hidden sm:hidden md:hidden lg:inline font-semibold">
+              <span className="hidden sm:hidden md:hidden lg:inline font-semibold group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow">
                 User
               </span>
             </Link>
@@ -218,46 +201,42 @@ const Navigation = () => {
         <ul className="flex flex-col gap-y-4">
           {/* Login */}
           <li>
-            <Link
-              to="/login"
-              className="flex items-center transition-transform transform hover:translate-x-2"
-            >
+            <Link to="/login" className={getLinkClass('/login')}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="2rem"
                 height="2rem"
                 viewBox="0 0 24 24"
-                className="text-[#e7e7ea]"
+                className="text-[#e7e7ea] group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow"
               >
                 <path
                   fill="currentColor"
                   d="M12 21v-2h7V5h-7V3h7q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm-2-4l-1.375-1.45l2.55-2.55H3v-2h8.175l-2.55-2.55L10 7l5 5z"
                 />
               </svg>
-              <span className="nav-item-name ml-3 text-[#e7e7ea]">Login</span>
+              <span className="hidden sm:hidden md:hidden lg:inline font-semibold group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow">
+                Login
+              </span>
               {''}
             </Link>
           </li>
 
           {/* Register */}
           <li>
-            <Link
-              to="/register"
-              className="flex items-center transition-transform transform hover:translate-x-2"
-            >
+            <Link to="/register" className={getLinkClass('/register')}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="2rem"
                 height="2rem"
                 viewBox="0 0 24 24"
-                className="text-[#e7e7ea]"
+                className="text-[#e7e7ea] group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow"
               >
                 <path
                   fill="currentColor"
                   d="M20 12a1 1 0 0 0-1-1h-7.59l2.3-2.29a1 1 0 1 0-1.42-1.42l-4 4a1 1 0 0 0-.21.33a1 1 0 0 0 0 .76a1 1 0 0 0 .21.33l4 4a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.42L11.41 13H19a1 1 0 0 0 1-1M17 2H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-3a1 1 0 0 0-2 0v3a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3a1 1 0 0 0 2 0V5a3 3 0 0 0-3-3"
                 />
               </svg>
-              <span className=" nav-item-name ml-3 text-[#e7e7ea]">
+              <span className="hidden sm:hidden md:hidden lg:inline font-semibold group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow">
                 Register
               </span>
               {''}
