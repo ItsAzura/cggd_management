@@ -54,7 +54,7 @@ export function TopProducts() {
     { browser: 'other', visitors: 90, fill: 'var(--color-other)' },
   ];
   return (
-    <Card>
+    <Card className="text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out">
       <CardHeader>
         <CardTitle>Top Products</CardTitle>
         <CardDescription>2024</CardDescription>

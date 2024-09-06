@@ -60,7 +60,7 @@ export function CirleChart() {
   }, []);
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out">
       <CardHeader className="items-center pb-0">
         <CardTitle>Orders By Category</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
@@ -74,6 +74,7 @@ export function CirleChart() {
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
+              className="bg-white text-black"
             />
             <Pie
               data={chartData}
@@ -95,7 +96,8 @@ export function CirleChart() {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-foreground text-3xl font-bold "
+                          fill="hsl(var(--chart-5))"
                         >
                           {totalVisitors.toLocaleString()}
                         </tspan>
@@ -103,6 +105,7 @@ export function CirleChart() {
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
+                          fill="hsl(var(--chart-5))"
                         >
                           Orders
                         </tspan>

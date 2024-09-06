@@ -37,7 +37,7 @@ const chartConfig = {
 
 export function SpiderChart() {
   return (
-    <Card>
+    <Card className="text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out">
       <CardHeader className="items-center pb-4">
         <CardTitle>Orders By Month</CardTitle>
         <CardDescription>
