@@ -10,20 +10,40 @@ import Loading from '../components/loading/Loading.jsx';
 import Home from '../pages/Home/Home.jsx';
 
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard.jsx'));
+const Login = lazy(() => import('../pages/auth/Login.jsx'));
+const Register = lazy(() => import('../pages/auth/Register.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route path="" element={<Home />} />
+    <>
+      <Route path="/" element={<App />}>
+        <Route path="" element={<Home />} />
+        <Route
+          path="/dashboard"
+          element={
+            <Suspense fallback={<Loading />}>
+              <Dashboard />
+            </Suspense>
+          }
+        />
+      </Route>
       <Route
-        path="dashboard"
+        path="/login"
         element={
           <Suspense fallback={<Loading />}>
-            <Dashboard />
+            <Login />
           </Suspense>
         }
       />
-    </Route>
+      <Route
+        path="/register"
+        element={
+          <Suspense fallback={<Loading />}>
+            <Register />
+          </Suspense>
+        }
+      />
+    </>
   )
 );
 

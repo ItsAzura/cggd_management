@@ -3,8 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Navigation = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+
+  console.log(userInfo);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [userInfo, setUserInfo] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
 
@@ -249,8 +252,10 @@ const Navigation = () => {
         <div className="flex items-center p-4">
           <div className="rounded-full bg-gray-300 h-10 w-10"></div>
           <div className="ml-2">
-            <div className="text-lg font-semibold">Username</div>
-            <div className="text-sm text-gray-500">Admin</div>
+            <div className="text-lg font-semibold text-white">
+              {userInfo.username}
+            </div>
+            <div className="text-sm text-gray-500">{userInfo.email}</div>
           </div>
         </div>
       )}

@@ -27,7 +27,7 @@ const chartConfig = {
 
 export function MainChar(chartData) {
   return (
-    <Card>
+    <Card className="text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out">
       <CardHeader>
         <CardTitle>Total Sales Every Month</CardTitle>
         <CardDescription>2024</CardDescription>
