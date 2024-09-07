@@ -1,4 +1,5 @@
 import App from './App.jsx';
+import PrivateRoute from '../components/private/PrivateRoute.jsx';
 import './index.css';
 import ReactDOM from 'react-dom';
 import store from '../redux/store';
@@ -18,14 +19,16 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<App />}>
         <Route path="" element={<Home />} />
-        <Route
-          path="/dashboard"
-          element={
-            <Suspense fallback={<Loading />}>
-              <Dashboard />
-            </Suspense>
-          }
-        />
+        <Route path="" element={<PrivateRoute />}>
+          <Route
+            path="/dashboard"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Dashboard />
+              </Suspense>
+            }
+          />
+        </Route>
       </Route>
       <Route
         path="/login"

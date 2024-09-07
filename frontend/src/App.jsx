@@ -4,8 +4,16 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navigation from '../pages/Navigation/Navigation';
 import Footer from '../pages/Navigation/Footer';
+import { useDispatch } from 'react-redux';
+import { checkExpiration } from '../redux/feature/authSlice';
+import { useEffect } from 'react';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkExpiration());
+  }, [dispatch]);
   return (
     <>
       <ToastContainer />

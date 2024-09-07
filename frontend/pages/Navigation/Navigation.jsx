@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../redux/feature/authSlice';
+import { useLogoutUserMutation } from '../../redux/api/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Navigation = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -11,6 +14,11 @@ const Navigation = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [logoutUser] = useLogoutUserMutation();
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -19,6 +27,16 @@ const Navigation = () => {
     return location.pathname === path
       ? 'flex items-center text-[#e7e7ea] p-2 rounded gap-2 transition-transform duration-300 group bg-blue-500'
       : 'flex items-center text-[#e7e7ea] p-2 rounded gap-2 transition-transform duration-300 group';
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser().unwrap();
+      dispatch(logout());
+      navigate('/login');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -249,13 +267,33 @@ const Navigation = () => {
       )}
 
       {userInfo && (
-        <div className="flex items-center p-4">
-          <div className="rounded-full bg-gray-300 h-10 w-10"></div>
-          <div className="ml-2">
-            <div className="text-lg font-semibold text-white">
-              {userInfo.username}
+        <div className="flex flex-row items-center py-4">
+          <div className="flex flex-row">
+            <div className="rounded-full bg-gray-300 h-10 w-10"></div>
+            <div className="ml-2">
+              <div className="text-lg font-semibold text-white">
+                {userInfo.username}
+              </div>
+              <div className="text-sm text-gray-500">{userInfo.email}</div>
             </div>
-            <div className="text-sm text-gray-500">{userInfo.email}</div>
+          </div>
+          <div>
+            <button
+              onClick={handleLogout}
+              className="border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out delay-0 hover:bg-[rgba(41,125,204,0.3)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] text-white font-semibold py-2 px-2 rounded ml-4"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1.8rem"
+                height="1.8rem"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"
+                />
+              </svg>
+            </button>
           </div>
         </div>
       )}
