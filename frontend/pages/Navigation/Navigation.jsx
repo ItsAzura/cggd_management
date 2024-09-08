@@ -11,7 +11,6 @@ const Navigation = () => {
   console.log(userInfo);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
 
   const dispatch = useDispatch();
@@ -29,11 +28,18 @@ const Navigation = () => {
       : 'flex items-center text-[#e7e7ea] p-2 rounded gap-2 transition-transform duration-300 group';
   };
 
+  const truncateEmail = (email, maxLength = 10) => {
+    if (email.length <= maxLength) {
+      return email;
+    }
+    return email.substring(0, maxLength) + '...';
+  };
+
   const handleLogout = async () => {
     try {
       await logoutUser().unwrap();
       dispatch(logout());
-      navigate('/login');
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
@@ -197,7 +203,7 @@ const Navigation = () => {
             </span>
           </Link>
 
-          {isAdmin && (
+          {userInfo?.role_id === 3 && (
             <Link to={`/user`} className={getLinkClass('/user')}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -267,14 +273,17 @@ const Navigation = () => {
       )}
 
       {userInfo && (
-        <div className="flex flex-row items-center py-4">
+        <div className="flex flex-row items-center">
           <div className="flex flex-row">
             <div className="rounded-full bg-gray-300 h-10 w-10"></div>
             <div className="ml-2">
               <div className="text-lg font-semibold text-white">
                 {userInfo.username}
               </div>
-              <div className="text-sm text-gray-500">{userInfo.email}</div>
+              <div className="text-sm text-gray-500">
+                {' '}
+                {truncateEmail(userInfo.email)}
+              </div>
             </div>
           </div>
           <div>
