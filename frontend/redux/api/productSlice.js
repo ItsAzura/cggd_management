@@ -5,10 +5,32 @@ export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     //Define the endpoint for fetching all products
     getAllProducts: builder.query({
-      query: ({ page }) => ({
-        url: `${PRODUCTS_URL}?page=${page}`,
-        method: 'GET',
-      }),
+      query: ({
+        page,
+        name,
+        color_id,
+        price_min,
+        price_max,
+        size_id,
+        category_id,
+        supplier_id,
+      }) => {
+        // Tạo query parameters cho URL
+        let queryString = `?page=${page}`;
+
+        if (name) queryString += `&name=${name}`;
+        if (color_id) queryString += `&color_id=${color_id}`;
+        if (price_min) queryString += `&price_min=${price_min}`;
+        if (price_max) queryString += `&price_max=${price_max}`;
+        if (size_id) queryString += `&size_id=${size_id}`;
+        if (category_id) queryString += `&category_id=${category_id}`;
+        if (supplier_id) queryString += `&supplier_id=${supplier_id}`;
+
+        return {
+          url: `${PRODUCTS_URL}${queryString}`,
+          method: 'GET',
+        };
+      },
       providesTags: ['Products'],
     }),
 

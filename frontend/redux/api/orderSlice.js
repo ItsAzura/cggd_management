@@ -5,10 +5,18 @@ export const orderApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     //Define endpoint for fetching all orders
     getAllOrders: builder.query({
-      query: ({ page }) => ({
-        url: `${ORDERS_URL}?page=${page}`,
-        method: 'GET',
-      }),
+      query: ({ page, customer_id, status_id, total_amount }) => {
+        let queryString = `?page=${page}`;
+
+        if (customer_id) queryString += `&customer_id=${customer_id}`;
+        if (status_id) queryString += `&status_id=${status_id}`;
+        if (total_amount) queryString += `&total_amount=${total_amount}`;
+
+        return {
+          url: `${ORDERS_URL}${queryString}`,
+          method: 'GET',
+        };
+      },
       providesTags: ['Orders'],
     }),
 

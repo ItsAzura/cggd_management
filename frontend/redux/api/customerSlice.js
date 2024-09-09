@@ -5,10 +5,19 @@ export const customerApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Define the endpoint for fetching all customers
     getAllCustomers: builder.query({
-      query: (page) => ({
-        url: `${CUSTOMERS_URL}?page=${page}`,
-        method: 'GET',
-      }),
+      query: ({ page, customer_name, email, phone, address }) => {
+        let queryString = `?page=${page}`;
+
+        if (customer_name) queryString += `&customer_name=${customer_name}`;
+        if (email) queryString += `&email=${email}`;
+        if (phone) queryString += `&phone=${phone}`;
+        if (address) queryString += `&address=${address}`;
+
+        return {
+          url: `${CUSTOMERS_URL}${queryString}`,
+          method: 'GET',
+        };
+      },
       providesTags: ['Customers'],
     }),
 

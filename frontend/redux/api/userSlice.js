@@ -5,10 +5,18 @@ export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Define the endpoint for fetching all users
     getAllUsers: builder.query({
-      query: ({ page }) => ({
-        url: `${USERS_URL}?page=${page}`,
-        method: 'GET',
-      }),
+      query: ({ page, email, username, role_id }) => {
+        let queryString = `?page=${page}`;
+
+        if (email) queryString += `&email=${email}`;
+        if (username) queryString += `&username=${username}`;
+        if (role_id) queryString += `&role_id=${role_id}`;
+
+        return {
+          url: `${USERS_URL}${queryString}`,
+          method: 'GET',
+        };
+      },
       providesTags: ['Users'],
     }),
 

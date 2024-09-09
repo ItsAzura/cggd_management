@@ -20,7 +20,7 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
       state.userInfo = action.payload;
       // Set expiration time to 1 hour from now
-      const expirationTime = new Date().getTime() + 60 * 60 * 1000;
+      const expirationTime = new Date().getTime() + 60 * 60 * 60 * 1000;
       state.expirationTime = expirationTime;
 
       // Save user info and expiration time to localStorage

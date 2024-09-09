@@ -5,10 +5,19 @@ export const inventoryApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     //Define endpoint for fetching all inventory items
     getAllInventory: builder.query({
-      query: ({ page }) => ({
-        url: `${INVENTORY_URL}?page=${page}`,
-        method: 'GET',
-      }),
+      query: ({ page, product_id, quantity, min_quantity, location_id }) => {
+        let queryString = `?page=${page}`;
+
+        if (product_id) queryString += `&product_id=${product_id}`;
+        if (quantity) queryString += `&quantity=${quantity}`;
+        if (min_quantity) queryString += `&min_quantity=${min_quantity}`;
+        if (location_id) queryString += `&location_id=${location_id}`;
+
+        return {
+          url: `${INVENTORY_URL}${queryString}`,
+          method: 'GET',
+        };
+      },
       providesTags: ['Inventory'],
     }),
 

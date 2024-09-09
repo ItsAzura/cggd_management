@@ -9,7 +9,7 @@ const getAllSupplier = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: 'Page number is required' });
   }
 
-  const limit = 10;
+  const limit = 6;
   const offset = (page - 1) * limit;
 
   let query = 'SELECT * FROM suppliers WHERE 1=1';
@@ -55,7 +55,7 @@ const getAllSupplier = asyncHandler(async (req, res) => {
     const totalPages = Math.ceil(totalSuppliers / limit);
 
     res.status(200).json({
-      page: parseInt(page, 10),
+      page: parseInt(page, 6),
       per_page: limit,
       total_products: totalSuppliers,
       total_pages: totalPages,

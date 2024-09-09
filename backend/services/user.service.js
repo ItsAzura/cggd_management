@@ -4,13 +4,13 @@ import createToken from '../utils/createToken.js';
 import bcrypt from 'bcryptjs';
 
 const getAllUsers = asyncHandler(async (req, res) => {
-  const { email, username, user_password, role_id, page } = req.query;
+  const { email, username, role_id, page } = req.query;
 
   if (!page) {
     return res.status(400).json({ message: 'Page number is required' });
   }
 
-  const limit = 10;
+  const limit = 6;
   const offset = (page - 1) * limit;
 
   let query = `
@@ -56,7 +56,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
     const totalPages = Math.ceil(total / limit);
     const [users] = await db.query(query, [...values, limit, offset]);
     res.status(200).json({
-      page: parseInt(page, 10),
+      page: parseInt(page, 6),
       per_page: limit,
       total_users: total,
       total_pages: totalPages,
