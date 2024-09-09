@@ -54,7 +54,7 @@ export function TopProducts() {
     { browser: 'other', visitors: 90, fill: 'var(--color-other)' },
   ];
   return (
-    <Card className="text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out">
+    <Card className="text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out shadow-lg shadow-[rgba(41,125,204,0.1)]">
       <CardHeader>
         <CardTitle>Top Products</CardTitle>
         <CardDescription>2024</CardDescription>
@@ -81,8 +81,14 @@ export function TopProducts() {
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
+              className="bg-white text-black"
             />
-            <Bar dataKey="visitors" layout="vertical" radius={5} />
+            <Bar
+              dataKey="visitors"
+              layout="vertical"
+              radius={5}
+              fill="var(--color-other)"
+            />
           </BarChart>
         </ChartContainer>
       </CardContent>

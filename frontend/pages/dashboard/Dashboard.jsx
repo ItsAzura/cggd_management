@@ -56,7 +56,9 @@ const Dashboard = () => {
 
   return (
     <div className="ml-72">
-      <h1 className="text-4xl ml-4 font-semibold text-white py-2">Dashboard</h1>
+      <h1 className="text-4xl pt-4 ml-4 font-semibold text-white py-2 filter drop-shadow-[0px_0px_6px_rgba(41,125,204,1)] transition-shadow">
+        Dashboard
+      </h1>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 p-4">
         {customers?.length > 0 && (
           <StatCard

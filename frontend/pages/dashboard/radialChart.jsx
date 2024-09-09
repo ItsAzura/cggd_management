@@ -36,7 +36,7 @@ export function RadiChar() {
   const totalVisitors = chartData[0].desktop + chartData[0].mobile;
 
   return (
-    <Card className="flex flex-col text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out">
+    <Card className="flex flex-col text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out shadow-lg shadow-[rgba(41,125,204,0.1)]">
       <CardHeader className="items-center pb-2">
         <CardTitle>Platform Users</CardTitle>
         <CardDescription>January - June 2024</CardDescription>

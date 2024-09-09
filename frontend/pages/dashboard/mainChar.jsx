@@ -27,7 +27,7 @@ const chartConfig = {
 
 export function MainChar(chartData) {
   return (
-    <Card className="text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out">
+    <Card className="text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out shadow-lg shadow-[rgba(41,125,204,0.1)]">
       <CardHeader>
         <CardTitle>Total Sales Every Month</CardTitle>
         <CardDescription>2024</CardDescription>
@@ -52,6 +52,7 @@ export function MainChar(chartData) {
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
+              className="bg-white text-black"
             />
             <Bar
               dataKey="total_amount_sum"

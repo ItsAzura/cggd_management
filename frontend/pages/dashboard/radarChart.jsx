@@ -37,7 +37,7 @@ const chartConfig = {
 
 export function SpiderChart() {
   return (
-    <Card className="text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out">
+    <Card className="text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out shadow-lg shadow-[rgba(41,125,204,0.1)]">
       <CardHeader className="items-center pb-4">
         <CardTitle>Orders By Month</CardTitle>
         <CardDescription>
@@ -50,7 +50,11 @@ export function SpiderChart() {
           className="mx-auto aspect-square max-h-[250px]"
         >
           <RadarChart data={chartData}>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent />}
+              className="bg-white text-black"
+            />
             <PolarAngleAxis dataKey="month" />
             <PolarGrid />
             <Radar

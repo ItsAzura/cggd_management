@@ -60,7 +60,7 @@ export function CirleChart() {
   }, []);
 
   return (
-    <Card className="flex flex-col text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out">
+    <Card className="flex flex-col text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out shadow-lg shadow-[rgba(41,125,204,0.1)]">
       <CardHeader className="items-center pb-0">
         <CardTitle>Orders By Category</CardTitle>
         <CardDescription>January - June 2024</CardDescription>

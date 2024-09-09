@@ -76,7 +76,7 @@ const Home = () => {
               opacity: inView1 ? 1 : 0,
               transform: inView1 ? 'translateY(0)' : 'translateY(20px)',
             }}
-            className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+            className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] hover:bg-[rgba(41,125,204,0.3)]"
           >
             <h2 className="text-2xl font-semibold text-[#e7e7ea]">Storage</h2>
             <p className="mt-4 text-[#b7b7b7]">
@@ -91,7 +91,7 @@ const Home = () => {
               opacity: inView2 ? 1 : 0,
               transform: inView2 ? 'translateY(0)' : 'translateY(20px)',
             }}
-            className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+            className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] hover:bg-[rgba(41,125,204,0.3)]"
           >
             <h2 className="text-2xl font-semibold text-[#e7e7ea]">Logistics</h2>
             <p className="mt-4 text-[#b7b7b7]">
@@ -108,7 +108,7 @@ const Home = () => {
               opacity: inView3 ? 1 : 0,
               transform: inView3 ? 'translateY(0)' : 'translateY(20px)',
             }}
-            className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+            className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] hover:bg-[rgba(41,125,204,0.3)]"
           >
             <h2 className="text-2xl font-semibold text-[#e7e7ea]">Security</h2>
             <p className="mt-4 text-[#b7b7b7]">
