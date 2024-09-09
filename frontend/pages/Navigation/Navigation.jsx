@@ -24,7 +24,7 @@ const Navigation = () => {
 
   const getLinkClass = (path) => {
     return location.pathname === path
-      ? 'flex items-center text-[#e7e7ea] p-2 rounded gap-2 transition-transform duration-300 group bg-blue-500'
+      ? 'flex items-center text-[#e7e7ea] p-2 rounded border border-[rgba(41,125,204,0.5)] gap-2 transition-transform duration-300 group bg-blue-500'
       : 'flex items-center text-[#e7e7ea] p-2 rounded gap-2 transition-transform duration-300 group';
   };
 
@@ -48,7 +48,7 @@ const Navigation = () => {
   return (
     <div
       style={{ zIndex: 9999 }}
-      className="h-auto w-64 border-[rgba(41,125,204,0.2)] bg-[rgba(41,125,204,0.1)] border shadow-md flex flex-col justify-between p-4 mt-4 ml-4 sm:w-20 md:w-64 lg:w-64 xl:w-64 fixed rounded"
+      className="h-auto w-64 border-[rgba(41,125,204,0.2)] bg-[rgba(41,125,204,0.1)] border flex flex-col justify-between p-4 mt-4 ml-4 sm:w-20 md:w-64 lg:w-64 xl:w-64 fixed rounded shadow-lg shadow-[rgba(41,125,204,0.1)]"
     >
       <div className="mb-14">
         <div className="ml-3 text-3xl font-bold text-[#e7e7ea] mb-6 sm:text-xl md:text-2xl lg:text-3xl filter drop-shadow-[0px_0px_3px_rgba(41,125,204,1)] transition-shadow">
