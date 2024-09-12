@@ -2,8 +2,16 @@ import asyncHandler from '../middlewares/asyncHandler.js';
 import db from '../db.js';
 
 const getAllSupplier = asyncHandler(async (req, res) => {
-  const { supplier_name, contact_person, phone, email, address, page } =
-    req.query;
+  const {
+    supplier_name,
+    contact_person,
+    phone,
+    email,
+    address,
+    page,
+    sort_by = 'id',
+    sort_order = 'DESC',
+  } = req.query;
 
   if (!page) {
     return res.status(400).json({ message: 'Page number is required' });
@@ -46,6 +54,8 @@ const getAllSupplier = asyncHandler(async (req, res) => {
     countQuery += ' AND address LIKE ?';
     values.push(`%${address}%`);
   }
+
+  query += ` ORDER BY ${sort_by} ${sort_order.toUpperCase()}`;
 
   query += ' LIMIT ? OFFSET ?';
   try {

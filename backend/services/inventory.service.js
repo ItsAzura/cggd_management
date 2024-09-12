@@ -2,7 +2,15 @@ import asyncHandler from '../middlewares/asyncHandler.js';
 import db from '../db.js';
 
 const getAllProductInventory = asyncHandler(async (req, res) => {
-  const { product_id, quantity, min_quantity, location_id, page } = req.query;
+  const {
+    product_id,
+    quantity,
+    min_quantity,
+    location_id,
+    page,
+    sort_by = 'id',
+    sort_order = 'DESC',
+  } = req.query;
   if (!page) {
     return res.status(400).json({ message: 'Page number is required' });
   }
@@ -52,6 +60,8 @@ const getAllProductInventory = asyncHandler(async (req, res) => {
     countQuery += ' AND location_id = ?';
     values.push(location_id);
   }
+
+  query += ` ORDER BY ${sort_by} ${sort_order.toUpperCase()}`;
 
   query += ' LIMIT ? OFFSET ?';
 

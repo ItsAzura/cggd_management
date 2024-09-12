@@ -4,7 +4,14 @@ import createToken from '../utils/createToken.js';
 import bcrypt from 'bcryptjs';
 
 const getAllUsers = asyncHandler(async (req, res) => {
-  const { email, username, role_id, page } = req.query;
+  const {
+    email,
+    username,
+    role_id,
+    page,
+    sort_by = 'id',
+    sort_order = 'DESC',
+  } = req.query;
 
   if (!page) {
     return res.status(400).json({ message: 'Page number is required' });
@@ -47,6 +54,8 @@ const getAllUsers = asyncHandler(async (req, res) => {
     countQuery += ' AND role_id = ?';
     values.push(role_id);
   }
+
+  query += ` ORDER BY ${sort_by} ${sort_order.toUpperCase()}`;
 
   query += ' LIMIT ? OFFSET ?';
 

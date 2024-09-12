@@ -1,5 +1,4 @@
 import React from 'react';
-import hero_img from '../../Assets/hero_img.png';
 import aboutus from '../../Assets/Aboutus.png';
 import contactus from '../../Assets/Contactus.png';
 import { useInView } from 'react-intersection-observer';
@@ -25,30 +24,23 @@ const Home = () => {
   const [ref02, inView02] = useInView({ triggerOnce: false, threshold: 0.1 });
 
   return (
-    <div className="ml-[21%] min-h-screen flex flex-col items-center justify-center px-4 py-10 md:px-20">
+    <div className="ml-[19%] min-h-screen flex flex-col items-center justify-center px-4 py-10 md:px-20">
       <div className="w-full max-w-5xl space-y-12">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-center items-center">
+        <div className="md:flex-row justify-center items-center md:p-12">
           <div className="flex flex-col text-center md:text-left">
-            <h1 className="text-5xl md:text-6xl font-bold text-white filter drop-shadow-[0px_0px_3px_rgba(41,125,204,1)] transition-shadow ">
-              Welcome to Azura's Warehouse
-            </h1>
-            <p className="mt-4 text-gray-300 md:text-lg">
-              Reliable, Efficient, and Secure Storage Solutions for Your
-              Business
-            </p>
-            <button className="w-full md:w-40 mt-6 px-6 py-3 bg-[#297DCC] text-white rounded-full font-semibold shadow-lg hover:bg-[#246aae] transition-colors hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]">
-              Learn More
-            </button>
+            <div className="w-[115%] relative overflow-hidden">
+              <h1 className=" text-4xl md:text-6xl font-bold text-white mb-4 filter drop-shadow-[0px_0px_3px_rgba(41,125,204,1)] transition-shadow whitespace-nowrap">
+                <span className="text">Welcome to Azura's Warehouse</span>
+              </h1>
+            </div>
           </div>
-          <div className="mt-8 md:mt-0">
-            <img
-              loading="lazy"
-              src={hero_img}
-              alt="Warehouse"
-              className="max-w-full h-auto animate-fadeInRight rounded-lg shadow-lg"
-            />
-          </div>
+          <p className="mt-4 text-gray-300 md:text-lg">
+            Reliable, Efficient, and Secure Storage Solutions for Your Business
+          </p>
+          <button className="w-full md:w-[200px] mt-6 px-8 py-3 bg-[#297DCC] text-white rounded-full font-semibold shadow-lg hover:bg-[#246aae] transition-colors duration-300 hover:shadow-xl">
+            Learn More
+          </button>
         </div>
 
         {/* Services Section */}

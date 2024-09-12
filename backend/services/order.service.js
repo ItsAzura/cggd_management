@@ -2,7 +2,14 @@ import asyncHandler from '../middlewares/asyncHandler.js';
 import db from '../db.js';
 
 const getAllOrder = asyncHandler(async (req, res) => {
-  const { customer_id, total_amount, status_id, page } = req.query;
+  const {
+    customer_id,
+    total_amount,
+    status_id,
+    page,
+    sort_by = 'id',
+    sort_order = 'DESC',
+  } = req.query;
 
   if (!page) {
     return res.status(400).json({ message: 'Page number is required' });
@@ -47,6 +54,8 @@ const getAllOrder = asyncHandler(async (req, res) => {
     countQuery += ' AND order_status.id = ?';
     values.push(status_id);
   }
+
+  query += ` ORDER BY ${sort_by} ${sort_order.toUpperCase()}`;
 
   query += ' LIMIT ? OFFSET ?';
 

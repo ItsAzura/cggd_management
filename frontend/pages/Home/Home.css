@@ -1,7 +1,7 @@
 @keyframes fadeInRight {
   0% {
     opacity: 0;
-    transform: translateX(-20%);
+    transform: translateX(+20%);
   }
   100% {
     opacity: 1;
@@ -29,4 +29,54 @@
 
 .visible {
   opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in-text {
+  display: inline-block;
+  opacity: 0;
+  animation: fadeInWords 2s forwards;
+  animation-delay: 0.5s; /* Add a slight delay to make it smoother */
+}
+
+@keyframes fadeInWords {
+  0% {
+    opacity: 0;
+    transform: translateX(-20%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes blinkCursor {
+  50% {
+    border-right-color: transparent;
+  }
+}
+
+@keyframes typeAndDelete {
+  0%,
+  10% {
+    width: 0;
+  }
+  45%,
+  55% {
+    width: 100%;
+  }
+  90%,
+  100% {
+    width: 0;
+  }
+}
+
+.text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 0.2em solid white; /* Cursor */
+  animation: typeAndDelete 5s steps(40) infinite,
+    /* Adjust steps based on content length */ blinkCursor 0.6s step-end
+      infinite alternate;
+  margin-top: 1.5em;
 }

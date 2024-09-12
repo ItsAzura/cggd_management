@@ -11,6 +11,8 @@ const getAllProduct = asyncHandler(async (req, res) => {
     category_id,
     supplier_id,
     page,
+    sort_by = 'id',
+    sort_order = 'DESC',
   } = req.query;
 
   if (!page) {
@@ -32,7 +34,8 @@ const getAllProduct = asyncHandler(async (req, res) => {
     LEFT JOIN sizes ON products.size_id = sizes.id
     LEFT JOIN categories ON products.category_id = categories.id
     LEFT JOIN suppliers ON products.supplier_id = suppliers.id
-    WHERE 1=1`;
+    WHERE 1=1
+    `;
 
   let countQuery = `
     SELECT COUNT(*) as total_products 
@@ -86,6 +89,8 @@ const getAllProduct = asyncHandler(async (req, res) => {
     countQuery += ' AND supplier_id = ?';
     values.push(supplier_id);
   }
+
+  query += ` ORDER BY ${sort_by} ${sort_order.toUpperCase()}`;
 
   query += ' LIMIT ? OFFSET ?';
 
