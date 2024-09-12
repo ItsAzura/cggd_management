@@ -107,54 +107,74 @@ const getAllProduct = asyncHandler(async (req, res) => {
   }
 });
 
-const getCountProduct = asyncHandler(async (req, res) => {
-  const count_product = 'SELECT COUNT(*) AS total_product FROM products;';
+const getCountProduct = async (req, res) => {
+  try {
+    console.log('Running count product query...');
+    const [rows] = await db.query(
+      `SELECT COUNT(*) AS total_product FROM products`
+    );
+    console.log('Query result:', rows);
+    res.status(200).json({ total_product: rows[0].total_product });
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res
+      .status(500)
+      .json({ message: 'Error fetching product count', error: error.message });
+  }
+};
 
-  const [rows] = await db.query(count_product);
-  res.json(rows);
-});
+const getTopOrderProduct = async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT product_id, COUNT(*) AS total_ordered
+      FROM orders
+      GROUP BY product_id
+      ORDER BY total_ordered DESC
+      LIMIT 1;
+    `);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'No top ordered product found' });
+    }
+    res.status(200).json({
+      product_id: rows[0].product_id,
+      total_ordered: rows[0].total_ordered,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error fetching top ordered product',
+      error: error.message,
+    });
+  }
+};
 
-const getTopOrderProduct = asyncHandler(async (req, res) => {
-  const top_order_product = `SELECT 
-    p.id, 
-    p.name, 
-    p.sku,
-    p.category_id, 
-    p.size_id, 
-    p.color_id, 
-    p.material, 
-    p.price, 
-    p.supplier_id, 
-    p.image, 
-    p.description, 
-    COUNT(oi.order_id) AS order_count,  
-    SUM(oi.quantity) AS total_quantity 
-FROM 
-    products p
-JOIN 
-    order_items oi ON p.id = oi.product_id
-GROUP BY 
-    p.id, 
-    p.name, 
-    p.sku,
-    p.category_id, 
-    p.size_id, 
-    p.color_id, 
-    p.material, 
-    p.price, 
-    p.supplier_id, 
-    p.image, 
-    p.description
-ORDER BY 
-    order_count DESC
-LIMIT 5;
-`;
+const getProductById = asyncHandler(async (req, res) => {
+  const [rows] = await db.query(
+    `SELECT 
+      products.*, 
+      colors.color_name, 
+      sizes.size_name, 
+      categories.cate_name, 
+      suppliers.supplier_name 
+    FROM products
+    LEFT JOIN colors ON products.color_id = colors.id
+    LEFT JOIN sizes ON products.size_id = sizes.id
+    LEFT JOIN categories ON products.category_id = categories.id
+    LEFT JOIN suppliers ON products.supplier_id = suppliers.id
+    WHERE products.id = ?`,
+    [req.params.id]
+  );
 
-  const [rows] = await db.query(top_order_product);
-  res.json(rows);
+  if (rows.length === 0) {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+
+  res.json(rows[0]);
 });
 
 const createProduct = asyncHandler(async (req, res) => {
+  console.log('Received data:', req.body);
+  console.log('Received file:', req.file);
   const {
     name,
     sku,
@@ -164,19 +184,40 @@ const createProduct = asyncHandler(async (req, res) => {
     material,
     price,
     supplier_id,
-    image,
     description,
   } = req.body;
 
-  const existingProduct = await db.query(
+  // Check if a file was uploaded
+  let image = null;
+  if (req.file && req.file.filename) {
+    image = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  }
+
+  // Perform validation
+  if (
+    !name ||
+    !sku ||
+    !category_id ||
+    !size_id ||
+    !color_id ||
+    !material ||
+    !price ||
+    !supplier_id ||
+    !description
+  ) {
+    return res.status(400).json({ message: 'All product fields are required' });
+  }
+
+  // Check if product SKU already exists
+  const [existingProduct] = await db.query(
     'SELECT * FROM products WHERE sku = ?',
     [sku]
   );
-
-  if (existingProduct[0].length > 0) {
+  if (existingProduct.length > 0) {
     return res.status(400).json({ message: 'Product already exists' });
   }
 
+  // Create new product
   const newProduct = {
     name,
     sku,
@@ -186,14 +227,16 @@ const createProduct = asyncHandler(async (req, res) => {
     material,
     price,
     supplier_id,
-    image,
+    image, // Save the image URL in the database
     description,
   };
 
   const [result] = await db.query('INSERT INTO products SET ?', newProduct);
   newProduct.id = result.insertId;
 
-  res.status(201).json(newProduct);
+  res
+    .status(200)
+    .json({ message: 'Product created successfully', product: newProduct });
 });
 
 const updateProduct = asyncHandler(async (req, res) => {
@@ -270,6 +313,7 @@ export {
   getCountProduct,
   getAllProduct,
   getTopOrderProduct,
+  getProductById,
   createProduct,
   updateProduct,
   deleteProduct,

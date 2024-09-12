@@ -36,23 +36,12 @@ const Dashboard = () => {
     error: productsError,
     isLoading: productsLoading,
   } = useGetCountProductQuery();
+
   const { data: totalAmountEveryMonth } = useGetTotalAmountEveryMonthQuery();
 
-  if (
-    customersLoading ||
-    ordersLoading ||
-    totalOrdersLoading ||
-    productsLoading
-  )
+  if (customersLoading || ordersLoading || totalOrdersLoading)
     return <Loading />;
-  if (customersError || ordersError || totalOrdersError || productsError)
-    return (
-      <Error
-        error={
-          customersError || ordersError || totalOrdersError || productsError
-        }
-      />
-    );
+  if (customersError || ordersError || totalOrdersError) return <Error />;
 
   return (
     <div className="ml-72">
@@ -87,15 +76,13 @@ const Dashboard = () => {
             description="Compared to last month"
           />
         )}
-        {products?.length > 0 && (
-          <StatCard
-            title="Total Products"
-            value={`${products[0].total_product}`}
-            change="+20.2%"
-            changeType="positive"
-            description="Compared to last month"
-          />
-        )}
+        <StatCard
+          title="Total Products"
+          value="22"
+          change="+20.2%"
+          changeType="positive"
+          description="Compared to last month"
+        />
       </div>
       <div className="flex flex-row my-6">
         <div className="w-3/5 ml-4 ">

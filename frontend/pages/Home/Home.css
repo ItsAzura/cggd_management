@@ -21,11 +21,12 @@
 }
 
 .fade-in-letter {
-  display: inline-block;
   opacity: 0;
-  animation: fadeInUp 0.8s ease forwards;
+  transform: translateY(20px);
+  display: inline-block;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.visible .fade-in-letter {
+.visible {
   opacity: 1;
 }

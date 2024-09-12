@@ -9,7 +9,8 @@ import {
 import { useGetAllProductsQuery } from '../../redux/api/productSlice';
 import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 const Products = () => {
   const navigate = useNavigate();
@@ -262,19 +263,24 @@ const Products = () => {
           </svg>
           <span>Filter</span>
         </button>
-        <button className="flex flex-row items-center gap-2 bg-[#0b1c37] text-white p-2 border border-[rgba(41,125,204,0.5)] rounded-lg hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="2rem"
-            height="2rem"
-            viewBox="0 0 24 24"
+        <button className="bg-[#0b1c37] text-white p-2 border border-[rgba(41,125,204,0.5)] rounded-lg hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]">
+          <Link
+            to="/product/create"
+            className="flex flex-row items-center gap-2 "
           >
-            <path
-              fill="currentColor"
-              d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1"
-            />
-          </svg>
-          <span>Add Product</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="2rem"
+              height="2rem"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1"
+              />
+            </svg>
+            <span>Add Product</span>
+          </Link>
         </button>
       </div>
       <div className="mt-10">
@@ -303,6 +309,9 @@ const Products = () => {
                 Supplier
               </th>
               <th className="p-3 border-b border-[rgba(41,125,204,0.7)]">
+                Updated
+              </th>
+              <th className="p-3 border-b border-[rgba(41,125,204,0.7)]">
                 Action
               </th>
             </tr>
@@ -320,23 +329,31 @@ const Products = () => {
                 <td className="p-4">{product.color_name}</td>
                 <td className="p-4">{product.price}</td>
                 <td className="p-4">{product.supplier_name}</td>
+                <td className="p-4">
+                  {moment(product.updated_at).format('DD-MM-YYYY')}
+                </td>
                 <td className="p-4 flex gap-2 justify-center">
                   <button className="bg-[#0b1c37] text-white p-2 rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-[#297dcc] hover:scale-110 transition-all duration-300">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
+                    <Link
+                      to={`/product/${product.id}`}
+                      className="flex flex-row items-center gap-2"
                     >
-                      <path
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.5"
-                        d="m5 16l-1 4l4-1L19.586 7.414a2 2 0 0 0 0-2.828l-.172-.172a2 2 0 0 0-2.828 0zM15 6l3 3m-5 11h8"
-                      />
-                    </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.5"
+                          d="m5 16l-1 4l4-1L19.586 7.414a2 2 0 0 0 0-2.828l-.172-.172a2 2 0 0 0-2.828 0zM15 6l3 3m-5 11h8"
+                        />
+                      </svg>
+                    </Link>
                   </button>
                   <button className="bg-[#0b1c37] text-white p-2 rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-[#ff4c4c] hover:scale-110 transition-all duration-300">
                     <svg

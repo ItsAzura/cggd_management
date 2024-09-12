@@ -44,6 +44,11 @@ code {
     --chart-3: 216 92% 60%;
     --chart-4: 210 98% 78%;
     --chart-5: 212 97% 87%;
+    --toastify-color-dark: #1f1f20;
+    --toastify-color-info: rgb(41, 84, 204);
+    --toastify-color-success: rgb(41, 204, 76);
+    --toastify-color-warning: rgb(174, 204, 41);
+    --toastify-color-error: rgb(204, 41, 41);
   }
 
   .dark {

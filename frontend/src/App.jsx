@@ -16,7 +16,19 @@ function App() {
   }, [dispatch]);
   return (
     <>
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition:Bounce
+      />
       <Navigation />
       <main className="min-h-screen h-auto">
         <Outlet />

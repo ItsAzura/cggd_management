@@ -14,6 +14,8 @@ const Dashboard = lazy(() => import('../pages/dashboard/Dashboard.jsx'));
 const Login = lazy(() => import('../pages/auth/Login.jsx'));
 const Register = lazy(() => import('../pages/auth/Register.jsx'));
 const Products = lazy(() => import('../pages/product/Products.jsx'));
+const CreateProduct = lazy(() => import('../pages/product/CreateProduct.jsx'));
+const DetailProduct = lazy(() => import('../pages/product/DetailProduct.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +36,22 @@ const router = createBrowserRouter(
             element={
               <Suspense fallback={<Loading />}>
                 <Products />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/product/create"
+            element={
+              <Suspense fallback={<Loading />}>
+                <CreateProduct />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/product/:id"
+            element={
+              <Suspense fallback={<Loading />}>
+                <DetailProduct />
               </Suspense>
             }
           />

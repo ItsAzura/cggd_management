@@ -4,23 +4,10 @@ import aboutus from '../../Assets/Aboutus.png';
 import contactus from '../../Assets/Contactus.png';
 import { useInView } from 'react-intersection-observer';
 import './Home.css';
+import LazyLoad from 'react-lazyload';
 
 const Home = () => {
   const [ref0, inView0] = useInView({ triggerOnce: false, threshold: 0.1 });
-
-  // Hàm chia chữ thành từng span với độ trễ animation khác nhau
-  const splitTextWithDelay = (text) => {
-    return text.split('').map((char, index) => (
-      <span
-        key={index}
-        style={{ animationDelay: `${index * 0.05}s` }} // Mỗi chữ cái có delay khác nhau
-        className={`fade-in-letter ${inView0 ? 'visible' : ''}`}
-      >
-        {char === ' ' ? '\u00A0' : char}{' '}
-        {/* Giữ dấu cách bằng ký tự không phá vỡ không gian */}
-      </span>
-    ));
-  };
 
   const [ref1, inView1] = useInView({ triggerOnce: false, threshold: 0.1 });
   const [ref2, inView2] = useInView({ triggerOnce: false, threshold: 0.1 });
@@ -56,6 +43,7 @@ const Home = () => {
           </div>
           <div className="mt-8 md:mt-0">
             <img
+              loading="lazy"
               src={hero_img}
               alt="Warehouse"
               className="max-w-full h-auto animate-fadeInRight rounded-lg shadow-lg"
@@ -65,7 +53,7 @@ const Home = () => {
 
         {/* Services Section */}
         <h1 className="text-5xl font-bold text-white text-center filter drop-shadow-[0px_0px_3px_rgba(41,125,204,1)] transition-shadow">
-          {splitTextWithDelay('Our Services')}
+          Our Services
         </h1>
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div
@@ -131,25 +119,28 @@ const Home = () => {
             </p>
           </div>
           <div className="md:w-1/2 mt-8 md:mt-0 md:pl-8">
-            <img
-              ref={ref01}
-              style={{
-                transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                transitionDelay: inView01 ? '0' : '0s',
-                opacity: inView01 ? 1 : 0,
-                transform: inView01 ? 'translateX(0)' : 'translateX(20px)',
-              }}
-              src={aboutus}
-              alt="Warehouse"
-              className="rounded shadow-md max-w-full h-auto"
-            />
+            <LazyLoad height={200} offset={100}>
+              <img
+                loading="lazy"
+                ref={ref01}
+                style={{
+                  transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
+                  transitionDelay: inView01 ? '0' : '0s',
+                  opacity: inView01 ? 1 : 0,
+                  transform: inView01 ? 'translateX(0)' : 'translateX(20px)',
+                }}
+                src={aboutus}
+                alt="Warehouse"
+                className="rounded shadow-md max-w-full h-auto"
+              />
+            </LazyLoad>
           </div>
         </section>
 
         {/* Testimonials Section */}
         <section className="text-center pb-10">
           <h2 className="text-4xl md:text-5xl font-bold text-white filter drop-shadow-[0px_0px_3px_rgba(41,125,204,1)] transition-shadow">
-            {splitTextWithDelay(' What Our Clients Say')}
+            What Our Clients Say
           </h2>
           <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div
@@ -306,18 +297,24 @@ const Home = () => {
 
             {/* Image Section */}
             <div className="flex items-center justify-center">
-              <img
-                ref={ref02}
-                style={{
-                  transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                  transitionDelay: inView02 ? '0' : '0s',
-                  opacity: inView02 ? 1 : 0,
-                  transform: inView02 ? 'translateX(-20px)' : 'translateX(0px)',
-                }}
-                src={contactus}
-                alt="Contact Us"
-                className="max-w-full h-auto rounded-lg shadow-md"
-              />
+              <LazyLoad height={200} offset={100}>
+                <img
+                  loading="lazy"
+                  ref={ref02}
+                  style={{
+                    transition:
+                      'opacity 0.6s ease-out, transform 0.6s ease-out',
+                    transitionDelay: inView02 ? '0' : '0s',
+                    opacity: inView02 ? 1 : 0,
+                    transform: inView02
+                      ? 'translateX(-20px)'
+                      : 'translateX(0px)',
+                  }}
+                  src={contactus}
+                  alt="Contact Us"
+                  className="max-w-full h-auto rounded-lg shadow-md"
+                />
+              </LazyLoad>
             </div>
           </div>
         </section>
