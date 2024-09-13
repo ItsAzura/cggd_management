@@ -1,17 +1,22 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useGetProductByIdQuery } from '../../redux/api/productSlice';
 import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import placeholderimg from '../../Assets/placeholder_img.png';
+import DeleteModal from './DeleteModal';
 
 const DetailProduct = () => {
   const { id } = useParams();
-  console.log('id', id);
+  const [product, setProduct] = useState({});
 
   const navigate = useNavigate();
 
-  const { data: product, isLoading, isError } = useGetProductByIdQuery(id);
+  const { data, isLoading, isError } = useGetProductByIdQuery(id);
+
+  useEffect(() => {
+    if (data) setProduct(data);
+  }, [data]);
 
   if (isLoading) return <Loading />;
   if (isError) return <ErrorPage />;
@@ -77,7 +82,7 @@ const DetailProduct = () => {
             <p>{product.supplier_name}</p>
           </div>
 
-          <div className="flex flex-row gap-4 py-4">
+          <Link to={`/product/${id}/edit`} className="flex flex-row gap-4 py-4">
             <button className="flex flex-row gap-2 items-center md:w-auto font-semibold py-2 px-4 rounded transition duration-300 border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] hover:bg-blue-600 hover:text-white hover:shadow-lg hover:scale-105 ease-in-out">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -96,21 +101,7 @@ const DetailProduct = () => {
               </svg>
               <span>Edit</span>
             </button>
-            <button className="flex flex-row gap-2 items-center md:w-auto font-semibold py-2 px-4 rounded transition duration-300 border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] hover:bg-red-600 hover:text-white hover:shadow-lg hover:scale-105 ease-in-out">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1.8rem"
-                height="1.8rem"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
-                />
-              </svg>
-              <span>Delete</span>
-            </button>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

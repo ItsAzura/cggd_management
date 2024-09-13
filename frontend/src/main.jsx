@@ -16,6 +16,7 @@ const Register = lazy(() => import('../pages/auth/Register.jsx'));
 const Products = lazy(() => import('../pages/product/Products.jsx'));
 const CreateProduct = lazy(() => import('../pages/product/CreateProduct.jsx'));
 const DetailProduct = lazy(() => import('../pages/product/DetailProduct.jsx'));
+const EditProduct = lazy(() => import('../pages/product/EditProduct.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -52,6 +53,14 @@ const router = createBrowserRouter(
             element={
               <Suspense fallback={<Loading />}>
                 <DetailProduct />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/product/:id/edit"
+            element={
+              <Suspense fallback={<Loading />}>
+                <EditProduct />
               </Suspense>
             }
           />

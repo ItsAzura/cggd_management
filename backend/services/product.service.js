@@ -246,6 +246,7 @@ const createProduct = asyncHandler(async (req, res) => {
 
 const updateProduct = asyncHandler(async (req, res) => {
   const {
+    id,
     name,
     sku,
     category_id,
@@ -254,43 +255,52 @@ const updateProduct = asyncHandler(async (req, res) => {
     material,
     price,
     supplier_id,
-    image,
     description,
   } = req.body;
 
-  const existingProduct = await db.query(
-    'SELECT * FROM products WHERE sku = ?',
-    [sku]
-  );
+  console.log(req.body);
 
-  if (existingProduct[0].length > 0) {
-    return res.status(400).json({ message: 'Product already exists' });
+  try {
+    const [existingProduct] = await db.query(
+      'SELECT * FROM products WHERE id = ?',
+      [id]
+    );
+
+    if (existingProduct.length === 0) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    const updatedProduct = {
+      name,
+      sku,
+      category_id,
+      size_id,
+      color_id,
+      material,
+      price,
+      supplier_id,
+      description,
+    };
+
+    const [result] = await db.query('UPDATE products SET ? WHERE id = ?', [
+      updatedProduct,
+      id,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Trả về dữ liệu sản phẩm đã cập nhật từ cơ sở dữ liệu
+    const [updatedProductData] = await db.query(
+      'SELECT * FROM products WHERE id = ?',
+      [id]
+    );
+
+    res.status(200).json(updatedProductData[0]);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-
-  const updatedProduct = {
-    name,
-    sku,
-    category_id,
-    size_id,
-    color_id,
-    material,
-    price,
-    supplier_id,
-    image,
-    description,
-  };
-
-  const [result] = await db.query('UPDATE products SET ? WHERE id = ?', [
-    updatedProduct,
-    req.params.id,
-  ]);
-
-  if (result.affectedRows === 0) {
-    res.status(404);
-    throw new Error('Product not found');
-  }
-
-  res.status(200).json(updatedProduct);
 });
 
 const deleteProduct = asyncHandler(async (req, res) => {

@@ -11,6 +11,7 @@ import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import DeleteModal from './DeleteModal';
 
 const Products = () => {
   const navigate = useNavigate();
@@ -25,6 +26,9 @@ const Products = () => {
     category_id: '',
     supplier_id: '',
   });
+
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // Cập nhật URL khi filter hoặc paginate thay đổi
   useEffect(() => {
@@ -106,6 +110,16 @@ const Products = () => {
     }));
   };
 
+  const openDeleteModal = (productId) => {
+    setSelectedProductId(productId);
+    setShowDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setSelectedProductId(null);
+  };
+
   if (
     colorLoading ||
     sizeLoading ||
@@ -132,6 +146,14 @@ const Products = () => {
 
   return (
     <div className="ml-72 ">
+      {/* Delete Modal */}
+      {showDeleteModal && (
+        <DeleteModal
+          id={selectedProductId}
+          showModal={showDeleteModal}
+          onClose={closeDeleteModal}
+        />
+      )}
       <h1 className="text-4xl pt-4 mb-6 font-semibold text-white py-2 filter drop-shadow-[0px_0px_6px_rgba(41,125,204,1)] transition-shadow">
         Product Manager
       </h1>
@@ -355,16 +377,19 @@ const Products = () => {
                       </svg>
                     </Link>
                   </button>
-                  <button className="bg-[#0b1c37] text-white p-2 rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-[#ff4c4c] hover:scale-110 transition-all duration-300">
+                  <button
+                    className="bg-[#0b1c37] text-white p-2 rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-[#297dcc] hover:scale-110 transition-all duration-300"
+                    onClick={() => openDeleteModal(product.id)}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
+                      width="2rem"
+                      height="2rem"
+                      viewBox="0 0 256 256"
                     >
                       <path
                         fill="currentColor"
-                        d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
+                        d="M216 48h-40v-8a24 24 0 0 0-24-24h-48a24 24 0 0 0-24 24v8H40a8 8 0 0 0 0 16h8v144a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16V64h8a8 8 0 0 0 0-16M96 40a8 8 0 0 1 8-8h48a8 8 0 0 1 8 8v8H96Zm96 168H64V64h128Zm-80-104v64a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0m48 0v64a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0"
                       />
                     </svg>
                   </button>
