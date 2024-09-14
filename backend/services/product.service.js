@@ -258,8 +258,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     description,
   } = req.body;
 
-  console.log(req.body);
-
   try {
     const [existingProduct] = await db.query(
       'SELECT * FROM products WHERE id = ?',
@@ -291,7 +289,6 @@ const updateProduct = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    // Trả về dữ liệu sản phẩm đã cập nhật từ cơ sở dữ liệu
     const [updatedProductData] = await db.query(
       'SELECT * FROM products WHERE id = ?',
       [id]

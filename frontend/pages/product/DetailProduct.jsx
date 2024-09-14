@@ -4,7 +4,7 @@ import { useGetProductByIdQuery } from '../../redux/api/productSlice';
 import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import placeholderimg from '../../Assets/placeholder_img.png';
-import DeleteModal from './DeleteModal';
+import IconBtn from '../../components/Shared/IconBtn';
 
 const DetailProduct = () => {
   const { id } = useParams();
@@ -82,25 +82,27 @@ const DetailProduct = () => {
             <p>{product.supplier_name}</p>
           </div>
 
-          <Link to={`/product/${id}/edit`} className="flex flex-row gap-4 py-4">
-            <button className="flex flex-row gap-2 items-center md:w-auto font-semibold py-2 px-4 rounded transition duration-300 border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] hover:bg-blue-600 hover:text-white hover:shadow-lg hover:scale-105 ease-in-out">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1.8rem"
-                height="1.8rem"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  d="m5 16l-1 4l4-1L19.586 7.414a2 2 0 0 0 0-2.828l-.172-.172a2 2 0 0 0-2.828 0zM15 6l3 3m-5 11h8"
-                />
-              </svg>
-              <span>Edit</span>
-            </button>
+          <Link to={`/product/${id}/edit`}>
+            <IconBtn
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1.8rem"
+                  height="1.8rem"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="m5 16l-1 4l4-1L19.586 7.414a2 2 0 0 0 0-2.828l-.172-.172a2 2 0 0 0-2.828 0zM15 6l3 3m-5 11h8"
+                  />
+                </svg>
+              }
+              label="Edit"
+            />
           </Link>
         </div>
       </div>

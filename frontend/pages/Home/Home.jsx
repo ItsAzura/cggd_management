@@ -1,13 +1,14 @@
 import React from 'react';
-import aboutus from '../../Assets/Aboutus.png';
-import contactus from '../../Assets/Contactus.png';
+import AboutUs from '../../Assets/Aboutus.png';
+import ContactUs from '../../Assets/Contactus.png';
 import { useInView } from 'react-intersection-observer';
 import './Home.css';
 import LazyLoad from 'react-lazyload';
+import CardService from '../../components/Home/CardService';
+import ClientCard from '../../components/Home/ClientCard';
+import QuestionCard from '../../components/Home/QuestionCard';
 
 const Home = () => {
-  const [ref0, inView0] = useInView({ triggerOnce: false, threshold: 0.1 });
-
   const [ref1, inView1] = useInView({ triggerOnce: false, threshold: 0.1 });
   const [ref2, inView2] = useInView({ triggerOnce: false, threshold: 0.1 });
   const [ref3, inView3] = useInView({ triggerOnce: false, threshold: 0.1 });
@@ -27,7 +28,7 @@ const Home = () => {
     <div className="ml-[19%] min-h-screen flex flex-col items-center justify-center px-4 py-10 md:px-20">
       <div className="w-full max-w-5xl space-y-12">
         {/* Header Section */}
-        <div className="md:flex-row justify-center items-center md:p-12">
+        <div className="md:flex-row justify-center items-center md:px-6 md:py-10 ">
           <div className="flex flex-col text-center md:text-left">
             <div className="w-[115%] relative overflow-hidden">
               <h1 className=" text-4xl md:text-6xl font-bold text-white mb-4 filter drop-shadow-[0px_0px_3px_rgba(41,125,204,1)] transition-shadow whitespace-nowrap">
@@ -48,53 +49,27 @@ const Home = () => {
           Our Services
         </h1>
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div
+          <CardService
             ref={ref1}
-            style={{
-              transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-              transitionDelay: inView1 ? '0s' : '0s',
-              opacity: inView1 ? 1 : 0,
-              transform: inView1 ? 'translateY(0)' : 'translateY(20px)',
-            }}
-            className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] hover:bg-[rgba(41,125,204,0.3)]"
-          >
-            <h2 className="text-2xl font-semibold text-[#e7e7ea]">Storage</h2>
-            <p className="mt-4 text-[#b7b7b7]">
-              Secure storage solutions with temperature control and 24/7 access.
-            </p>
-          </div>
-          <div
+            inView={inView1}
+            transitionDelay="0s"
+            title="Storage"
+            description="Secure storage solutions with temperature control and 24/7 access."
+          />
+          <CardService
             ref={ref2}
-            style={{
-              transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-              transitionDelay: inView2 ? '0.24s' : '0s',
-              opacity: inView2 ? 1 : 0,
-              transform: inView2 ? 'translateY(0)' : 'translateY(20px)',
-            }}
-            className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] hover:bg-[rgba(41,125,204,0.3)]"
-          >
-            <h2 className="text-2xl font-semibold text-[#e7e7ea]">Logistics</h2>
-            <p className="mt-4 text-[#b7b7b7]">
-              Streamlined logistics management to ensure timely delivery and
-              efficient operations.
-            </p>
-          </div>
-
-          <div
+            inView={inView2}
+            transitionDelay="0.24s"
+            title="Logistics"
+            description="Streamlined logistics management to ensure timely delivery and efficient operations."
+          />
+          <CardService
             ref={ref3}
-            style={{
-              transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-              transitionDelay: inView3 ? '0.48s' : '0s',
-              opacity: inView3 ? 1 : 0,
-              transform: inView3 ? 'translateY(0)' : 'translateY(20px)',
-            }}
-            className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] hover:bg-[rgba(41,125,204,0.3)]"
-          >
-            <h2 className="text-2xl font-semibold text-[#e7e7ea]">Security</h2>
-            <p className="mt-4 text-[#b7b7b7]">
-              Top-notch security systems to protect your valuable assets.
-            </p>
-          </div>
+            inView={inView3}
+            transitionDelay="0.48s"
+            title="Security"
+            description="Top-notch security systems to protect your valuable assets."
+          />
         </section>
 
         {/* About Section */}
@@ -121,7 +96,7 @@ const Home = () => {
                   opacity: inView01 ? 1 : 0,
                   transform: inView01 ? 'translateX(0)' : 'translateX(20px)',
                 }}
-                src={aboutus}
+                src={AboutUs}
                 alt="Warehouse"
                 className="rounded shadow-md max-w-full h-auto"
               />
@@ -135,52 +110,28 @@ const Home = () => {
             What Our Clients Say
           </h2>
           <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div
+            <ClientCard
               ref={ref4}
-              style={{
-                transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                transitionDelay: inView4 ? '0s' : '0s',
-                opacity: inView4 ? 1 : 0,
-                transform: inView4 ? 'translateY(0)' : 'translateY(20px)',
-              }}
-              className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out delay-0 hover:bg-[rgba(41,125,204,0.3)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-            >
-              <p className="text-[#b7b7b7] italic">
-                "Fantastic service and top-notch facilities. We couldn't be
-                happier!"
-              </p>
-              <p className="mt-4 text-[#e7e7ea] font-semibold">- Client A</p>
-            </div>
-            <div
+              inView={inView4}
+              transitionDelay="0s"
+              comment="Fantastic service and top-notch facilities. We couldn't be happier!"
+              client="Client A"
+            />
+            <ClientCard
               ref={ref5}
-              style={{
-                transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                transitionDelay: inView5 ? '0.24s' : '0s',
-                opacity: inView5 ? 1 : 0,
-                transform: inView5 ? 'translateY(0)' : 'translateY(20px)',
-              }}
-              className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out delay-0 hover:bg-[rgba(41,125,204,0.3)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-            >
-              <p className="text-[#b7b7b7] italic">
-                "Reliable and secure. They have exceeded our expectations."
-              </p>
-              <p className="mt-4 text-[#e7e7ea] font-semibold">- Client B</p>
-            </div>
-            <div
+              inView={inView5}
+              transitionDelay="0.24s"
+              comment="Reliable and secure. They have exceeded our expectations."
+              client="Client B"
+            />
+
+            <ClientCard
               ref={ref6}
-              style={{
-                transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                transitionDelay: inView6 ? '0.48s' : '0s',
-                opacity: inView6 ? 1 : 0,
-                transform: inView6 ? 'translateY(0)' : 'translateY(20px)',
-              }}
-              className="p-6 rounded shadow-lg text-center border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out delay-0 hover:bg-[rgba(41,125,204,0.3)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-            >
-              <p className="text-[#b7b7b7] italic">
-                "Excellent logistics management. Highly recommended!"
-              </p>
-              <p className="mt-4 text-[#e7e7ea] font-semibold">- Client C</p>
-            </div>
+              inView={inView6}
+              transitionDelay="0.48s"
+              comment="Great customer service and efficient operations. Highly recommended!"
+              client="Client C"
+            />
           </div>
         </section>
 
@@ -190,60 +141,27 @@ const Home = () => {
             Frequently Asked Questions
           </h2>
           <div className="mt-8 space-y-4">
-            <div
+            <QuestionCard
               ref={ref7}
-              style={{
-                transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                transitionDelay: inView7 ? '0s' : '0s',
-                opacity: inView7 ? 1 : 0,
-                transform: inView7 ? 'translateY(0)' : 'translateY(20px)',
-              }}
-              className="p-4 rounded shadow-lg border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out delay-0 hover:bg-[rgba(41,125,204,0.3)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-            >
-              <h3 className="text-lg font-semibold text-[#e7e7ea]">
-                What are your storage capacities?
-              </h3>
-              <p className="mt-2 text-[#b7b7b7]">
-                We offer a range of storage options, from small units to large
-                warehouse spaces. Contact us for more details.
-              </p>
-            </div>
-            <div
+              inView={inView7}
+              transitionDelay="0s"
+              question="What are your storage rates?"
+              answer="Our storage rates vary depending on the size and type of storage you require. Please contact us for a quote."
+            />
+            <QuestionCard
               ref={ref8}
-              style={{
-                transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                transitionDelay: inView8 ? '0.24s' : '0s',
-                opacity: inView8 ? 1 : 0,
-                transform: inView8 ? 'translateY(0)' : 'translateY(20px)',
-              }}
-              className="p-4 rounded shadow-lg border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out delay-0 hover:bg-[rgba(41,125,204,0.3)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-            >
-              <h3 className="text-lg font-semibold text-[#e7e7ea]">
-                How can I manage my inventory?
-              </h3>
-              <p className="mt-2 text-[#b7b7b7]">
-                Our warehouse provides advanced inventory management systems to
-                help you keep track of your stock.
-              </p>
-            </div>
-            <div
+              inView={inView8}
+              transitionDelay="0.24s"
+              question="Do you offer temperature-controlled storage?"
+              answer="Yes, we offer temperature-controlled storage to ensure your goods are kept in optimal conditions."
+            />
+            <QuestionCard
               ref={ref9}
-              style={{
-                transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                transitionDelay: inView9 ? '0.48s' : '0s',
-                opacity: inView9 ? 1 : 0,
-                transform: inView9 ? 'translateY(0)' : 'translateY(20px)',
-              }}
-              className="p-4 rounded shadow-lg border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out delay-0 hover:bg-[rgba(41,125,204,0.3)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-            >
-              <h3 className="text-lg font-semibold text-[#e7e7ea]">
-                Do you offer insurance for stored goods?
-              </h3>
-              <p className="mt-2 text-[#b7b7b7]">
-                Yes, we offer comprehensive insurance options to protect your
-                valuable assets.
-              </p>
-            </div>
+              inView={inView9}
+              transitionDelay="0.48s"
+              question="How can I access my stored items?"
+              answer="You can access your stored items 24/7 with our secure access system. Contact us for more details."
+            />
           </div>
         </section>
 
@@ -302,7 +220,7 @@ const Home = () => {
                       ? 'translateX(-20px)'
                       : 'translateX(0px)',
                   }}
-                  src={contactus}
+                  src={ContactUs}
                   alt="Contact Us"
                   className="max-w-full h-auto rounded-lg shadow-md"
                 />

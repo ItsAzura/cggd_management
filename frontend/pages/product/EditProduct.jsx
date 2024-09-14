@@ -14,6 +14,7 @@ import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import PageTitle from '../../components/Shared/PageTitle';
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -137,9 +138,7 @@ const EditProduct = () => {
 
   return (
     <div className="ml-72">
-      <h1 className="text-4xl pt-4 mb-4 font-semibold text-white py-2 filter drop-shadow-[0px_0px_6px_rgba(41,125,204,1)] transition-shadow">
-        Edit Product
-      </h1>
+      <PageTitle title="Edit Product" />
       <form
         className="w-[96%]"
         onSubmit={handleSubmit}

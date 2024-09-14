@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   useGetAllColorsQuery,
   useGetAllCategoriesQuery,
-  useGetAllLocationsQuery,
   useGetAllSizesQuery,
   useGetAllSelectorSupplierQuery,
 } from '../../redux/api/seletorSlice';
@@ -12,6 +11,10 @@ import ErrorPage from '../../components/error/Error';
 import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import DeleteModal from './DeleteModal';
+import PageTitle from '../../components/Shared/PageTitle';
+import IconBtn from '../../components/Shared/IconBtn';
+import { useDeleteProductMutation } from '../../redux/api/productSlice';
+import { toast } from 'react-toastify';
 
 const Products = () => {
   const navigate = useNavigate();
@@ -120,6 +123,19 @@ const Products = () => {
     setSelectedProductId(null);
   };
 
+  const [deleteProduct] = useDeleteProductMutation();
+
+  const handleDelete = async () => {
+    try {
+      const response = await deleteProduct(selectedProductId).unwrap();
+      console.log(response);
+      toast.success('Product deleted successfully', response);
+      closeDeleteModal();
+    } catch (error) {
+      toast.error('Failed to delete product');
+    }
+  };
+
   if (
     colorLoading ||
     sizeLoading ||
@@ -149,14 +165,13 @@ const Products = () => {
       {/* Delete Modal */}
       {showDeleteModal && (
         <DeleteModal
-          id={selectedProductId}
           showModal={showDeleteModal}
           onClose={closeDeleteModal}
+          content="Are you sure you want to delete this product?"
+          handleDelete={handleDelete}
         />
       )}
-      <h1 className="text-4xl pt-4 mb-6 font-semibold text-white py-2 filter drop-shadow-[0px_0px_6px_rgba(41,125,204,1)] transition-shadow">
-        Product Manager
-      </h1>
+      <PageTitle title="Products" />
       <div className="w-[100%] grid grid-cols-3 gap-1 mb-4">
         <input
           type="text"
@@ -271,39 +286,40 @@ const Products = () => {
         </select>
       </div>
       <div className="w-[93%] flex flex-row justify-between items-center">
-        <button className="flex flex-row items-center gap-2 bg-[#0b1c37] text-white p-2 border border-[rgba(41,125,204,0.5)] rounded-lg  hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] ">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="2rem"
-            height="2rem"
-            viewBox="0 0 512 512"
-          >
-            <path
-              fill="currentColor"
-              d="M472 168H40a24 24 0 0 1 0-48h432a24 24 0 0 1 0 48m-80 112H120a24 24 0 0 1 0-48h272a24 24 0 0 1 0 48m-96 112h-80a24 24 0 0 1 0-48h80a24 24 0 0 1 0 48"
-            />
-          </svg>
-          <span>Filter</span>
-        </button>
-        <button className="bg-[#0b1c37] text-white p-2 border border-[rgba(41,125,204,0.5)] rounded-lg hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]">
-          <Link
-            to="/product/create"
-            className="flex flex-row items-center gap-2 "
-          >
+        <IconBtn
+          icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
               height="2rem"
-              viewBox="0 0 24 24"
+              viewBox="0 0 512 512"
             >
               <path
                 fill="currentColor"
-                d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1"
+                d="M472 168H40a24 24 0 0 1 0-48h432a24 24 0 0 1 0 48m-80 112H120a24 24 0 0 1 0-48h272a24 24 0 0 1 0 48m-96 112h-80a24 24 0 0 1 0-48h80a24 24 0 0 1 0 48"
               />
             </svg>
-            <span>Add Product</span>
-          </Link>
-        </button>
+          }
+          label="Filter"
+        />
+        <Link to="/product/create">
+          <IconBtn
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="2rem"
+                height="2rem"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1"
+                />
+              </svg>
+            }
+            label="Add Product"
+          />
+        </Link>
       </div>
       <div className="mt-10">
         <table className="w-[94%] bg-[rgba(41,125,204,0.2)] text-white border border-[rgba(41,125,204,0.7)] rounded shadow-xl shadow-[rgba(41,125,204,0.08)]">
@@ -355,7 +371,7 @@ const Products = () => {
                   {moment(product.updated_at).format('DD-MM-YYYY')}
                 </td>
                 <td className="p-4 flex gap-2 justify-center">
-                  <button className="bg-[#0b1c37] text-white p-2 rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-[#297dcc] hover:scale-110 transition-all duration-300">
+                  <button className="px-3 py-2 bg-[#0b1c37] text-white rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-[#297dcc] hover:scale-110 transition-all duration-300">
                     <Link
                       to={`/product/${product.id}`}
                       className="flex flex-row items-center gap-2"
@@ -378,7 +394,7 @@ const Products = () => {
                     </Link>
                   </button>
                   <button
-                    className="bg-[#0b1c37] text-white p-2 rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-[#297dcc] hover:scale-110 transition-all duration-300"
+                    className="px-2 py-2 bg-[#0b1c37] text-white p-2 rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-red-500 hover:scale-110 transition-all duration-300"
                     onClick={() => openDeleteModal(product.id)}
                   >
                     <svg
