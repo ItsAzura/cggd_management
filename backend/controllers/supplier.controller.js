@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   getAllSupplier,
+  getSupplierById,
   createSupplier,
   updateSupplier,
   deleteSupplier,
@@ -9,7 +10,11 @@ const router = express.Router();
 
 router.route('/').get(getAllSupplier).post(createSupplier);
 
-router.route('/:id').put(updateSupplier).delete(deleteSupplier);
+router
+  .route('/:id')
+  .get(getSupplierById)
+  .put(updateSupplier)
+  .delete(deleteSupplier);
 
 // router.get('/', getAllSupplier);
 // router.post('/', createSupplier);

@@ -258,6 +258,8 @@ const updateProduct = asyncHandler(async (req, res) => {
     description,
   } = req.body;
 
+  console.log('Received data:', req.body);
+
   try {
     const [existingProduct] = await db.query(
       'SELECT * FROM products WHERE id = ?',

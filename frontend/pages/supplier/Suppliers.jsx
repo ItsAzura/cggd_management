@@ -1,33 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import {
-  useGetAllColorsQuery,
-  useGetAllCategoriesQuery,
-  useGetAllSizesQuery,
-  useGetAllSelectorSupplierQuery,
-} from '../../redux/api/seletorSlice';
-import { useGetAllProductsQuery } from '../../redux/api/productSlice';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useGetAllSuppliersQuery } from '../../redux/api/supplierSlice';
 import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
-import { Link, useNavigate } from 'react-router-dom';
-import moment from 'moment';
-import DeleteModal from '../../components/Shared/DeleteModal';
 import PageTitle from '../../components/Shared/PageTitle';
 import IconBtn from '../../components/Shared/IconBtn';
-import { useDeleteProductMutation } from '../../redux/api/productSlice';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import DeleteModal from '../../components/Shared/DeleteModal';
+import { useDeleteSupplierMutation } from '../../redux/api/supplierSlice';
 import { toast } from 'react-toastify';
 
-const Products = () => {
+const Suppliers = () => {
   const navigate = useNavigate();
-
   const [filters, setFilters] = useState({
     page: 1,
-    name: '',
-    color_id: '',
-    price_min: '',
-    price_max: '',
-    size_id: '',
-    category_id: '',
-    supplier_id: '',
+    supplier_name: '',
+    contact_person: '',
+    phone: '',
+    email: '',
+    address: '',
   });
 
   const [selectedProductId, setSelectedProductId] = useState(null);
@@ -50,50 +42,22 @@ const Products = () => {
     }
   }, [filters, navigate]);
 
-  // Xử lý debounce cho việc filter
   const [debounceTimeout, setDebounceTimeout] = useState(null);
 
   const {
-    data: colors,
-    isLoading: colorLoading,
-    isError: colorError,
-  } = useGetAllColorsQuery();
-
-  const {
-    data: sizes,
-    isLoading: sizeLoading,
-    isError: sizeError,
-  } = useGetAllSizesQuery();
-
-  const {
-    data: categories,
-    isLoading: categoryLoading,
-    isError: categoryError,
-  } = useGetAllCategoriesQuery();
-
-  const {
     data: suppliers,
-    isLoading: supplierLoading,
-    isError: supplierError,
-  } = useGetAllSelectorSupplierQuery();
+    isLoading,
+    error,
+  } = useGetAllSuppliersQuery(filters);
 
-  const {
-    data: products,
-    isLoading: productLoading,
-    isError: productError,
-  } = useGetAllProductsQuery(filters);
-
-  // Handle filter change
   const handleFilterChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
 
-    // Clear previous debounce
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
     }
 
-    // Debounce filter change
     const newTimeout = setTimeout(() => {
       setFilters((prevFilters) => ({
         ...prevFilters,
@@ -105,7 +69,6 @@ const Products = () => {
     setDebounceTimeout(newTimeout);
   };
 
-  // Handle page change
   const handlePageChange = (newPage) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -123,11 +86,11 @@ const Products = () => {
     setSelectedProductId(null);
   };
 
-  const [deleteProduct] = useDeleteProductMutation();
+  const [deleteSupplier] = useDeleteSupplierMutation();
 
   const handleDelete = async () => {
     try {
-      const response = await deleteProduct(selectedProductId).unwrap();
+      const response = await deleteSupplier(selectedProductId).unwrap();
       console.log(response);
       toast.success('Product deleted successfully', response);
       closeDeleteModal();
@@ -136,33 +99,20 @@ const Products = () => {
     }
   };
 
-  if (
-    colorLoading ||
-    sizeLoading ||
-    categoryLoading ||
-    supplierLoading ||
-    productLoading
-  ) {
+  if (isLoading) {
     return <Loading />;
   }
 
-  if (
-    colorError ||
-    sizeError ||
-    categoryError ||
-    supplierError ||
-    productError
-  ) {
-    return <ErrorPage />;
+  if (error) {
+    return <ErrorPage message={error} />;
   }
 
-  console.log(filters);
+  const totalPages = suppliers?.total_pages || 1;
 
-  const totalPages = products?.total_pages || 1;
+  console.log(suppliers);
 
   return (
     <div className="ml-72 ">
-      {/* Delete Modal */}
       {showDeleteModal && (
         <DeleteModal
           showModal={showDeleteModal}
@@ -171,121 +121,45 @@ const Products = () => {
           handleDelete={handleDelete}
         />
       )}
-      <PageTitle title="Products" />
-      <div className="w-[100%] grid grid-cols-3 gap-1 mb-4">
+      <PageTitle title="Suppliers" />
+      <div className="w-[100%] grid grid-cols-3 gap-y-6 mb-4 mt-2">
         <input
           type="text"
-          placeholder="Search by name"
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-          name="name"
-          value={filters.name}
+          name="supplier_name"
+          placeholder="Search by supplier name"
+          className="w-[90%] p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           onChange={handleFilterChange}
         />
         <input
-          type="number"
-          placeholder="Min price"
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-          name="price_min"
-          value={filters.price_min}
+          type="text"
+          name="contact_person"
+          placeholder="Search by contact person"
+          className="w-[90%] p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           onChange={handleFilterChange}
         />
         <input
-          type="number"
-          placeholder="Max price"
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-          name="price_max"
-          value={filters.price_max}
+          type="text"
+          name="phone"
+          placeholder="Search by phone"
+          className="w-[90%] p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          onChange={handleFilterChange}
+        />
+        <input
+          type="text"
+          name="email"
+          placeholder="Search by email"
+          className="w-[90%] p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          onChange={handleFilterChange}
+        />
+        <input
+          type="text"
+          name="address"
+          placeholder="Search by address"
+          className="w-[90%] p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           onChange={handleFilterChange}
         />
       </div>
-      <div className="w-[98%] grid grid-cols-4 gap-1 mb-6 mt-6">
-        <select
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-          name="color_id"
-          value={filters.color_id}
-          onChange={handleFilterChange}
-        >
-          <option value="" className="bg-[#0b1c37] text-[#e7e7ea] ">
-            Select Color
-          </option>
-          {colors.map((color) => (
-            <option
-              key={color.id}
-              value={color.id}
-              className=" bg-[#0b1c37] cursor-pointer text-[#e7e7ea] "
-            >
-              {color.color_name}
-            </option>
-          ))}
-        </select>
-        <select
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-          name="size_id"
-          value={filters.size_id}
-          onChange={handleFilterChange}
-        >
-          <option
-            value=""
-            className=" bg-[#0b1c37] cursor-pointer text-[#e7e7ea] "
-          >
-            Select Size
-          </option>
-          {sizes.map((size) => (
-            <option
-              key={size.id}
-              value={size.id}
-              className=" bg-[#0b1c37] cursor-pointer text-[#e7e7ea] "
-            >
-              {size.size_name}
-            </option>
-          ))}
-        </select>
-        <select
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-          name="category_id"
-          value={filters.category_id}
-          onChange={handleFilterChange}
-        >
-          <option
-            value=""
-            className=" bg-[#0b1c37] cursor-pointer text-[#e7e7ea] "
-          >
-            Select Category
-          </option>
-          {categories.map((category) => (
-            <option
-              key={category.id}
-              value={category.id}
-              className=" bg-[#0b1c37] cursor-pointer text-[#e7e7ea] "
-            >
-              {category.cate_name}
-            </option>
-          ))}
-        </select>
-        <select
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
-          name="supplier_id"
-          value={filters.supplier_id}
-          onChange={handleFilterChange}
-        >
-          <option
-            value=""
-            className=" bg-[#0b1c37] cursor-pointer text-[#e7e7ea] "
-          >
-            Select Supplier
-          </option>
-          {suppliers.map((supplier) => (
-            <option
-              key={supplier.id}
-              value={supplier.id}
-              className=" bg-[#0b1c37] cursor-pointer text-[#e7e7ea] "
-            >
-              {supplier.supplier_name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="w-[93%] flex flex-row justify-between items-center">
+      <div className="w-[95%] flex flex-row justify-between items-center">
         <IconBtn
           icon={
             <svg
@@ -302,7 +176,7 @@ const Products = () => {
           }
           label="Filter"
         />
-        <Link to="/product/create">
+        <Link to="/supplier/create">
           <IconBtn
             icon={
               <svg
@@ -326,54 +200,47 @@ const Products = () => {
           <thead className="bg-[#163a62]">
             <tr className="text-left">
               <th className="p-3 border-b border-[rgba(41,125,204,0.7)]">
-                Name
+                Supplier Name
               </th>
               <th className="p-3 border-b border-[rgba(41,125,204,0.7)]">
-                SKU
+                Contact Person
               </th>
               <th className="p-3 border-b border-[rgba(41,125,204,0.7)]">
-                Category
+                Phone
               </th>
               <th className="p-3 border-b border-[rgba(41,125,204,0.7)]">
-                Size
+                Email
               </th>
               <th className="p-3 border-b border-[rgba(41,125,204,0.7)]">
-                Color
-              </th>
-              <th className="p-3 border-b border-[rgba(41,125,204,0.7)]">
-                Price
-              </th>
-              <th className="p-3 border-b border-[rgba(41,125,204,0.7)]">
-                Supplier
+                Address
               </th>
               <th className="p-3 border-b border-[rgba(41,125,204,0.7)]">
                 Updated
               </th>
               <th className="p-3 border-b border-[rgba(41,125,204,0.7)]">
-                Action
+                Actions
               </th>
             </tr>
           </thead>
           <tbody>
-            {products.data.map((product) => (
+            {suppliers?.data.map((supplier) => (
               <tr
-                key={product.id}
+                key={suppliers.id}
                 className="border-b  border-[rgba(41,125,204,0.4)] transition duration-300 ease-in-out hover:bg-[#2b4f7e] hover:scale-[1.02] hover:shadow-lg"
               >
-                <td className="p-4">{product.name}</td>
-                <td className="p-4">{product.sku}</td>
-                <td className="p-4">{product.cate_name}</td>
-                <td className="p-4">{product.size_name}</td>
-                <td className="p-4">{product.color_name}</td>
-                <td className="p-4">{product.price}</td>
-                <td className="p-4">{product.supplier_name}</td>
+                <td className="p-4">{supplier.supplier_name}</td>
+                <td className="p-4">{supplier.contact_person}</td>
+                <td className="p-4">{supplier.phone}</td>
+                <td className="p-4">{supplier.email}</td>
+                <td className="p-4">{supplier.address}</td>
                 <td className="p-4">
-                  {moment(product.updated_at).format('DD-MM-YYYY')}
+                  {' '}
+                  {moment(supplier.updated_at).format('DD-MM-YYYY')}
                 </td>
                 <td className="p-4 flex gap-2 justify-center">
                   <button className="px-3 py-2 bg-[#0b1c37] text-white rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-[#297dcc] hover:scale-110 transition-all duration-300">
                     <Link
-                      to={`/product/${product.id}`}
+                      to={`/supplier/${supplier.id}`}
                       className="flex flex-row items-center gap-2"
                     >
                       <svg
@@ -395,7 +262,7 @@ const Products = () => {
                   </button>
                   <button
                     className="px-2 py-2 bg-[#0b1c37] text-white p-2 rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-red-500 hover:scale-110 transition-all duration-300"
-                    onClick={() => openDeleteModal(product.id)}
+                    onClick={() => openDeleteModal(supplier.id)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -474,4 +341,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Suppliers;

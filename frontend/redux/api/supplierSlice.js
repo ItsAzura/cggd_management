@@ -30,6 +30,13 @@ export const supplierApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Suppliers'],
     }),
 
+    getSupplierById: builder.query({
+      query: (supplierId) => ({
+        url: `${SUPPLIERS_URL}/${supplierId}`,
+        method: 'GET',
+      }),
+    }),
+
     // Define the endpoint for creating a new supplier
     createSupplier: builder.mutation({
       query: (newSupplier) => ({
@@ -42,7 +49,7 @@ export const supplierApiSlice = apiSlice.injectEndpoints({
 
     // Define the endpoint for updating a supplier
     updateSupplier: builder.mutation({
-      query: (id, updatedSupplier) => ({
+      query: ({ id, updatedSupplier }) => ({
         url: `${SUPPLIERS_URL}/${id}`,
         method: 'PUT',
         body: updatedSupplier,
@@ -63,6 +70,7 @@ export const supplierApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetAllSuppliersQuery,
+  useGetSupplierByIdQuery,
   useCreateSupplierMutation,
   useUpdateSupplierMutation,
   useDeleteSupplierMutation,

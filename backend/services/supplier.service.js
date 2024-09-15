@@ -77,23 +77,39 @@ const getAllSupplier = asyncHandler(async (req, res) => {
   }
 });
 
+const getSupplierById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const [supplier] = await db.query('SELECT * FROM suppliers WHERE id = ?', [
+    id,
+  ]);
+
+  if (supplier.length === 0) {
+    res.status(404).json({ message: 'Supplier not found' });
+  }
+
+  res.status(200).json(supplier[0]);
+});
+
 const createSupplier = asyncHandler(async (req, res) => {
   const { supplier_name, contact_person, phone, email, address } = req.body;
 
+  // Check for missing fields and return an error if any are missing
   if (!supplier_name || !contact_person || !phone || !email || !address) {
-    res.status(400);
-    throw new Error('All fields are required');
+    return res.status(400).json({ message: 'All fields are required' });
   }
 
-  const existingSupplier = await db.query(
+  // Check if the supplier already exists
+  const [existingSupplier] = await db.query(
     'SELECT * FROM suppliers WHERE email = ? AND phone = ? ',
     [email, phone]
   );
 
   if (existingSupplier.length > 0) {
-    res.status(400).json({ message: 'Supplier already exists' });
+    return res.status(400).json({ message: 'Supplier already exists' });
   }
 
+  // If all validations pass, insert the new supplier
   const query =
     'INSERT INTO suppliers (supplier_name, contact_person, phone, email, address) VALUES (?, ?, ?, ?, ?)';
 
@@ -105,7 +121,8 @@ const createSupplier = asyncHandler(async (req, res) => {
     address,
   ]);
 
-  res.status(201).json({
+  // Send the success response
+  return res.status(201).json({
     id: result.insertId,
     supplier_name,
     contact_person,
@@ -116,43 +133,50 @@ const createSupplier = asyncHandler(async (req, res) => {
 });
 
 const updateSupplier = asyncHandler(async (req, res) => {
-  const { supplier_name, contact_person, phone, email, address } = req.body;
-  const { id } = req.params;
+  const { id, supplier_name, contact_person, phone, email, address } = req.body;
+
+  console.log('Received data:', req.body);
 
   if (!supplier_name || !contact_person || !phone || !email || !address) {
-    res.status(400);
-    throw new Error('All fields are required');
+    return res.status(400).json({ message: 'All fields are required' });
   }
 
-  const existingSupplier = await db.query(
-    'SELECT * FROM suppliers WHERE email = ? AND phone = ? ',
-    [email, phone]
-  );
+  try {
+    const [existingSupplier] = await db.query(
+      'SELECT * FROM suppliers WHERE id = ?',
+      [id]
+    );
 
-  if (existingSupplier.length > 0) {
-    res.status(400).json({ message: 'Supplier already exists' });
+    if (existingSupplier.length === 0) {
+      return res.status(404).json({ message: 'Supplier not found' });
+    }
+
+    const updateSupplier = {
+      supplier_name,
+      contact_person,
+      phone,
+      email,
+      address,
+    };
+
+    const [result] = await db.query('UPDATE suppliers SET ? WHERE id = ?', [
+      updateSupplier,
+      id,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(400).json({ message: 'Failed to update supplier' });
+    }
+
+    const [updatedSupplier] = await db.query(
+      'SELECT * FROM suppliers WHERE id = ?',
+      [id]
+    );
+
+    res.status(200).json(updatedSupplier[0]);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
   }
-
-  const query =
-    'UPDATE suppliers SET supplier_name = ?, contact_person = ?, phone = ?, email = ?, address = ? WHERE id = ?';
-
-  await db.query(query, [
-    supplier_name,
-    contact_person,
-    phone,
-    email,
-    address,
-    id,
-  ]);
-
-  res.status(200).json({
-    id,
-    supplier_name,
-    contact_person,
-    phone,
-    email,
-    address,
-  });
 });
 
 const deleteSupplier = asyncHandler(async (req, res) => {
@@ -177,4 +201,10 @@ const deleteSupplier = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Supplier deleted' });
 });
 
-export { getAllSupplier, createSupplier, updateSupplier, deleteSupplier };
+export {
+  getAllSupplier,
+  getSupplierById,
+  createSupplier,
+  updateSupplier,
+  deleteSupplier,
+};

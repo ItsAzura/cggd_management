@@ -17,6 +17,14 @@ const Products = lazy(() => import('../pages/product/Products.jsx'));
 const CreateProduct = lazy(() => import('../pages/product/CreateProduct.jsx'));
 const DetailProduct = lazy(() => import('../pages/product/DetailProduct.jsx'));
 const EditProduct = lazy(() => import('../pages/product/EditProduct.jsx'));
+const Suppliers = lazy(() => import('../pages/supplier/Suppliers.jsx'));
+const CreateSupplier = lazy(() =>
+  import('../pages/supplier/CreateSupplier.jsx')
+);
+const DetailSupplier = lazy(() =>
+  import('../pages/supplier/DetailSupplier.jsx')
+);
+const EditSupplier = lazy(() => import('../pages/supplier/EditSupplier.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -61,6 +69,38 @@ const router = createBrowserRouter(
             element={
               <Suspense fallback={<Loading />}>
                 <EditProduct />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/supplier"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Suppliers />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/supplier/create"
+            element={
+              <Suspense fallback={<Loading />}>
+                <CreateSupplier />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/supplier/:id"
+            element={
+              <Suspense fallback={<Loading />}>
+                <DetailSupplier />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/supplier/:id/edit"
+            element={
+              <Suspense fallback={<Loading />}>
+                <EditSupplier />
               </Suspense>
             }
           />
