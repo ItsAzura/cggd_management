@@ -1,5 +1,5 @@
 import App from './App.jsx';
-import PrivateRoute from '../components/private/PrivateRoute.jsx';
+import PrivateRoute from '../components/private/Private.Route.jsx';
 import './index.css';
 import ReactDOM from 'react-dom';
 import store from '../redux/store';
@@ -15,28 +15,28 @@ const Dashboard = lazy(() => import('../pages/dashboard/Dashboard.jsx'));
 const Login = lazy(() => import('../pages/auth/Login.jsx'));
 const Register = lazy(() => import('../pages/auth/Register.jsx'));
 //Product
-const Products = lazy(() => import('../pages/product/Products.jsx'));
-const CreateProduct = lazy(() => import('../pages/product/CreateProduct.jsx'));
-const DetailProduct = lazy(() => import('../pages/product/DetailProduct.jsx'));
-const EditProduct = lazy(() => import('../pages/product/EditProduct.jsx'));
+const Products = lazy(() => import('../pages/product/List.Product.jsx'));
+const CreateProduct = lazy(() => import('../pages/product/Create.Product.jsx'));
+const DetailProduct = lazy(() => import('../pages/product/Detail.Product.jsx'));
+const EditProduct = lazy(() => import('../pages/product/Edit.Product.jsx'));
 //Supplier
-const Suppliers = lazy(() => import('../pages/supplier/Suppliers.jsx'));
+const Suppliers = lazy(() => import('../pages/supplier/List.Supplier.jsx'));
 const CreateSupplier = lazy(() =>
-  import('../pages/supplier/CreateSupplier.jsx')
+  import('../pages/supplier/Create.Supplier.jsx')
 );
 const DetailSupplier = lazy(() =>
-  import('../pages/supplier/DetailSupplier.jsx')
+  import('../pages/supplier/Detail.Supplier.jsx')
 );
-const EditSupplier = lazy(() => import('../pages/supplier/EditSupplier.jsx'));
+const EditSupplier = lazy(() => import('../pages/supplier/Edit.Supplier.jsx'));
 //Customer
-const Customers = lazy(() => import('../pages/customer/Customers.jsx'));
+const Customers = lazy(() => import('../pages/customer/List.Customer.jsx'));
 const CreateCustomer = lazy(() =>
-  import('../pages/customer/CreateCustomer.jsx')
+  import('../pages/customer/Create.Customer.jsx')
 );
 const DetailCustomer = lazy(() =>
-  import('../pages/customer/DetailCustomer.jsx')
+  import('../pages/customer/Detail.Customer.jsx')
 );
-const EditCustomer = lazy(() => import('../pages/customer/EditCustomer.jsx'));
+const EditCustomer = lazy(() => import('../pages/customer/Edit.Customer.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(

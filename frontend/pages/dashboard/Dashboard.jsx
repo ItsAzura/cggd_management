@@ -1,5 +1,5 @@
 import React from 'react';
-import StatCard from '../../components/Dashboard/StatCard';
+import StatCard from '../../components/Dashboard/Stat.Card';
 import { useGetCountCustomersQuery } from '../../redux/api/customerSlice';
 import {
   useGetTotalAmountQuery,
@@ -9,19 +9,19 @@ import {
 import { useGetCountProductQuery } from '../../redux/api/productSlice';
 import Loading from '../../components/loading/Loading';
 import Error from '../../components/error/Error';
-import { MainChar } from '../../components/Dashboard/mainChar';
+import { MainChar } from '../../components/Dashboard/main.Char';
 import { TopProducts } from '../../components/Dashboard/topProducts';
-import { SpiderChart } from '../../components/Dashboard/radarChart';
-import { CirleChart } from '../../components/Dashboard/PieChart';
-import { RadiChar } from '../../components/Dashboard/radialChart';
+import { SpiderChart } from '../../components/Dashboard/radar.Chart';
+import { CirleChart } from '../../components/Dashboard/Pie.Chart';
+import { RadiChar } from '../../components/Dashboard/radial.Chart';
 import PageTitle from '../../components/Shared/PageTitle';
 
 const Dashboard = () => {
-  const {
-    data: customers,
-    error: customersError,
-    isLoading: customersLoading,
-  } = useGetCountCustomersQuery();
+  // const {
+  //   data: customers,
+  //   error: customersError,
+  //   isLoading: customersLoading,
+  // } = useGetCountCustomersQuery();
   const {
     data: orders,
     error: ordersError,
@@ -35,23 +35,21 @@ const Dashboard = () => {
 
   const { data: totalAmountEveryMonth } = useGetTotalAmountEveryMonthQuery();
 
-  if (customersLoading || ordersLoading || totalOrdersLoading)
-    return <Loading />;
-  if (customersError || ordersError || totalOrdersError) return <Error />;
+  if (ordersLoading || totalOrdersLoading) return <Loading />;
+  if (ordersError || totalOrdersError) return <Error />;
 
   return (
     <div className="ml-72">
       <PageTitle title="Dashboard" />
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 p-4">
-        {customers?.length > 0 && (
-          <StatCard
-            title="Total Customers"
-            value={customers[0].total_customer}
-            change="+2.8%"
-            changeType="positive"
-            description="Compared to last month"
-          />
-        )}
+        <StatCard
+          title="Total Customers"
+          value="22"
+          change="+2.8%"
+          changeType="positive"
+          description="Compared to last month"
+        />
+
         {orders?.length > 0 && (
           <StatCard
             title="Total Orders"

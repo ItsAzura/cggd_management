@@ -4,9 +4,9 @@ import ContactUs from '../../Assets/Contactus.png';
 import { useInView } from 'react-intersection-observer';
 import './Home.css';
 import LazyLoad from 'react-lazyload';
-import CardService from '../../components/Home/CardService';
-import ClientCard from '../../components/Home/ClientCard';
-import QuestionCard from '../../components/Home/QuestionCard';
+import CardService from '../../components/Home/Service.Card';
+import ClientCard from '../../components/Home/Client.Card';
+import QuestionCard from '../../components/Home/Question.Card';
 
 const Home = () => {
   const [ref1, inView1] = useInView({ triggerOnce: false, threshold: 0.1 });
