@@ -10,13 +10,16 @@ import { lazy, Suspense } from 'react';
 import Loading from '../components/loading/Loading.jsx';
 import Home from '../pages/Home/Home.jsx';
 
+//Dashboard
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard.jsx'));
 const Login = lazy(() => import('../pages/auth/Login.jsx'));
 const Register = lazy(() => import('../pages/auth/Register.jsx'));
+//Product
 const Products = lazy(() => import('../pages/product/Products.jsx'));
 const CreateProduct = lazy(() => import('../pages/product/CreateProduct.jsx'));
 const DetailProduct = lazy(() => import('../pages/product/DetailProduct.jsx'));
 const EditProduct = lazy(() => import('../pages/product/EditProduct.jsx'));
+//Supplier
 const Suppliers = lazy(() => import('../pages/supplier/Suppliers.jsx'));
 const CreateSupplier = lazy(() =>
   import('../pages/supplier/CreateSupplier.jsx')
@@ -25,6 +28,15 @@ const DetailSupplier = lazy(() =>
   import('../pages/supplier/DetailSupplier.jsx')
 );
 const EditSupplier = lazy(() => import('../pages/supplier/EditSupplier.jsx'));
+//Customer
+const Customers = lazy(() => import('../pages/customer/Customers.jsx'));
+const CreateCustomer = lazy(() =>
+  import('../pages/customer/CreateCustomer.jsx')
+);
+const DetailCustomer = lazy(() =>
+  import('../pages/customer/DetailCustomer.jsx')
+);
+const EditCustomer = lazy(() => import('../pages/customer/EditCustomer.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -101,6 +113,38 @@ const router = createBrowserRouter(
             element={
               <Suspense fallback={<Loading />}>
                 <EditSupplier />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/customer"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Customers />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/customer/create"
+            element={
+              <Suspense fallback={<Loading />}>
+                <CreateCustomer />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/customer/:id"
+            element={
+              <Suspense fallback={<Loading />}>
+                <DetailCustomer />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/customer/:id/edit"
+            element={
+              <Suspense fallback={<Loading />}>
+                <EditCustomer />
               </Suspense>
             }
           />

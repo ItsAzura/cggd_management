@@ -1,5 +1,6 @@
 import asyncHandler from '../middlewares/asyncHandler.js';
 import db from '../db.js';
+import bcrypt from 'bcryptjs';
 
 const getAllCustomer = asyncHandler(async (req, res) => {
   const {
@@ -34,21 +35,21 @@ const getAllCustomer = asyncHandler(async (req, res) => {
   }
 
   if (email) {
-    query += ' AND email = ?';
-    countQuery += ' AND email = ?';
-    values.push(email);
+    query += ' AND email LIKE ?';
+    countQuery += ' AND email LIKE ?';
+    values.push(`%${email}%`);
   }
 
   if (phone) {
-    query += ' AND phone = ?';
-    countQuery += ' AND phone = ?';
-    values.push(phone);
+    query += ' AND phone LIKE ?';
+    countQuery += ' AND phone LIKE ?';
+    values.push(`%${phone}%`);
   }
 
   if (address) {
-    query += ' AND address = ?';
-    countQuery += ' AND address = ?';
-    values.push(address);
+    query += ' AND address LIKE ?';
+    countQuery += ' AND address LIKE ?';
+    values.push(`%${address}%`);
   }
 
   query += ` ORDER BY ${sort_by} ${sort_order.toUpperCase()}`;
@@ -71,6 +72,20 @@ const getAllCustomer = asyncHandler(async (req, res) => {
     console.error('Error fetching products:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
+});
+
+const getCustomerById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const query = 'SELECT * FROM customers WHERE id = ?';
+
+  const [rows] = await db.query(query, [id]);
+
+  if (rows.length === 0) {
+    return res.status(404).json({ message: 'Customer not found' });
+  }
+
+  res.json(rows[0]);
 });
 
 const getCountCustomer = asyncHandler(async (req, res) => {
@@ -96,24 +111,28 @@ GROUP BY
 });
 
 const createCustomer = asyncHandler(async (req, res) => {
-  const { customer_name, email, phone, address } = req.body;
+  const { customer_name, email, phone, password, address } = req.body;
 
   const existingCustomer = await db.query(
-    'SELECT * FROM customers WHERE email = ?',
-    [email]
+    'SELECT * FROM customers WHERE email = ? or phone = ?',
+    [email, phone]
   );
 
-  if (existingCustomer[0].length > 0) {
+  if (existingCustomer[0].length) {
     return res.status(400).json({ message: 'Customer already exists' });
   }
 
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
   const query =
-    'INSERT INTO customers (customer_name, email, phone, address) VALUES (?, ?, ?, ?)';
+    'INSERT INTO customers (customer_name, email, phone, password,address) VALUES (?, ?, ?, ?,?)';
 
   const [result] = await db.query(query, [
     customer_name,
     email,
     phone,
+    hashedPassword,
     address,
   ]);
   res.status(201).json({
@@ -121,31 +140,59 @@ const createCustomer = asyncHandler(async (req, res) => {
     id: result.insertId,
     customer_name,
     email,
+    password: hashedPassword,
     phone,
     address,
   });
 });
 
 const updateCustomer = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { customer_name, email, phone, address } = req.body;
+  const { id, customer_name, email, phone, password, address } = req.body;
 
-  const existingCustomer = await db.query(
-    'SELECT * FROM customers WHERE email = ?',
-    [email]
-  );
-
-  if (existingCustomer[0].length > 0) {
-    return res
-      .status(400)
-      .json({ message: 'Customer already exists with this email' });
+  if (!customer_name || !email || !phone || !password || !address) {
+    return res.status(400).json({ message: 'All fields are required' });
   }
 
-  const query =
-    'UPDATE customers SET customer_name = ?, email = ?, phone = ?, address = ? WHERE id = ?';
+  try {
+    const [existingCustomer] = await db.query(
+      'SELECT * FROM customers WHERE id = ?',
+      [id]
+    );
 
-  await db.query(query, [customer_name, email, phone, address, id]);
-  res.json({ id, customer_name, email, phone, address });
+    if (existingCustomer.length === 0) {
+      return res.status(404).json({ message: 'Customer not found' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const updateCustomer = {
+      customer_name,
+      email,
+      phone,
+      password: hashedPassword,
+      address,
+    };
+
+    const [result] = await db.query('UPDATE customers SET ? WHERE id = ?', [
+      updateCustomer,
+      id,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(400).json({ message: 'Failed to update customer' });
+    }
+
+    const [updatedCustomer] = await db.query(
+      'SELECT * FROM customers WHERE id = ?',
+      [id]
+    );
+
+    res.status(200).json(updatedCustomer[0]);
+  } catch (error) {
+    console.error('Failed to update customer:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
 
 const deleteCustomer = asyncHandler(async (req, res) => {
@@ -168,6 +215,7 @@ const deleteCustomer = asyncHandler(async (req, res) => {
 
 export {
   getAllCustomer,
+  getCustomerById,
   getCountCustomer,
   getCustomerByAddress,
   createCustomer,

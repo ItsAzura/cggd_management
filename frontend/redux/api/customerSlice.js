@@ -21,6 +21,14 @@ export const customerApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Customers'],
     }),
 
+    getCustomerById: builder.query({
+      query: (id) => ({
+        url: `${CUSTOMERS_URL}/${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['Customers'],
+    }),
+
     // Define the endpoint for getting Count of customers
     getCountCustomers: builder.query({
       query: () => ({
@@ -72,6 +80,7 @@ export const customerApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetAllCustomersQuery,
+  useGetCustomerByIdQuery,
   useGetCountCustomersQuery,
   useGetCustomersByAddressQuery,
   useCreateCustomerMutation,

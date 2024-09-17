@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   getAllCustomer,
+  getCustomerById,
   getCountCustomer,
   getCustomerByAddress,
   createCustomer,
@@ -11,7 +12,11 @@ const router = express.Router();
 
 router.route('/').get(getAllCustomer).post(createCustomer);
 
-router.route('/:id').put(updateCustomer).delete(deleteCustomer);
+router
+  .route('/:id')
+  .get(getCustomerById)
+  .put(updateCustomer)
+  .delete(deleteCustomer);
 
 router.route('/count_customer').get(getCountCustomer);
 

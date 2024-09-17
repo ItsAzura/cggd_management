@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useGetSupplierByIdQuery } from '../../redux/api/supplierSlice';
+import { useGetCustomerByIdQuery } from '../../redux/api/customerSlice';
 import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import IconBtn from '../../components/Shared/IconBtn';
 import moment from 'moment';
 
-const DetailSupplier = () => {
+const DetailCustomer = () => {
   const { id } = useParams();
-  const [supplier, setSupplier] = useState({});
+  const [customer, setCustomer] = useState({});
   const navigate = useNavigate();
 
-  const { data, isLoading, isError } = useGetSupplierByIdQuery(id);
+  const { data, isLoading, isError } = useGetCustomerByIdQuery(id);
 
   useEffect(() => {
-    if (data) setSupplier(data);
+    if (data) setCustomer(data);
   }, [data]);
 
   if (isLoading) return <Loading />;
@@ -40,40 +40,35 @@ const DetailSupplier = () => {
         </svg>
         <span>Back</span>
       </button>
-
       <div className="w-[60%]">
         <div className="space-y-8">
           <h1 className="text-5xl pt-4 font-semibold text-white filter drop-shadow-[0px_0px_6px_rgba(41,125,204,1)] transition-shadow duration-300 ease-in-out hover:drop-shadow-[0px_0px_16px_rgba(41,125,204,0.8)]">
-            {supplier.supplier_name}
+            {customer.customer_name}
           </h1>
-
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
             <p className="text-gray-300">
-              <span className="font-semibold text-blue-400">
-                Contact Person:
-              </span>{' '}
-              {supplier.contact_person}
+              <span className="font-semibold text-blue-400">Email:</span>{' '}
+              {customer.email}
             </p>
             <p className="text-gray-300">
               <span className="font-semibold text-blue-400">Phone:</span>{' '}
-              {supplier.phone}
-            </p>
-            <p className="text-gray-300">
-              <span className="font-semibold text-blue-400">Email:</span>{' '}
-              {supplier.email}
+              {customer.phone}
             </p>
             <p className="text-gray-300">
               <span className="font-semibold text-blue-400">Address:</span>{' '}
-              {supplier.address}
+              {customer.address}
             </p>
             <p className="text-gray-300">
-              <span className="font-semibold text-blue-400">Last Updated:</span>{' '}
-              {moment(supplier.updated_at).format('MMMM Do YYYY, h:mm:ss a')}
+              <span className="font-semibold text-blue-400">Created At:</span>{' '}
+              {moment(customer.created_at).format('MMMM Do YYYY, h:mm:ss a')}
+            </p>
+            <p className="text-gray-300">
+              <span className="font-semibold text-blue-400">Updated At:</span>{' '}
+              {moment(customer.updated_at).format('MMMM Do YYYY, h:mm:ss a')}
             </p>
           </div>
-
           <div className="flex justify-end">
-            <Link to={`/supplier/${id}/edit`}>
+            <Link to={`/customer/${id}/edit`}>
               <IconBtn
                 icon={
                   <svg
@@ -103,4 +98,4 @@ const DetailSupplier = () => {
   );
 };
 
-export default DetailSupplier;
+export default DetailCustomer;
