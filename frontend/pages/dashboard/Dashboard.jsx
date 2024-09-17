@@ -7,7 +7,6 @@ import {
   useGetTotalAmountEveryMonthQuery,
 } from '../../redux/api/orderSlice';
 import { useGetCountProductQuery } from '../../redux/api/productSlice';
-import Loading from '../../components/loading/Loading';
 import Error from '../../components/error/Error';
 import { MainChar } from '../../components/Dashboard/main.Char';
 import { TopProducts } from '../../components/Dashboard/topProducts';
@@ -15,6 +14,7 @@ import { SpiderChart } from '../../components/Dashboard/radar.Chart';
 import { CirleChart } from '../../components/Dashboard/Pie.Chart';
 import { RadiChar } from '../../components/Dashboard/radial.Chart';
 import PageTitle from '../../components/Shared/PageTitle';
+import DashboardLoader from '../../components/Dashboard/Loader.Dashboard';
 
 const Dashboard = () => {
   // const {
@@ -35,7 +35,7 @@ const Dashboard = () => {
 
   const { data: totalAmountEveryMonth } = useGetTotalAmountEveryMonthQuery();
 
-  if (ordersLoading || totalOrdersLoading) return <Loading />;
+  if (ordersLoading || totalOrdersLoading) return <DashboardLoader />;
   if (ordersError || totalOrdersError) return <Error />;
 
   return (

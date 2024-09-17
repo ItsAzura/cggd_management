@@ -6,7 +6,6 @@ import {
   useGetAllSelectorSupplierQuery,
 } from '../../redux/api/seletorSlice';
 import { useGetAllProductsQuery } from '../../redux/api/productSlice';
-import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment';
@@ -15,6 +14,7 @@ import PageTitle from '../../components/Shared/PageTitle';
 import IconBtn from '../../components/Shared/IconBtn';
 import { useDeleteProductMutation } from '../../redux/api/productSlice';
 import { toast } from 'react-toastify';
+import ProductLoader from '../../components/Product/Loader.Product';
 
 const Products = () => {
   const navigate = useNavigate();
@@ -143,7 +143,7 @@ const Products = () => {
     supplierLoading ||
     productLoading
   ) {
-    return <Loading />;
+    return <ProductLoader />;
   }
 
   if (

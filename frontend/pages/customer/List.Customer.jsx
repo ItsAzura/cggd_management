@@ -9,6 +9,7 @@ import moment from 'moment';
 import DeleteModal from '../../components/Shared/DeleteModal';
 import { useDeleteCustomerMutation } from '../../redux/api/customerSlice';
 import { toast } from 'react-toastify';
+import CustomerLoader from '../../components/Customer/Loader.Customer';
 const Customers = () => {
   const navigate = useNavigate();
 
@@ -97,7 +98,7 @@ const Customers = () => {
   };
 
   if (isLoading || isDeleting) {
-    return <Loading />;
+    return <CustomerLoader />;
   }
 
   if (error) {

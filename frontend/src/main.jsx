@@ -148,6 +148,10 @@ const router = createBrowserRouter(
               </Suspense>
             }
           />
+          <Route
+            path="/loader"
+            element={<Suspense fallback={<Loading />}>{/* s */}</Suspense>}
+          />
         </Route>
       </Route>
       <Route
@@ -155,6 +159,14 @@ const router = createBrowserRouter(
         element={
           <Suspense fallback={<Loading />}>
             <Login />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <Suspense fallback={<Loading />}>
+            <Register />
           </Suspense>
         }
       />

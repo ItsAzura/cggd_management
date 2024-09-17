@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetAllSuppliersQuery } from '../../redux/api/supplierSlice';
-import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import PageTitle from '../../components/Shared/PageTitle';
 import IconBtn from '../../components/Shared/IconBtn';
@@ -10,6 +9,7 @@ import moment from 'moment';
 import DeleteModal from '../../components/Shared/DeleteModal';
 import { useDeleteSupplierMutation } from '../../redux/api/supplierSlice';
 import { toast } from 'react-toastify';
+import SupplierLoader from '../../components/Supplier/Loader.Supplier';
 
 const Suppliers = () => {
   const navigate = useNavigate();
@@ -100,7 +100,7 @@ const Suppliers = () => {
   };
 
   if (isLoading) {
-    return <Loading />;
+    return <SupplierLoader />;
   }
 
   if (error) {
