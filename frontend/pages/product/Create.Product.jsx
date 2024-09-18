@@ -124,7 +124,7 @@ const CreateProduct = () => {
             <label className="text-white mb-1">Name</label>
             <input
               type="text"
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
               placeholder="Enter product name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -134,7 +134,7 @@ const CreateProduct = () => {
             <label className="text-white mb-1">Sku</label>
             <input
               type="text"
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
               placeholder="Enter product sku"
               value={sku}
               onChange={(e) => setSku(e.target.value)}
@@ -144,7 +144,7 @@ const CreateProduct = () => {
         <div className="flex flex-col mb-4">
           <label className="text-white mb-1">Description</label>
           <textarea
-            className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+            className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
             cols={10}
             rows={6}
             placeholder="Enter product description"
@@ -156,7 +156,7 @@ const CreateProduct = () => {
           <div className="flex flex-col">
             <label className="text-white mb-1">Category</label>
             <select
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
               value={category_id}
               onChange={(e) => setCategory_id(e.target.value)}
             >
@@ -180,7 +180,7 @@ const CreateProduct = () => {
           <div className="flex flex-col">
             <label className="text-white mb-1">Size</label>
             <select
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
               value={size_id}
               onChange={(e) => setSize_id(e.target.value)}
             >
@@ -206,7 +206,7 @@ const CreateProduct = () => {
           <div className="flex flex-col">
             <label className="text-white mb-1">Color</label>
             <select
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
               value={color_id}
               onChange={(e) => setColor_id(e.target.value)}
             >
@@ -227,7 +227,7 @@ const CreateProduct = () => {
           <div className="flex flex-col">
             <label className="text-white mb-1">Supplier</label>
             <select
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
               value={supplier_id}
               onChange={(e) => setSupplier_id(e.target.value)}
             >
@@ -254,7 +254,7 @@ const CreateProduct = () => {
             <label className="text-white mb-1">Material</label>
             <input
               type="text"
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
               placeholder="Enter product material"
               value={material}
               onChange={(e) => setMaterial(e.target.value)}
@@ -264,7 +264,7 @@ const CreateProduct = () => {
             <label className="text-white mb-1">Price</label>
             <input
               type="number"
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
               placeholder="Enter product price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}

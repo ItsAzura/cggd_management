@@ -26,10 +26,16 @@ const getAllSuppliers = asyncHandler(async (req, res) => {
   res.json(rows);
 });
 
+const getAllRoles = asyncHandler(async (req, res) => {
+  const [rows] = await db.query('SELECT * FROM roles');
+  res.json(rows);
+});
+
 export {
   getAllColor,
   getAllSize,
   getAllCategory,
   getAllInvertoryLocation,
   getAllSuppliers,
+  getAllRoles,
 };

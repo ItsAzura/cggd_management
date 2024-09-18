@@ -87,12 +87,15 @@ const createUser = asyncHandler(async (req, res) => {
       .json({ message: 'Email, username, and password are required' });
   }
 
-  const existingUser = await db.query('SELECT * FROM users WHERE email = ?', [
-    email,
-  ]);
+  const existingUser = await db.query(
+    'SELECT * FROM users WHERE email = ? or username = ?',
+    [email, username]
+  );
 
   if (existingUser[0].length) {
-    return res.status(400).json({ message: 'User already exists' });
+    return res.status(400).json({
+      message: 'User already exists with this email or this username',
+    });
   }
 
   const salt = await bcrypt.genSalt(10);
@@ -192,7 +195,12 @@ const getUserById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const user = await db.query(
-    'SELECT id, email, username, role_id FROM users WHERE id = ?',
+    `SELECT 
+        users.*, 
+        roles.role_name
+        FROM users
+        JOIN roles ON users.role_id = roles.id 
+        WHERE users.id = ?`,
     [id]
   );
 
@@ -205,25 +213,57 @@ const getUserById = asyncHandler(async (req, res) => {
 });
 
 const updateUserById = asyncHandler(async (req, res) => {
-  const { email, username, user_password } = req.body;
-  const { id } = req.params;
+  const { id, email, username, user_password, role_id } = req.body;
 
-  const user = await db.query('SELECT * FROM users WHERE id = ?', [id]);
-
-  if (user[0].length === 0) {
-    res.status(404);
-    throw new Error('User not found');
+  if (!email || !username || !user_password || !role_id) {
+    return res
+      .status(400)
+      .json({ message: 'Email, username, and password are required' });
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(user_password, salt);
+  try {
+    const [existingUser] = await db.query('SELECT * FROM users WHERE id = ?', [
+      id,
+    ]);
 
-  await db.query(
-    'UPDATE users SET email = ?, username = ?, user_password = ? WHERE id = ?',
-    [email, username, hashedPassword, id]
-  );
+    if (existingUser.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-  res.json({ message: 'User updated successfully' });
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(user_password, salt);
+
+    const updateUser = {
+      email,
+      username,
+      user_password: hashedPassword,
+      role_id,
+    };
+
+    const [result] = await db.query('UPDATE users SET ? WHERE id = ?', [
+      updateUser,
+      id,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(400).json({ message: 'Failed to update user' });
+    }
+
+    const [updatedUser] = await db.query(
+      `SELECT 
+        users.*, 
+        roles.role_name
+        FROM users
+        JOIN roles ON users.role_id = roles.id 
+        WHERE users.id = ?`,
+      [id]
+    );
+
+    res.json(updatedUser[0]);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
 
 const deleteUser = asyncHandler(async (req, res) => {

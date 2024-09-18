@@ -18,6 +18,7 @@ export const selectorApiSlice = apiSlice.injectEndpoints({
     getAllCategories: builder.query(createQuery('categories')),
     getAllLocations: builder.query(createQuery('locations')),
     getAllSelectorSupplier: builder.query(createQuery('suppliers')),
+    getAllRole: builder.query(createQuery('roles')),
   }),
 });
 
@@ -27,4 +28,5 @@ export const {
   useGetAllCategoriesQuery,
   useGetAllLocationsQuery,
   useGetAllSelectorSupplierQuery,
+  useGetAllRoleQuery,
 } = selectorApiSlice;

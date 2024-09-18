@@ -1,5 +1,6 @@
 import App from './App.jsx';
 import PrivateRoute from '../components/private/Private.Route.jsx';
+import AdminRoute from '../components/private/Admin.Route.jsx';
 import './index.css';
 import ReactDOM from 'react-dom';
 import store from '../redux/store';
@@ -14,11 +15,13 @@ import Home from '../pages/Home/Home.jsx';
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard.jsx'));
 const Login = lazy(() => import('../pages/auth/Login.jsx'));
 const Register = lazy(() => import('../pages/auth/Register.jsx'));
+
 //Product
 const Products = lazy(() => import('../pages/product/List.Product.jsx'));
 const CreateProduct = lazy(() => import('../pages/product/Create.Product.jsx'));
 const DetailProduct = lazy(() => import('../pages/product/Detail.Product.jsx'));
 const EditProduct = lazy(() => import('../pages/product/Edit.Product.jsx'));
+
 //Supplier
 const Suppliers = lazy(() => import('../pages/supplier/List.Supplier.jsx'));
 const CreateSupplier = lazy(() =>
@@ -28,6 +31,7 @@ const DetailSupplier = lazy(() =>
   import('../pages/supplier/Detail.Supplier.jsx')
 );
 const EditSupplier = lazy(() => import('../pages/supplier/Edit.Supplier.jsx'));
+
 //Customer
 const Customers = lazy(() => import('../pages/customer/List.Customer.jsx'));
 const CreateCustomer = lazy(() =>
@@ -37,6 +41,12 @@ const DetailCustomer = lazy(() =>
   import('../pages/customer/Detail.Customer.jsx')
 );
 const EditCustomer = lazy(() => import('../pages/customer/Edit.Customer.jsx'));
+
+//User
+const Users = lazy(() => import('../pages/user/List.User.jsx'));
+const CreateUser = lazy(() => import('../pages/user/Create.User.jsx'));
+const DetailUser = lazy(() => import('../pages/user/Detail.User.jsx'));
+const EditUser = lazy(() => import('../pages/user/Edit.User.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -148,10 +158,41 @@ const router = createBrowserRouter(
               </Suspense>
             }
           />
-          <Route
-            path="/loader"
-            element={<Suspense fallback={<Loading />}>{/* s */}</Suspense>}
-          />
+
+          <Route path="" element={<PrivateRoute />}>
+            <Route
+              path="/user"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Users />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/user/create"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <CreateUser />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/user/:id"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <DetailUser />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/user/:id/edit"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <EditUser />
+                </Suspense>
+              }
+            />
+          </Route>
         </Route>
       </Route>
       <Route

@@ -5,6 +5,7 @@ import {
   getAllColor,
   getAllInvertoryLocation,
   getAllSuppliers,
+  getAllRoles,
 } from '../services/selector.service.js';
 const router = express.Router();
 
@@ -17,6 +18,8 @@ router.route('/categories').get(getAllCategory);
 router.route('/locations').get(getAllInvertoryLocation);
 
 router.route('/suppliers').get(getAllSuppliers);
+
+router.route('/roles').get(getAllRoles);
 
 // router.get('/colors', getAllColor);
 // router.get('/sizes', getAllSize);
