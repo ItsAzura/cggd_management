@@ -21,6 +21,11 @@ const getAllInvertoryLocation = asyncHandler(async (req, res) => {
   res.json(rows);
 });
 
+const getAllInventoryProduct = asyncHandler(async (req, res) => {
+  const [rows] = await db.query('SELECT * FROM products');
+  res.json(rows);
+});
+
 const getAllSuppliers = asyncHandler(async (req, res) => {
   const [rows] = await db.query('SELECT * FROM suppliers');
   res.json(rows);
@@ -38,4 +43,5 @@ export {
   getAllInvertoryLocation,
   getAllSuppliers,
   getAllRoles,
+  getAllInventoryProduct,
 };

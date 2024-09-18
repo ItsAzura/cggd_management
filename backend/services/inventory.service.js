@@ -44,14 +44,14 @@ const getAllProductInventory = asyncHandler(async (req, res) => {
   }
 
   if (quantity) {
-    query += ' AND quantity = ?';
-    countQuery += ' AND quantity = ?';
+    query += ' AND quantity <= ?';
+    countQuery += ' AND quantity <= ?';
     values.push(quantity);
   }
 
   if (min_quantity) {
-    query += ' AND min_quantity = ?';
-    countQuery += ' AND min_quantity = ?';
+    query += ' AND quantity >= ?';
+    countQuery += ' AND quantity >= ?';
     values.push(min_quantity);
   }
 
@@ -82,6 +82,29 @@ const getAllProductInventory = asyncHandler(async (req, res) => {
     console.error('Error fetching products:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
+});
+
+const getProductInventoryById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const query = ` 
+    SELECT 
+      inventory.*, 
+      products.name AS product_name, 
+      inventory_location.name AS location_name
+    FROM inventory
+    JOIN products ON inventory.product_id = products.id
+    JOIN inventory_location ON inventory.location_id = inventory_location.id
+     WHERE inventory.id = ?
+  `;
+
+  const [rows] = await db.query(query, [id]);
+
+  if (rows.length === 0) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  res.json(rows[0]);
 });
 
 const createProductInventory = asyncHandler(async (req, res) => {
@@ -122,48 +145,49 @@ const createProductInventory = asyncHandler(async (req, res) => {
 });
 
 const updateProductInventory = asyncHandler(async (req, res) => {
-  const { product_id, quantity, min_quantity, location_id } = req.body;
-  const { id } = req.params;
-
-  const existingProduct = await db.query(
-    'SELECT * FROM inventory WHERE product_id = ? AND location_id = ?',
-    [product_id, location_id]
-  );
-
-  if (existingProduct[0].length > 0) {
-    res
-      .status(400)
-      .json({ message: 'Product already exists in this location' });
-  }
+  const { id, product_id, quantity, min_quantity, location_id } = req.body;
 
   if (!product_id || !quantity || !min_quantity || !location_id) {
-    res.status(400);
-    throw new Error('All fields are required');
+    return res.status(400).json({ message: 'All fields are required' });
   }
 
-  const query =
-    'UPDATE inventory SET product_id = ?, quantity = ?, min_quantity = ?, location_id = ? WHERE id = ?';
+  try {
+    const [existingProduct] = await db.query(
+      `SELECT * FROM inventory WHERE id = ?`,
+      [id]
+    );
+    if (existingProduct.length === 0) {
+      return res
+        .status(404)
+        .json({ message: 'Product not found in this Inventory' });
+    }
 
-  const [result] = await db.query(query, [
-    product_id,
-    quantity,
-    min_quantity,
-    location_id,
-    id,
-  ]);
+    const updatedProduct = {
+      product_id,
+      quantity,
+      min_quantity,
+      location_id,
+    };
 
-  if (result.affectedRows === 0) {
-    res.status(404);
-    throw new Error('Product inventory not found');
+    const [result] = await db.query(`UPDATE inventory SET ? WHERE id = ?`, [
+      updatedProduct,
+      id,
+    ]);
+
+    if (result.affectedRows === 0) {
+      res.status(404).json({ message: 'Failed to updated ' });
+    }
+
+    const [updatedProductInventory] = await db.query(
+      `SELECT * FROM inventory WHERE id = ?`,
+      [id]
+    );
+
+    res.json(updatedProductInventory[0]);
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
-
-  res.json({
-    id,
-    product_id,
-    quantity,
-    min_quantity,
-    location_id,
-  });
 });
 
 const deleteProductInventory = asyncHandler(async (req, res) => {
@@ -708,6 +732,7 @@ const getAllHistoryProductInventoryExport = asyncHandler(async (req, res) => {
 
 export {
   getAllProductInventory,
+  getProductInventoryById,
   createProductInventory,
   updateProductInventory,
   deleteProductInventory,

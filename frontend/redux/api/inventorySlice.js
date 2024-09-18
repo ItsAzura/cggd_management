@@ -21,6 +21,14 @@ export const inventoryApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Inventory'],
     }),
 
+    getInventoryProductById: builder.query({
+      query: (productId) => ({
+        url: `${INVENTORY_URL}/${productId}`,
+        method: 'GET',
+      }),
+      providesTags: ['Inventory'],
+    }),
+
     //Define endpoint for creating a new inventory item
     createInventory: builder.mutation({
       query: (newInventory) => ({
@@ -147,6 +155,7 @@ export const inventoryApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetAllInventoryQuery,
+  useGetInventoryProductByIdQuery,
   useCreateInventoryMutation,
   useUpdateInventoryMutation,
   useDeleteInventoryMutation,

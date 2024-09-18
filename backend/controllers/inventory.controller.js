@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   getAllProductInventory,
+  getProductInventoryById,
   createProductInventory,
   updateProductInventory,
   deleteProductInventory,
@@ -22,7 +23,11 @@ const router = express.Router();
 
 router.route('/').get(getAllProductInventory).post(createProductInventory);
 
-router.route('/:id').put(updateProductInventory).delete(deleteProductInventory);
+router
+  .route('/:id')
+  .get(getProductInventoryById)
+  .put(updateProductInventory)
+  .delete(deleteProductInventory);
 
 router
   .route('/incoming')
