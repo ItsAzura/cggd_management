@@ -5,6 +5,7 @@ import {
   getCountOrder,
   getTotalAmountEveryMonth,
   getCountCategory,
+  getAllOrderStatus,
   createOrder,
   updateOrder,
   deleteOrder,
@@ -20,6 +21,8 @@ router.route('/count_order').get(getCountOrder);
 router.route('/total_amount_every_month').get(getTotalAmountEveryMonth);
 
 router.route('/count_category').get(getCountCategory);
+
+router.route('/status').get(getAllOrderStatus);
 
 router.route('/:id').put(updateOrder).delete(deleteOrder);
 

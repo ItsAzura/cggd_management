@@ -84,6 +84,15 @@ export const orderApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ['Orders'],
     }),
+
+    //Define endpoint for fetching all order status
+    getAllOrderStatus: builder.query({
+      query: () => ({
+        url: `${ORDERS_URL}/status`,
+        method: 'GET',
+      }),
+      providesTags: ['Orders'],
+    }),
   }),
 });
 
@@ -96,4 +105,5 @@ export const {
   useGetCountOrderQuery,
   useGetTotalAmountEveryMonthQuery,
   useGetCountCategoryQuery,
+  useGetAllOrderStatusQuery,
 } = orderApiSlice;

@@ -185,7 +185,7 @@ const Navigation = () => {
             </span>
           </Link>
 
-          <Link to={`/reports`} className={getLinkClass('/reports')}>
+          {/* <Link to={`/reports`} className={getLinkClass('/reports')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="2rem"
@@ -201,7 +201,7 @@ const Navigation = () => {
             <span className="hidden sm:hidden md:hidden lg:inline font-semibold group-hover:filter group-hover:drop-shadow-[0_0_2px_rgba(41,125,204,1)] transition-shadow">
               Reports
             </span>
-          </Link>
+          </Link> */}
 
           {userInfo?.role_id === 3 && (
             <Link to={`/user`} className={getLinkClass('/user')}>

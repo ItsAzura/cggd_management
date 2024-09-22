@@ -17,11 +17,11 @@ import PageTitle from '../../components/Shared/PageTitle';
 import DashboardLoader from '../../components/Dashboard/Loader.Dashboard';
 
 const Dashboard = () => {
-  // const {
-  //   data: customers,
-  //   error: customersError,
-  //   isLoading: customersLoading,
-  // } = useGetCountCustomersQuery();
+  const {
+    data: customers,
+    error: customersError,
+    isLoading: customersLoading,
+  } = useGetCountCustomersQuery();
   const {
     data: orders,
     error: ordersError,
@@ -32,28 +32,43 @@ const Dashboard = () => {
     error: totalOrdersError,
     isLoading: totalOrdersLoading,
   } = useGetCountOrderQuery();
+  const {
+    data: products,
+    error: productsError,
+    isLoading: productsLoading,
+  } = useGetCountProductQuery();
 
   const { data: totalAmountEveryMonth } = useGetTotalAmountEveryMonthQuery();
 
-  if (ordersLoading || totalOrdersLoading) return <DashboardLoader />;
-  if (ordersError || totalOrdersError) return <Error />;
+  if (
+    ordersLoading ||
+    totalOrdersLoading ||
+    customersLoading ||
+    productsLoading
+  )
+    return <DashboardLoader />;
+  if (ordersError || totalOrdersError || customersError || productsError)
+    return <Error />;
 
+  console.log('products', products);
   return (
     <div className="ml-72">
       <PageTitle title="Dashboard" />
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 p-4">
-        <StatCard
-          title="Total Customers"
-          value="22"
-          change="+2.8%"
-          changeType="positive"
-          description="Compared to last month"
-        />
+        {customers?.length > 0 && (
+          <StatCard
+            title="Total Customers"
+            value={customers[0].total_customer}
+            change="+2.8%"
+            changeType="positive"
+            description="Compared to last month"
+          />
+        )}
 
         {orders?.length > 0 && (
           <StatCard
             title="Total Orders"
-            value={`${orders[0].total_sum} VNĐ`}
+            value={`${Number(orders[0].total_sum).toLocaleString()}`}
             change="+12.9%"
             changeType="positive"
             description="Compared to last month"
@@ -68,9 +83,10 @@ const Dashboard = () => {
             description="Compared to last month"
           />
         )}
+
         <StatCard
           title="Total Products"
-          value="22"
+          value={`${products.total_product}`}
           change="+20.2%"
           changeType="positive"
           description="Compared to last month"

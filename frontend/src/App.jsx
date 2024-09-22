@@ -33,7 +33,7 @@ function App() {
       <main className="min-h-screen h-auto">
         <Outlet />
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }

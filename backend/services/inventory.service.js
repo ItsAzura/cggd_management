@@ -514,9 +514,15 @@ const getAllProductInventoryIncoming = asyncHandler(async (req, res) => {
 
     const logIds = inventoryLogs.map((log) => log.id);
     let logItemsQuery = `
-      SELECT * 
-      FROM inventory_logItem
-      WHERE inventory_logsId IN (?)`;
+  SELECT 
+    inventory_logItem.*, 
+    products.name AS product_name 
+  FROM 
+    inventory_logItem
+  JOIN 
+    products ON inventory_logItem.product_id = products.id
+  WHERE 
+    inventory_logsId IN (?)`;
 
     const [logItems] = await db.query(logItemsQuery, [logIds]);
 
@@ -659,9 +665,15 @@ const getAllProductInventoryExport = asyncHandler(async (req, res) => {
 
     const logIds = inventoryLogs.map((log) => log.id);
     let logItemsQuery = `
-      SELECT * 
-      FROM inventory_logItem
-      WHERE inventory_logsId IN (?)`;
+  SELECT 
+    inventory_logItem.*, 
+    products.name AS product_name 
+  FROM 
+    inventory_logItem
+  JOIN 
+    products ON inventory_logItem.product_id = products.id
+  WHERE 
+    inventory_logsId IN (?)`;
 
     const [logItems] = await db.query(logItemsQuery, [logIds]);
 
@@ -731,9 +743,15 @@ const getAllHistoryProductInventoryIncoming = asyncHandler(async (req, res) => {
 
     const logIds = inventoryLogs.map((log) => log.id);
     let logItemsQuery = `
-      SELECT * 
-      FROM inventory_logItem
-      WHERE inventory_logsId IN (?)`;
+  SELECT 
+    inventory_logItem.*, 
+    products.name AS product_name 
+  FROM 
+    inventory_logItem
+  JOIN 
+    products ON inventory_logItem.product_id = products.id
+  WHERE 
+    inventory_logsId IN (?)`;
 
     const [logItems] = await db.query(logItemsQuery, [logIds]);
 
@@ -802,9 +820,15 @@ const getAllHistoryProductInventoryExport = asyncHandler(async (req, res) => {
 
     const logIds = inventoryLogs.map((log) => log.id);
     let logItemsQuery = `
-      SELECT * 
-      FROM inventory_logItem
-      WHERE inventory_logsId IN (?)`;
+  SELECT 
+    inventory_logItem.*, 
+    products.name AS product_name 
+  FROM 
+    inventory_logItem
+  JOIN 
+    products ON inventory_logItem.product_id = products.id
+  WHERE 
+    inventory_logsId IN (?)`;
 
     const [logItems] = await db.query(logItemsQuery, [logIds]);
 

@@ -100,32 +100,77 @@ const ListInComingInventory = () => {
         </div>
       </div>
 
-      <div className="w-[50%] py-6 text-white">
+      <div className="w-[96%] mt-10 space-y-6 text-white">
         {items && items.data.length > 0 ? (
-          <div className="list-disc">
+          <div>
             {items.data.map((log) => (
               <div
                 key={log.id}
-                className="mb-6 flex flex-col gap-2 p-6 rounded shadow-lg border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out hover:shadow-lg hover:shadow-[rgba(41,125,204,0.05)] hover:bg-[rgba(41,125,204,0.2)]"
+                className="p-6 transition-transform transform hover:scale-[1.01] duration-200 rounded shadow-lg border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] ease-in-out hover:shadow-lg hover:shadow-[rgba(41,125,204,0.05)] hover:bg-[rgba(41,125,204,0.2)]"
               >
-                <h2 className="font-bold">ID: {log.id}</h2>
-                <p>User Name: {log.user_name}</p>
-                <p>Type: {log.type_name}</p>
-                <p>Status: {log.status_name}</p>
-                <p>Created At: {new Date(log.created_at).toLocaleString()}</p>
-                <h3 className="font-semibold">Items:</h3>
-                <ul className="list-disc pl-5 flex flex-col gap-1">
-                  {log.items.map((item, index) => (
-                    <li key={index}>
-                      Product ID: {item.product_id}, Quantity: {item.quantity},
-                      Note: {item.note}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex gap-2">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+                  <div className="mb-4 md:mb-0">
+                    <h2 className="text-2xl font-bold text-[#297DCC]">
+                      Log ID: {log.id}
+                    </h2>
+                    <p className="text-sm mt-2">
+                      <span className="font-semibold">User Name:</span>{' '}
+                      {log.user_name} |{' '}
+                      <span className="font-semibold">Type:</span>{' '}
+                      {log.type_name} |{' '}
+                      <span className="font-semibold">Status:</span>{' '}
+                      {log.status_name}
+                    </p>
+                    <p className="text-sm mt-2">
+                      <span className="font-semibold">Created At:</span>{' '}
+                      {new Date(log.created_at).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <h1 className="text-lg font-semibold">Log Items</h1>
+                  <div className="overflow-x-auto">
+                    <table className="w-full mt-4 text-left border-collapse">
+                      <thead>
+                        <tr className="bg-[#1c2a48] text-white">
+                          <th className="p-3 border-b border-[#2e3a56]">
+                            Product Name
+                          </th>
+                          <th className="p-3 border-b border-[#2e3a56]">
+                            Quantity
+                          </th>
+                          <th className="p-3 border-b border-[#2e3a56]">
+                            Note
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {log.items.map((item, index) => (
+                          <tr
+                            key={item.product_id}
+                            className="hover:bg-[#2a3d64] transition-colors duration-200"
+                          >
+                            <td className="p-3 border-b border-[#2e3a56]">
+                              {item.product_name}
+                            </td>
+                            <td className="p-3 border-b border-[#2e3a56]">
+                              {item.quantity}
+                            </td>
+                            <td className="p-3 border-b border-[#2e3a56]">
+                              {item.note}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex gap-4 justify-end">
                   <button
                     onClick={() => handleAcceptLog(log.id)}
-                    disabled={userInfo.role_id !== 2}
+                    disabled={userInfo.role_id == 2}
                   >
                     <IconBtn
                       icon={
@@ -147,7 +192,7 @@ const ListInComingInventory = () => {
 
                   <button
                     onClick={() => handleRefuseLog(log.id)}
-                    disabled={userInfo.role_id !== 2}
+                    disabled={userInfo.role_id == 2}
                   >
                     <IconBtn
                       icon={
@@ -159,9 +204,9 @@ const ListInComingInventory = () => {
                         >
                           <path
                             fill="currentColor"
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M3.47 3.47a.75.75 0 0 1 1.06 0L8 6.94l3.47-3.47a.75.75 0 1 1 1.06 1.06L9.06 8l3.47 3.47a.75.75 0 1 1-1.06 1.06L8 9.06l-3.47 3.47a.75.75 0 0 1-1.06-1.06L6.94 8L3.47 4.53a.75.75 0 0 1 0-1.06"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                       }

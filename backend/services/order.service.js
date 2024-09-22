@@ -4,14 +4,13 @@ import db from '../db.js';
 const getAllOrder = asyncHandler(async (req, res) => {
   const {
     customer_id,
-    total_amount,
     status_id,
     page,
     sort_by = 'id',
     sort_order = 'DESC',
   } = req.query;
 
-  if (!page) {
+  if (!page || isNaN(page) || page < 1) {
     return res.status(400).json({ message: 'Page number is required' });
   }
 
@@ -43,12 +42,6 @@ const getAllOrder = asyncHandler(async (req, res) => {
     values.push(customer_id);
   }
 
-  if (total_amount) {
-    query += ' AND orders.total_amount = ?';
-    countQuery += ' AND orders.total_amount = ?';
-    values.push(total_amount);
-  }
-
   if (status_id) {
     query += ' AND order_status.id = ?';
     countQuery += ' AND order_status.id = ?';
@@ -57,21 +50,69 @@ const getAllOrder = asyncHandler(async (req, res) => {
 
   query += ` ORDER BY ${sort_by} ${sort_order.toUpperCase()}`;
 
+  // Adding pagination
   query += ' LIMIT ? OFFSET ?';
+  values.push(limit, offset);
 
   try {
-    const [count] = await db.query(countQuery, values);
-    const total = count[0].total_order;
+    // Executing the count query
+    const [countResult] = await db.query(
+      countQuery,
+      values.slice(0, values.length - 2)
+    ); // Use only filters for count
+    const total = countResult[0].total_order;
     const totalPages = Math.ceil(total / limit);
-    const [rows] = await db.query(query, [...values, limit, offset]);
 
-    res.json({
-      page: parseInt(page, 6),
-      per_page: limit,
-      total_order: total,
-      total_pages: totalPages,
-      data: rows,
-    });
+    // Executing the query for orders
+    const [orders] = await db.query(query, values);
+
+    const orderIds = orders.map((order) => order.id);
+    if (orderIds.length > 0) {
+      // Fetching related order items
+      const orderItemsQuery = `
+        SELECT 
+          order_items.order_id, 
+          order_items.product_id, 
+          order_items.quantity, 
+          order_items.price, 
+          products.name
+        FROM order_items
+        JOIN products ON order_items.product_id = products.id
+        WHERE order_items.order_id IN (?);
+      `;
+      const [orderItems] = await db.query(orderItemsQuery, [orderIds]);
+
+      // Organize order items by order ID
+      const orderItemsMap = orderItems.reduce((acc, item) => {
+        if (!acc[item.order_id]) {
+          acc[item.order_id] = [];
+        }
+        acc[item.order_id].push(item);
+        return acc;
+      }, {});
+
+      // Append items to corresponding orders
+      const data = orders.map((order) => ({
+        ...order,
+        order_items: orderItemsMap[order.id] || [],
+      }));
+
+      res.json({
+        page: parseInt(page),
+        per_page: limit,
+        total_orders: total,
+        total_pages: totalPages,
+        data,
+      });
+    } else {
+      res.json({
+        page: parseInt(page),
+        per_page: limit,
+        total_orders: 0,
+        total_pages: 0,
+        data: [],
+      });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
@@ -131,6 +172,13 @@ ORDER BY
   `;
 
   const [rows] = await db.query(count_category);
+  res.json(rows);
+});
+
+const getAllOrderStatus = asyncHandler(async (req, res) => {
+  const order_status = 'SELECT * FROM order_status;';
+
+  const [rows] = await db.query(order_status);
   res.json(rows);
 });
 
@@ -285,6 +333,7 @@ export {
   getCountOrder,
   getTotalAmountEveryMonth,
   getCountCategory,
+  getAllOrderStatus,
   createOrder,
   updateOrder,
   deleteOrder,
