@@ -24,12 +24,6 @@ const router = express.Router();
 router.route('/').get(getAllProductInventory).post(createProductInventory);
 
 router
-  .route('/:id')
-  .get(getProductInventoryById)
-  .put(updateProductInventory)
-  .delete(deleteProductInventory);
-
-router
   .route('/incoming')
   .get(getAllProductInventoryIncoming)
   .post(createProductsIncoming);
@@ -38,6 +32,16 @@ router
   .route('/export')
   .get(getAllProductInventoryExport)
   .post(createProductsExport);
+
+router.route('/history_incoming').get(getAllHistoryProductInventoryIncoming);
+
+router.route('/history_export').get(getAllHistoryProductInventoryExport);
+
+router
+  .route('/:id')
+  .get(getProductInventoryById)
+  .put(updateProductInventory)
+  .delete(deleteProductInventory);
 
 router.route('/log_update/:id').put(updateProductsLog);
 
@@ -53,10 +57,6 @@ router
 router.route('/accept_incoming/:id').put(acceptProductsIncoming);
 
 router.route('/accept_export/:id').put(acceptProductsExport);
-
-router.route('/history_incoming').get(getAllHistoryProductInventoryIncoming);
-
-router.route('/history_export').get(getAllHistoryProductInventoryExport);
 
 // router.get('/', getAllProductInventory);
 // router.post('/', createProductInventory);

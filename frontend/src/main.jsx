@@ -61,6 +61,25 @@ const DetailInventory = lazy(() =>
 const EditInventory = lazy(() =>
   import('../pages/inventory/EditProduct.Inventory.jsx')
 );
+const ListIncoming = lazy(() =>
+  import('../pages/inventory/ListIncoming.Inventory.jsx')
+);
+const ListExport = lazy(() =>
+  import('../pages/inventory/ListExport.Inventory.jsx')
+);
+const HistoryIncoming = lazy(() =>
+  import('../pages/inventory/HistoryIncoming.Inventory.jsx')
+);
+const HistoryExport = lazy(() =>
+  import('../pages/inventory/HistoryExport.Inventory.jsx')
+);
+const CreateInComingInventory = lazy(() =>
+  import('../pages/inventory/CreateInComing.Inventory.jsx')
+);
+const CreateExportInventory = lazy(() =>
+  import('../pages/inventory/CreateExport.Inventory.jsx')
+);
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -203,8 +222,56 @@ const router = createBrowserRouter(
               </Suspense>
             }
           />
+          <Route
+            path="/inventory/incoming"
+            element={
+              <Suspense fallback={<Loading />}>
+                <ListIncoming />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/inventory/export"
+            element={
+              <Suspense fallback={<Loading />}>
+                <ListExport />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/inventory/incoming/history"
+            element={
+              <Suspense fallback={<Loading />}>
+                <HistoryIncoming />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/inventory/export/history"
+            element={
+              <Suspense fallback={<Loading />}>
+                <HistoryExport />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/inventory/incoming/create"
+            element={
+              <Suspense fallback={<Loading />}>
+                <CreateInComingInventory />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/inventory/export/create"
+            element={
+              <Suspense fallback={<Loading />}>
+                <CreateExportInventory />
+              </Suspense>
+            }
+          />
 
-          <Route path="" element={<PrivateRoute />}>
+          <Route path="" element={<AdminRoute />}>
             <Route
               path="/user"
               element={

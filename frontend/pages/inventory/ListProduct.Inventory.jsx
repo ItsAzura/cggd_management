@@ -135,6 +135,14 @@ const ListProductInventory = () => {
         />
       )}
       <PageTitle title="Inventory" />
+      <div className="flex flex-row gap-4 absolute top-6 right-14">
+        <button className='<button className="my-4 flex flex-row items-center gap-2 bg-[#0b1c37] text-white p-2 border border-[rgba(41,125,204,0.5)] rounded hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]">'>
+          <Link to="/inventory/incoming">InComing</Link>
+        </button>
+        <button className='<button className="my-4 flex flex-row items-center gap-2 bg-[#0b1c37] text-white p-2 border border-[rgba(41,125,204,0.5)] rounded hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]">'>
+          <Link to="/inventory/export">Export</Link>
+        </button>
+      </div>
       <div className="w-[100%] grid grid-cols-4 gap-y-6 mb-4 mt-2">
         <select
           className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"

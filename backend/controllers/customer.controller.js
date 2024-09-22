@@ -12,15 +12,15 @@ const router = express.Router();
 
 router.route('/').get(getAllCustomer).post(createCustomer);
 
+router.route('/count_customer').get(getCountCustomer);
+
+router.route('/customer_by_address').get(getCustomerByAddress);
+
 router
   .route('/:id')
   .get(getCustomerById)
   .put(updateCustomer)
   .delete(deleteCustomer);
-
-router.route('/count_customer').get(getCountCustomer);
-
-router.route('/customer_by_address').get(getCustomerByAddress);
 
 // router.get('/', getAllCustomer);
 // router.get('/count_customer', getCountCustomer);

@@ -133,10 +133,19 @@ export const inventoryApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['Inventory'],
     }),
 
+    //Define endpoint for refusing incoming/export inventory
+    refuseIncomingExportInventory: builder.mutation({
+      query: (id) => ({
+        url: `${INVENTORY_URL}/log/${id}`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['Inventory'],
+    }),
+
     //Define endpoint for fetching history of incoming inventory
     getHistoryIncomingInventory: builder.query({
-      query: () => ({
-        url: `${INVENTORY_URL}/history_incoming`,
+      query: ({ page }) => ({
+        url: `${INVENTORY_URL}/history_incoming/?page=${page}`,
         method: 'GET',
       }),
       providesTags: ['Inventory'],
@@ -144,8 +153,8 @@ export const inventoryApiSlice = apiSlice.injectEndpoints({
 
     //Define endpoint for fetching history of export inventory
     getHistoryExportInventory: builder.query({
-      query: () => ({
-        url: `${INVENTORY_URL}/history_export`,
+      query: ({ page }) => ({
+        url: `${INVENTORY_URL}/history_export/?page=${page}`,
         method: 'GET',
       }),
       providesTags: ['Inventory'],
@@ -167,6 +176,7 @@ export const {
   useDeleteInventoryLogMutation,
   useAcceptIncomingInventoryMutation,
   useAcceptExportInventoryMutation,
+  useRefuseIncomingExportInventoryMutation,
   useGetHistoryIncomingInventoryQuery,
   useGetHistoryExportInventoryQuery,
 } = inventoryApiSlice;

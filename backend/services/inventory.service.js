@@ -214,9 +214,9 @@ const deleteProductInventory = asyncHandler(async (req, res) => {
 });
 
 const createProductsIncoming = asyncHandler(async (req, res) => {
-  const { products, user_id } = req.body;
+  const { logItems, user_id } = req.body;
 
-  if (!products || products.length === 0) {
+  if (!logItems || logItems.length === 0) {
     res.status(400);
     return res.status(400).json({ message: 'Products are required' });
   }
@@ -232,15 +232,15 @@ const createProductsIncoming = asyncHandler(async (req, res) => {
 
     const inventoryLogsId = inventoryLogsResult.insertId;
 
-    for (const product of products) {
-      const { product_id, quantity, note } = product;
+    const logItemsData = logItems.map((item) => [
+      item.product_id,
+      item.quantity,
+      item.note || '',
+      inventoryLogsId,
+    ]);
 
-      const query = `
-      INSERT INTO inventory_logItem (product_id, quantity, note, inventory_logsId) 
-      VALUES (?, ?, ?, ?)`;
-
-      await db.query(query, [product_id, quantity, note, inventoryLogsId]);
-    }
+    const query = `INSERT INTO inventory_logitem (product_id, quantity, note, inventory_logsId) VALUES ?`;
+    await db.query(query, [logItemsData]);
 
     res.status(201).json({ message: 'Incoming products created' });
   } catch (error) {
@@ -250,9 +250,9 @@ const createProductsIncoming = asyncHandler(async (req, res) => {
 });
 
 const createProductsExport = asyncHandler(async (req, res) => {
-  const { products, user_id } = req.body;
+  const { logItems, user_id } = req.body;
 
-  if (!products || products.length === 0) {
+  if (!logItems || logItems.length === 0) {
     res.status(400);
     return res.status(400).json({ message: 'Products are required' });
   }
@@ -268,17 +268,17 @@ const createProductsExport = asyncHandler(async (req, res) => {
 
     const inventoryLogsId = inventoryLogsResult.insertId;
 
-    for (const product of products) {
-      const { product_id, quantity, note } = product;
+    const logItemsData = logItems.map((item) => [
+      item.product_id,
+      item.quantity,
+      item.note || '',
+      inventoryLogsId,
+    ]);
 
-      const query = `
-      INSERT INTO inventory_logItem (product_id, quantity, note, inventory_logsId) 
-      VALUES (?, ?, ?, ?)`;
+    const query = `INSERT INTO inventory_logitem (product_id, quantity, note, inventory_logsId) VALUES ?`;
+    await db.query(query, [logItemsData]);
 
-      await db.query(query, [product_id, quantity, note, inventoryLogsId]);
-    }
-
-    res.status(201).json({ message: 'Export products created' });
+    res.status(201).json({ message: 'Incoming products created' });
   } catch (error) {
     console.error('Error creating incoming products:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -476,8 +476,9 @@ const deleteProductsIncomingExport = asyncHandler(async (req, res) => {
 
 const getAllProductInventoryIncoming = asyncHandler(async (req, res) => {
   const { page } = req.query;
-  if (!page) {
-    return res.status(400).json({ message: 'Page number is required' });
+
+  if (!page || isNaN(page) || page < 1) {
+    return res.status(400).json({ message: 'Valid page number is required' });
   }
 
   const limit = 10;
@@ -493,32 +494,51 @@ const getAllProductInventoryIncoming = asyncHandler(async (req, res) => {
     JOIN users ON inventory_logs.user_id = users.id
     JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
     JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
-    WHERE 1=1 AND inventory_logs.type_id = 1 AND inventory_logs.status_id = 1`;
+    WHERE inventory_logs.type_id = 1 AND inventory_logs.status_id = 1
+    LIMIT ? OFFSET ?`;
 
   let countQuery = `
-    SELECT COUNT(*) as total_inventory 
+     SELECT COUNT(*) as total_inventory 
     FROM inventory_logs
     JOIN users ON inventory_logs.user_id = users.id
     JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
     JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
-    WHERE 1=1 AND inventory_logs.type_id = 1 AND inventory_logs.status_id = 1`;
-
-  const values = [];
-
-  query += ' LIMIT ? OFFSET ?';
+    WHERE inventory_logs.type_id = 1 AND inventory_logs.status_id = 1`;
 
   try {
-    const [count] = await db.query(countQuery, values);
-    const total = count[0].total_inventory;
+    const [countResult] = await db.query(countQuery);
+    const total = countResult[0].total_inventory;
     const totalPages = Math.ceil(total / limit);
-    const [rows] = await db.query(query, [...values, limit, offset]);
+
+    const [inventoryLogs] = await db.query(query, [limit, offset]);
+
+    const logIds = inventoryLogs.map((log) => log.id);
+    let logItemsQuery = `
+      SELECT * 
+      FROM inventory_logItem
+      WHERE inventory_logsId IN (?)`;
+
+    const [logItems] = await db.query(logItemsQuery, [logIds]);
+
+    const groupedLogItems = logItems.reduce((acc, item) => {
+      if (!acc[item.inventory_logsId]) {
+        acc[item.inventory_logsId] = [];
+      }
+      acc[item.inventory_logsId].push(item);
+      return acc;
+    }, {});
+
+    const inventoryLogsWithItems = inventoryLogs.map((log) => ({
+      ...log,
+      items: groupedLogItems[log.id] || [],
+    }));
 
     res.json({
       page: parseInt(page, 10),
       per_page: limit,
       total_inventory: total,
       total_pages: totalPages,
-      data: rows,
+      data: inventoryLogsWithItems,
     });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -529,48 +549,74 @@ const getAllProductInventoryIncoming = asyncHandler(async (req, res) => {
 const getProductInventoryIncomingById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const query = ` 
-    SELECT * FROM inventory_logs WHERE id = ?
-  `;
+  const logQuery = ` 
+    SELECT 
+      inventory_logs.*, 
+      users.username AS user_name,
+      inventory_type.type_name AS type_name,
+      inventory_status.status_name AS status_name
+    FROM inventory_logs
+    JOIN users ON inventory_logs.user_id = users.id
+    JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
+    JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
+    WHERE inventory_logs.id = ?`;
 
-  const [rows] = await db.query(query, [id]);
+  const [logRows] = await db.query(logQuery, [id]);
 
-  if (rows.length === 0) {
-    return res.status(404).json({ message: 'Product not found' });
+  if (logRows.length === 0) {
+    return res.status(404).json({ message: 'Inventory log not found' });
   }
 
-  const queryItem = `
-    SELECT * FROM inventory_logitem WHERE inventory_logsId = ?`;
+  const logItemsQuery = `
+    SELECT 
+      inventory_logItem.*, 
+      products.product_name AS product_name
+    FROM inventory_logItem
+    JOIN products ON inventory_logItem.product_id = products.id
+    WHERE inventory_logItem.inventory_logsId = ?`;
 
-  const [rowsItem] = await db.query(queryItem, [id]);
+  const [logItemsRows] = await db.query(logItemsQuery, [id]);
 
   res.json({
-    data: rows[0],
-    items: rowsItem,
+    data: logRows[0],
+    items: logItemsRows,
   });
 });
 
 const getProductInventoryExportById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const query = ` 
-    SELECT * FROM inventory_logs WHERE id = ?
-  `;
+  const logQuery = ` 
+    SELECT 
+      inventory_logs.*, 
+      users.username AS user_name,
+      inventory_type.type_name AS type_name,
+      inventory_status.status_name AS status_name
+    FROM inventory_logs
+    JOIN users ON inventory_logs.user_id = users.id
+    JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
+    JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
+    WHERE inventory_logs.id = ?`;
 
-  const [rows] = await db.query(query, [id]);
+  const [logRows] = await db.query(logQuery, [id]);
 
-  if (rows.length === 0) {
-    return res.status(404).json({ message: 'Product not found' });
+  if (logRows.length === 0) {
+    return res.status(404).json({ message: 'Inventory log not found' });
   }
 
-  const queryItem = `
-    SELECT * FROM inventory_logitem WHERE inventory_logsId = ?`;
+  const logItemsQuery = `
+    SELECT 
+      inventory_logItem.*, 
+      products.product_name AS product_name
+    FROM inventory_logItem
+    JOIN products ON inventory_logItem.product_id = products.id
+    WHERE inventory_logItem.inventory_logsId = ?`;
 
-  const [rowsItem] = await db.query(queryItem, [id]);
+  const [logItemsRows] = await db.query(logItemsQuery, [id]);
 
   res.json({
-    data: rows[0],
-    items: rowsItem,
+    data: logRows[0],
+    items: logItemsRows,
   });
 });
 
@@ -593,32 +639,51 @@ const getAllProductInventoryExport = asyncHandler(async (req, res) => {
     JOIN users ON inventory_logs.user_id = users.id
     JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
     JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
-    WHERE 1=1 AND inventory_logs.type_id = 2 AND inventory_logs.status_id = 1`;
+    WHERE inventory_logs.type_id = 2 AND inventory_logs.status_id = 1
+    LIMIT ? OFFSET ?`;
 
   let countQuery = `
-    SELECT COUNT(*) as total_inventory 
+     SELECT COUNT(*) as total_inventory 
     FROM inventory_logs
     JOIN users ON inventory_logs.user_id = users.id
     JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
     JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
-    WHERE 1=1 AND inventory_logs.type_id = 2 AND inventory_logs.status_id = 1`;
-
-  const values = [];
-
-  query += ' LIMIT ? OFFSET ?';
+    WHERE inventory_logs.type_id = 2 AND inventory_logs.status_id = 1`;
 
   try {
-    const [count] = await db.query(countQuery, values);
-    const total = count[0].total_inventory;
+    const [countResult] = await db.query(countQuery);
+    const total = countResult[0].total_inventory;
     const totalPages = Math.ceil(total / limit);
-    const [rows] = await db.query(query, [...values, limit, offset]);
+
+    const [inventoryLogs] = await db.query(query, [limit, offset]);
+
+    const logIds = inventoryLogs.map((log) => log.id);
+    let logItemsQuery = `
+      SELECT * 
+      FROM inventory_logItem
+      WHERE inventory_logsId IN (?)`;
+
+    const [logItems] = await db.query(logItemsQuery, [logIds]);
+
+    const groupedLogItems = logItems.reduce((acc, item) => {
+      if (!acc[item.inventory_logsId]) {
+        acc[item.inventory_logsId] = [];
+      }
+      acc[item.inventory_logsId].push(item);
+      return acc;
+    }, {});
+
+    const inventoryLogsWithItems = inventoryLogs.map((log) => ({
+      ...log,
+      items: groupedLogItems[log.id] || [],
+    }));
 
     res.json({
       page: parseInt(page, 10),
       per_page: limit,
       total_inventory: total,
       total_pages: totalPages,
-      data: rows,
+      data: inventoryLogsWithItems,
     });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -645,7 +710,9 @@ const getAllHistoryProductInventoryIncoming = asyncHandler(async (req, res) => {
     JOIN users ON inventory_logs.user_id = users.id
     JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
     JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
-    WHERE 1=1 AND inventory_logs.type_id = 1 AND inventory_logs.status_id = 2`;
+    WHERE 1=1 AND inventory_logs.type_id = 1 AND inventory_logs.status_id = 2
+    LIMIT ? OFFSET ?
+    `;
 
   let countQuery = `
     SELECT COUNT(*) as total_inventory 
@@ -655,22 +722,40 @@ const getAllHistoryProductInventoryIncoming = asyncHandler(async (req, res) => {
     JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
     WHERE 1=1 AND inventory_logs.type_id = 1 AND inventory_logs.status_id = 2`;
 
-  const values = [];
-
-  query += ' LIMIT ? OFFSET ?';
-
   try {
-    const [count] = await db.query(countQuery, values);
-    const total = count[0].total_inventory;
+    const [countResult] = await db.query(countQuery);
+    const total = countResult[0].total_inventory;
     const totalPages = Math.ceil(total / limit);
-    const [rows] = await db.query(query, [...values, limit, offset]);
+
+    const [inventoryLogs] = await db.query(query, [limit, offset]);
+
+    const logIds = inventoryLogs.map((log) => log.id);
+    let logItemsQuery = `
+      SELECT * 
+      FROM inventory_logItem
+      WHERE inventory_logsId IN (?)`;
+
+    const [logItems] = await db.query(logItemsQuery, [logIds]);
+
+    const groupedLogItems = logItems.reduce((acc, item) => {
+      if (!acc[item.inventory_logsId]) {
+        acc[item.inventory_logsId] = [];
+      }
+      acc[item.inventory_logsId].push(item);
+      return acc;
+    }, {});
+
+    const inventoryLogsWithItems = inventoryLogs.map((log) => ({
+      ...log,
+      items: groupedLogItems[log.id] || [],
+    }));
 
     res.json({
       page: parseInt(page, 10),
       per_page: limit,
       total_inventory: total,
       total_pages: totalPages,
-      data: rows,
+      data: inventoryLogsWithItems,
     });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -697,7 +782,8 @@ const getAllHistoryProductInventoryExport = asyncHandler(async (req, res) => {
     JOIN users ON inventory_logs.user_id = users.id
     JOIN inventory_type ON inventory_logs.type_id = inventory_type.id
     JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
-    WHERE 1=1 AND inventory_logs.type_id = 2 AND inventory_logs.status_id = 2`;
+    WHERE 1=1 AND inventory_logs.type_id = 2 AND inventory_logs.status_id = 2
+    LIMIT ? OFFSET ?`;
 
   let countQuery = `
     SELECT COUNT(*) as total_inventory 
@@ -707,22 +793,40 @@ const getAllHistoryProductInventoryExport = asyncHandler(async (req, res) => {
     JOIN inventory_status ON inventory_logs.status_id = inventory_status.id
     WHERE 1=1 AND inventory_logs.type_id = 2 AND inventory_logs.status_id = 2`;
 
-  const values = [];
-
-  query += ' LIMIT ? OFFSET ?';
-
   try {
-    const [count] = await db.query(countQuery, values);
-    const total = count[0].total_inventory;
+    const [countResult] = await db.query(countQuery);
+    const total = countResult[0].total_inventory;
     const totalPages = Math.ceil(total / limit);
-    const [rows] = await db.query(query, [...values, limit, offset]);
+
+    const [inventoryLogs] = await db.query(query, [limit, offset]);
+
+    const logIds = inventoryLogs.map((log) => log.id);
+    let logItemsQuery = `
+      SELECT * 
+      FROM inventory_logItem
+      WHERE inventory_logsId IN (?)`;
+
+    const [logItems] = await db.query(logItemsQuery, [logIds]);
+
+    const groupedLogItems = logItems.reduce((acc, item) => {
+      if (!acc[item.inventory_logsId]) {
+        acc[item.inventory_logsId] = [];
+      }
+      acc[item.inventory_logsId].push(item);
+      return acc;
+    }, {});
+
+    const inventoryLogsWithItems = inventoryLogs.map((log) => ({
+      ...log,
+      items: groupedLogItems[log.id] || [],
+    }));
 
     res.json({
       page: parseInt(page, 10),
       per_page: limit,
       total_inventory: total,
       total_pages: totalPages,
-      data: rows,
+      data: inventoryLogsWithItems,
     });
   } catch (error) {
     console.error('Error fetching products:', error);

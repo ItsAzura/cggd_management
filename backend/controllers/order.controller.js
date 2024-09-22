@@ -13,8 +13,6 @@ const router = express.Router();
 
 router.route('/').get(getAllOrder).post(createOrder);
 
-router.route('/:id').put(updateOrder).delete(deleteOrder);
-
 router.route('/total_amount').get(getTotalAmount);
 
 router.route('/count_order').get(getCountOrder);
@@ -22,6 +20,8 @@ router.route('/count_order').get(getCountOrder);
 router.route('/total_amount_every_month').get(getTotalAmountEveryMonth);
 
 router.route('/count_category').get(getCountCategory);
+
+router.route('/:id').put(updateOrder).delete(deleteOrder);
 
 // router.get('/', getAllOrder);
 // router.get('/total_amount', getTotalAmount);

@@ -27,15 +27,15 @@ router.post('/', upload.single('image'), createProduct);
 
 router.route('/').get(getAllProduct);
 
+router.route('/count_product').get(getCountProduct);
+
+router.route('/top_order_product').get(getTopOrderProduct);
+
 router
   .route('/:id')
   .get(getProductById)
   .put(updateProduct)
   .delete(deleteProduct);
-
-router.route('/count_product').get(getCountProduct);
-
-router.route('/top_order_product').get(getTopOrderProduct);
 
 // router.get('/', getAllProduct);
 // router.get('/count_product', getCountProduct);
