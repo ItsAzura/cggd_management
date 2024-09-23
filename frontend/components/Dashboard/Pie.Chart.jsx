@@ -20,12 +20,28 @@ import {
 
 export const description = 'A donut chart with text';
 
+const getRandomCustomer = () => {
+  return Math.floor(Math.random() * (300 - 100 + 1)) + 100;
+};
+
 const chartData = [
-  { browser: 'chrome', orders: 275, fill: 'var(--color-chrome)' },
-  { browser: 'safari', orders: 200, fill: 'var(--color-safari)' },
-  { browser: 'firefox', orders: 287, fill: 'var(--color-firefox)' },
-  { browser: 'edge', orders: 173, fill: 'var(--color-edge)' },
-  { browser: 'other', orders: 190, fill: 'var(--color-other)' },
+  {
+    browser: 'chrome',
+    orders: getRandomCustomer(),
+    fill: 'var(--color-chrome)',
+  },
+  {
+    browser: 'safari',
+    orders: getRandomCustomer(),
+    fill: 'var(--color-safari)',
+  },
+  {
+    browser: 'firefox',
+    orders: getRandomCustomer(),
+    fill: 'var(--color-firefox)',
+  },
+  { browser: 'edge', orders: getRandomCustomer(), fill: 'var(--color-edge)' },
+  { browser: 'other', orders: getRandomCustomer(), fill: 'var(--color-other)' },
 ];
 
 const chartConfig = {

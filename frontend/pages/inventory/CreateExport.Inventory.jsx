@@ -54,7 +54,7 @@ const CreateExportInventory = () => {
 
   console.log(userInfo);
   return (
-    <div className="ml-72">
+    <div className="ml-[19rem]">
       <div className="w-[96%] flex flex-row justify-between">
         <PageTitle title="Create Export Product" />
         <button onClick={() => navigate(-1)}>

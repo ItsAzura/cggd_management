@@ -19,18 +19,22 @@ import {
 
 export const description = 'A radar chart';
 
+const getRandomProduct = () => {
+  return Math.floor(Math.random() * (300 - 120 + 1)) + 120;
+};
+
 const chartData = [
-  { month: 'January', visiter: 186 },
-  { month: 'February', visiter: 305 },
-  { month: 'March', visiter: 237 },
-  { month: 'April', visiter: 273 },
-  { month: 'May', visiter: 209 },
-  { month: 'June', visiter: 214 },
+  { month: 'January', customer: getRandomProduct() },
+  { month: 'February', customer: getRandomProduct() },
+  { month: 'March', customer: getRandomProduct() },
+  { month: 'April', customer: getRandomProduct() },
+  { month: 'May', customer: getRandomProduct() },
+  { month: 'June', customer: getRandomProduct() },
 ];
 
 const chartConfig = {
   desktop: {
-    label: 'visiter',
+    label: 'customer',
     color: 'hsl(var(--chart-1))',
   },
 };
@@ -58,8 +62,8 @@ export function SpiderChart() {
             <PolarAngleAxis dataKey="month" />
             <PolarGrid />
             <Radar
-              dataKey="visiter"
-              fill="var(--color-desktop)"
+              dataKey="customer"
+              fill="var(--toastify-color-info)"
               fillOpacity={0.6}
             />
           </RadarChart>

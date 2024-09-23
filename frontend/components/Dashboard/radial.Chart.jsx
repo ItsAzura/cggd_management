@@ -19,7 +19,17 @@ import {
 
 export const description = 'A radial chart with stacked sections';
 
-const chartData = [{ month: 'january', desktop: 1260, mobile: 570 }];
+const getRandomVisitor = () => {
+  return Math.floor(Math.random() * (1500 - 500 + 1)) + 500;
+};
+
+const chartData = [
+  {
+    month: 'january',
+    desktop: getRandomVisitor(),
+    mobile: getRandomVisitor(),
+  },
+];
 
 const chartConfig = {
   desktop: {

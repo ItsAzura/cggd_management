@@ -63,7 +63,7 @@ const EditUser = () => {
 
   if (isError) return <ErrorPage />;
   return (
-    <div className="ml-72">
+    <div className="ml-[19rem]">
       <PageTitle title="Edit User" />
       <form
         className="w-[96%]"

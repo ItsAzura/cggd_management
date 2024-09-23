@@ -22,7 +22,7 @@ router.post('/login', loginUser);
 router.post('/logout', logoutUser);
 
 router
-  .route('/profile')
+  .route('/profile/:id')
   .get(getUserProfile, authenticate)
   .put(updateUserProfile, authenticate);
 

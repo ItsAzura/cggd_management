@@ -53,7 +53,7 @@ const ListInComingInventory = () => {
 
   const totalPages = items?.total_pages || 1;
   return (
-    <div className="ml-72">
+    <div className="ml-[19rem]">
       <div className="w-[96%] flex flex-row justify-between">
         <PageTitle title="Incoming Inventory List" />
         <div className="flex flex-row gap-4 mt-1">

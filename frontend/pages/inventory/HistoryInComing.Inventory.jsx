@@ -22,7 +22,7 @@ const HistoryInComingInventory = () => {
 
   console.log(items);
   return (
-    <div className="ml-72">
+    <div className="ml-[19rem]">
       <div className="w-[96%] flex flex-row justify-between">
         <PageTitle title="History InComing Inventory" />
         <button onClick={() => navigate(-1)}>

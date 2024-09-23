@@ -114,11 +114,9 @@ const getAllProduct = asyncHandler(async (req, res) => {
 
 const getCountProduct = async (req, res) => {
   try {
-    console.log('Running count product query...');
     const [rows] = await db.query(
       `SELECT COUNT(*) AS total_product FROM products`
     );
-    console.log('Query result:', rows);
     res.status(200).json({ total_product: rows[0].total_product });
   } catch (error) {
     console.error('Error executing query:', error);
@@ -178,8 +176,6 @@ const getProductById = asyncHandler(async (req, res) => {
 });
 
 const createProduct = asyncHandler(async (req, res) => {
-  console.log('Received data:', req.body);
-  console.log('Received file:', req.file);
   const {
     name,
     sku,
@@ -257,8 +253,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     supplier_id,
     description,
   } = req.body;
-
-  console.log('Received data:', req.body);
 
   try {
     const [existingProduct] = await db.query(

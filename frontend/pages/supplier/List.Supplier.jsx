@@ -112,7 +112,7 @@ const Suppliers = () => {
   console.log(suppliers);
 
   return (
-    <div className="ml-72 ">
+    <div className="ml-[19rem]">
       {showDeleteModal && (
         <DeleteModal
           showModal={showDeleteModal}

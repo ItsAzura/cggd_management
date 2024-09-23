@@ -277,9 +277,12 @@ const Navigation = () => {
           <div className="flex flex-row">
             <div className="rounded-full bg-gray-300 h-10 w-10"></div>
             <div className="ml-2">
-              <div className="text-lg font-semibold text-white">
-                {userInfo.username}
-              </div>
+              <Link to={`/profile/${userInfo.id}`}>
+                <div className="text-lg font-semibold text-white">
+                  {userInfo.username}
+                </div>
+              </Link>
+
               <div className="text-sm text-gray-500">
                 {' '}
                 {truncateEmail(userInfo.email)}

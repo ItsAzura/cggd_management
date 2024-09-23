@@ -161,7 +161,7 @@ const Products = () => {
   const totalPages = products?.total_pages || 1;
 
   return (
-    <div className="ml-72 ">
+    <div className="ml-[19rem] ">
       {/* Delete Modal */}
       {showDeleteModal && (
         <DeleteModal

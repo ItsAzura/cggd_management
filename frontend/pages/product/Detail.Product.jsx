@@ -22,7 +22,7 @@ const DetailProduct = () => {
   if (isError) return <ErrorPage />;
 
   return (
-    <div className="pt-8 ml-72 p-4 text-white">
+    <div className="pt-8 ml-[19rem] p-4 text-white">
       <button
         onClick={() => navigate(-1)}
         className="flex flex-row gap-2 items-center md:w-auto font-semibold mb-4 py-1 px-2  "

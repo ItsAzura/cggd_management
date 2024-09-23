@@ -50,7 +50,6 @@ const Dashboard = () => {
   if (ordersError || totalOrdersError || customersError || productsError)
     return <Error />;
 
-  console.log('products', products);
   return (
     <div className="ml-72">
       <PageTitle title="Dashboard" />
@@ -100,7 +99,7 @@ const Dashboard = () => {
           <TopProducts />
         </div>
       </div>
-      <div className="flex flex-row my-10 ml-4">
+      <div className="flex flex-row my-10 ml-4 gap-4 mr-4">
         <div className="w-1/3">
           <SpiderChart />
         </div>

@@ -160,32 +160,57 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
+  const { id } = req.params;
   const user = await db.query(
-    'SELECT id, email, username, role_id FROM users WHERE id = ?',
-    [req.user.id]
+    `SELECT 
+        users.*, 
+        roles.role_name
+        FROM users
+        JOIN roles ON users.role_id = roles.id 
+        WHERE users.id = ?`,
+    [id]
   );
 
   res.json(user[0][0]);
 });
 
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const { email, username, user_password } = req.body;
+  const { id, email, username, user_password } = req.body;
 
-  const user = await db.query('SELECT * FROM users WHERE id = ?', [
-    req.user.id,
-  ]);
+  const user = await db.query('SELECT * FROM users WHERE id = ?', [id]);
 
   if (user[0].length === 0) {
     res.status(404);
     throw new Error('User not found');
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(user_password, salt);
+  const existingPassword = user[0][0].user_password; // The existing hashed password
+  let hashedPassword;
 
+  if (user_password) {
+    // Check if the new password matches the existing hashed password
+    const isSamePassword = await bcrypt.compare(
+      user_password,
+      existingPassword
+    );
+
+    if (isSamePassword) {
+      // If the new password is the same as the old one, keep the old hashed password
+      hashedPassword = existingPassword;
+    } else {
+      // Otherwise, hash the new password
+      const salt = await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(user_password, salt);
+    }
+  } else {
+    // If no password is provided, use the existing hashed password
+    hashedPassword = existingPassword;
+  }
+
+  // Update user data with the email, username, and the determined password
   await db.query(
     'UPDATE users SET email = ?, username = ?, user_password = ? WHERE id = ?',
-    [email, username, hashedPassword, req.user.id]
+    [email, username, hashedPassword, id]
   );
 
   res.json({ message: 'User updated successfully' });

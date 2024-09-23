@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -14,18 +13,38 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
 } from '@/components/ui/chart';
 
 export const description = 'A bar chart with a label';
 
+const getRandomOrder = () => {
+  return Math.floor(Math.random() * (500 - 120 + 1)) + 120;
+};
+
+const chartData = [
+  { month: 'January', order: getRandomOrder() },
+  { month: 'February', order: getRandomOrder() },
+  { month: 'March', order: getRandomOrder() },
+  { month: 'April', order: getRandomOrder() },
+  { month: 'May', order: getRandomOrder() },
+  { month: 'June', order: getRandomOrder() },
+  { month: 'July', order: getRandomOrder() },
+  { month: 'August', order: getRandomOrder() },
+  { month: 'September', order: getRandomOrder() },
+  { month: 'October', order: getRandomOrder() },
+  { month: 'November', order: getRandomOrder() },
+  { month: 'December', order: getRandomOrder() },
+];
 const chartConfig = {
   desktop: {
-    label: 'total_amount_sum',
-    color: 'hsl(var(--chart-1))',
+    label: 'Order',
+    color: 'var(--chart-main)',
   },
 };
 
-export function MainChar(chartData) {
+export function MainChar() {
   return (
     <Card className="text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out shadow-lg shadow-[rgba(41,125,204,0.1)]">
       <CardHeader>
@@ -34,13 +53,7 @@ export function MainChar(chartData) {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={chartData.chartData}
-            margin={{
-              top: 20,
-            }}
-          >
+          <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -48,35 +61,25 @@ export function MainChar(chartData) {
               tickMargin={10}
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
+              className="text-white"
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
               className="bg-white text-black"
             />
-            <Bar
-              dataKey="total_amount_sum"
-              fill="var(--color-desktop)"
-              radius={8}
-            >
+
+            <Bar dataKey="order" fill="var(--color-desktop)" radius={8}>
               <LabelList
                 position="top"
                 offset={12}
-                className="fill-foreground"
+                className="fill-foreground text-white"
                 fontSize={12}
               />
             </Bar>
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 10.5% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last year
-        </div>
-      </CardFooter>
     </Card>
   );
 }

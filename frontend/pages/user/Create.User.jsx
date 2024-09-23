@@ -44,7 +44,7 @@ const CreateUser = () => {
     }
   };
   return (
-    <div className="ml-72">
+    <div className="ml-[19rem]">
       <PageTitle title="Create User" />
       <form className="w-[60%] p-2" onSubmit={handleSubmit}>
         <div className=" grid grid-cols-1 gap-8 mb-4">

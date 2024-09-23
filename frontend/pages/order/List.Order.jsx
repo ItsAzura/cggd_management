@@ -76,7 +76,7 @@ const ListOrder = () => {
 
   const totalPages = orders?.totalPages || 1;
   return (
-    <div className="ml-72 ">
+    <div className="ml-[19rem] ">
       <PageTitle title="Order" />
       <div className="w-[100%] grid grid-cols-4 gap-y-6 mb-4 mt-2">
         <select

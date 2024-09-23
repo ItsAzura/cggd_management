@@ -112,7 +112,7 @@ const CreateProduct = () => {
   }
 
   return (
-    <div className="ml-72">
+    <div className="ml-[19rem]">
       <PageTitle title="Create Product" />
       <form
         className="w-[96%]"

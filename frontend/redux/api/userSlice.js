@@ -51,8 +51,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
     // Define the endpoint for fetching a user's profile
     getUserProfile: builder.query({
-      query: () => ({
-        url: `${USERS_URL}/profile`,
+      query: (id) => ({
+        url: `${USERS_URL}/profile/${id}`, // Use the id in the URL path
         method: 'GET',
       }),
       providesTags: ['Users'],
@@ -60,8 +60,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
     // Define the endpoint for updating a user's profile
     updateUserProfile: builder.mutation({
-      query: (updatedProfile) => ({
-        url: `${USERS_URL}/profile`,
+      query: ({ id, updatedProfile }) => ({
+        url: `${USERS_URL}/profile/${id}`,
         method: 'PUT',
         body: updatedProfile,
       }),

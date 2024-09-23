@@ -47,7 +47,7 @@ const CreateSupplier = () => {
     }
   };
   return (
-    <div className="ml-72">
+    <div className="ml-[19rem]">
       <PageTitle title="Create Supplier" />
       <form className="w-[96%] p-2" onSubmit={handleSubmit}>
         <div className=" grid grid-cols-2 gap-8 mb-4">

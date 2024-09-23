@@ -83,6 +83,10 @@ const CreateExportInventory = lazy(() =>
 //Order
 const Orders = lazy(() => import('../pages/order/List.Order.jsx'));
 
+//Profile
+const Profile = lazy(() => import('../pages/user/Profile.User.jsx'));
+const EditProfile = lazy(() => import('../pages/user/EditProfile.User.jsx'));
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -278,6 +282,22 @@ const router = createBrowserRouter(
             element={
               <Suspense fallback={<Loading />}>
                 <Orders />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/profile/:id"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Profile />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/profile/:id/edit"
+            element={
+              <Suspense fallback={<Loading />}>
+                <EditProfile />
               </Suspense>
             }
           />

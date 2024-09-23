@@ -54,7 +54,7 @@ const CreateInComingInventory = () => {
   if (productLoading) return <Loading />;
 
   return (
-    <div className="ml-72">
+    <div className="ml-[19rem]">
       <div className="w-[96%] flex flex-row justify-between">
         <PageTitle title="Create Incoming Product" />
         <button onClick={() => navigate(-1)}>

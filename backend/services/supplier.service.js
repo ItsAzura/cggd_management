@@ -135,8 +135,6 @@ const createSupplier = asyncHandler(async (req, res) => {
 const updateSupplier = asyncHandler(async (req, res) => {
   const { id, supplier_name, contact_person, phone, email, address } = req.body;
 
-  console.log('Received data:', req.body);
-
   if (!supplier_name || !contact_person || !phone || !email || !address) {
     return res.status(400).json({ message: 'All fields are required' });
   }

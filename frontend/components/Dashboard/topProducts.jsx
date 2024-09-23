@@ -20,8 +20,8 @@ import {
 export const description = 'A mixed bar chart';
 
 const chartConfig = {
-  visitors: {
-    label: 'Visitors',
+  orders: {
+    label: 'Orders',
   },
   chrome: {
     label: 'Chan',
@@ -45,13 +45,37 @@ const chartConfig = {
   },
 };
 
+const getRandomProduct = () => {
+  return Math.floor(Math.random() * (400 - 220 + 1)) + 120;
+};
+
 export function TopProducts() {
   const chartData = [
-    { browser: 'chrome', visitors: 275, fill: 'var(--color-chrome)' },
-    { browser: 'safari', visitors: 200, fill: 'var(--color-safari)' },
-    { browser: 'firefox', visitors: 187, fill: 'var(--color-firefox)' },
-    { browser: 'edge', visitors: 173, fill: 'var(--color-edge)' },
-    { browser: 'other', visitors: 90, fill: 'var(--color-other)' },
+    {
+      browser: 'chrome',
+      orders: getRandomProduct(),
+      fill: 'var(--color-chrome)',
+    },
+    {
+      browser: 'safari',
+      orders: getRandomProduct(),
+      fill: 'var(--color-safari)',
+    },
+    {
+      browser: 'firefox',
+      orders: getRandomProduct(),
+      fill: 'var(--color-firefox)',
+    },
+    {
+      browser: 'edge',
+      orders: getRandomProduct(),
+      fill: 'var(--color-edge)',
+    },
+    {
+      browser: 'other',
+      orders: getRandomProduct(),
+      fill: 'var(--color-other)',
+    },
   ];
   return (
     <Card className="text-white border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out shadow-lg shadow-[rgba(41,125,204,0.1)]">
@@ -77,14 +101,14 @@ export function TopProducts() {
               axisLine={false}
               tickFormatter={(value) => chartConfig[value]?.label}
             />
-            <XAxis dataKey="visitors" type="number" hide />
+            <XAxis dataKey="orders" type="number" hide />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
               className="bg-white text-black"
             />
             <Bar
-              dataKey="visitors"
+              dataKey="orders"
               layout="vertical"
               radius={5}
               fill="var(--color-other)"
@@ -97,7 +121,7 @@ export function TopProducts() {
           Trending up by 10.5% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last year
+          Showing total orders for the last year
         </div>
       </CardFooter>
     </Card>

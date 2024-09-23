@@ -21,7 +21,7 @@ const HistoryExportInventory = () => {
 
   const totalPages = items?.total_pages || 1;
   return (
-    <div className="ml-72">
+    <div className="ml-[19rem]">
       <div className="w-[96%] flex flex-row justify-between">
         <PageTitle title="Incoming Inventory List" />
         <button onClick={() => navigate(-1)}>
