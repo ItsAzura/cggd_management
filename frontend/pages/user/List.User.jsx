@@ -111,7 +111,7 @@ const Users = () => {
 
   const totalPages = users?.total_pages || 1;
   return (
-    <div className="ml-72 ">
+    <div className="ml-[19rem]">
       {showDeleteModal && (
         <DeleteModal
           showModal={showDeleteModal}
@@ -236,7 +236,10 @@ const Users = () => {
                   {moment(user.updated_at).format('DD/MM/YYYY')}
                 </td>
                 <td className="p-4 flex gap-2 justify-center">
-                  <button className="px-3 py-2 bg-[#0b1c37] text-white rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-[#297dcc] hover:scale-110 transition-all duration-300">
+                  <button
+                    className="px-3 py-2 bg-[#0b1c37] text-white rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-[#297dcc] hover:scale-110 transition-all duration-300"
+                    disabled={user.role_id == '3'}
+                  >
                     <Link
                       to={`/user/${user.id}`}
                       className="flex flex-row items-center gap-2"
@@ -258,9 +261,11 @@ const Users = () => {
                       </svg>
                     </Link>
                   </button>
+
                   <button
                     className="px-2 py-2 bg-[#0b1c37] text-white p-2 rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-red-500 hover:scale-110 transition-all duration-300"
                     onClick={() => openDeleteModal(user.id)}
+                    disabled={user.role_id == '3'}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
