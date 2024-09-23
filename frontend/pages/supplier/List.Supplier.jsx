@@ -122,40 +122,40 @@ const Suppliers = () => {
         />
       )}
       <PageTitle title="Suppliers" />
-      <div className="w-[100%] grid grid-cols-3 gap-y-6 mb-4 mt-2">
+      <div className="w-[100%] grid grid-cols-3 gap-y-6 mb-4 mt-4">
         <input
           type="text"
           name="supplier_name"
           placeholder="Search by supplier name"
-          className="w-[90%] p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-[90%] p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           onChange={handleFilterChange}
         />
         <input
           type="text"
           name="contact_person"
           placeholder="Search by contact person"
-          className="w-[90%] p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-[90%] p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           onChange={handleFilterChange}
         />
         <input
           type="text"
           name="phone"
           placeholder="Search by phone"
-          className="w-[90%] p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-[90%] p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           onChange={handleFilterChange}
         />
         <input
           type="text"
           name="email"
           placeholder="Search by email"
-          className="w-[90%] p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-[90%] p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           onChange={handleFilterChange}
         />
         <input
           type="text"
           name="address"
           placeholder="Search by address"
-          className="w-[90%] p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-[90%] p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           onChange={handleFilterChange}
         />
       </div>
@@ -282,7 +282,7 @@ const Suppliers = () => {
           </tbody>
         </table>
       </div>
-      <div className="mt-4 py-2 flex flex-row items-center justify-center space-x-4">
+      <div className="mt-10 py-2 flex flex-row items-center justify-center space-x-4 mr-16">
         <button
           className={`px-2 py-1 bg-[#297DCC] text-white rounded-lg transition-transform duration-300 ${
             filters.page === 1

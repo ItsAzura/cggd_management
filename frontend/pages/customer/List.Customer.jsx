@@ -108,7 +108,7 @@ const Customers = () => {
   const totalPages = customers?.total_pages || 1;
 
   return (
-    <div className="ml-72 ">
+    <div className="ml-[19rem]">
       {showDeleteModal && (
         <DeleteModal
           showModal={showDeleteModal}
@@ -118,11 +118,11 @@ const Customers = () => {
         />
       )}
       <PageTitle title="Customers" />
-      <div className="w-[100%] grid grid-cols-4 gap-1 mb-4">
+      <div className="w-[100%] grid grid-cols-4 gap-1 mb-4 mt-4">
         <input
           type="text"
           placeholder="Search by name"
-          className="w-5/6 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-5/6 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="customer_name"
           value={filters.customer_name}
           onChange={handleFilterChange}
@@ -130,7 +130,7 @@ const Customers = () => {
         <input
           type="text"
           placeholder="Search by email"
-          className="w-5/6 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-5/6 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="email"
           value={filters.email}
           onChange={handleFilterChange}
@@ -138,7 +138,7 @@ const Customers = () => {
         <input
           type="text"
           placeholder="Search by phone"
-          className="w-5/6 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-5/6 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="phone"
           value={filters.phone}
           onChange={handleFilterChange}
@@ -146,7 +146,7 @@ const Customers = () => {
         <input
           type="text"
           placeholder="Search by address"
-          className="w-5/6 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-5/6 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="address"
           value={filters.address}
           onChange={handleFilterChange}
@@ -270,7 +270,7 @@ const Customers = () => {
           </tbody>
         </table>
       </div>
-      <div className="mt-4 py-2 flex flex-row items-center justify-center space-x-4">
+      <div className="mt-10 py-2 flex flex-row items-center justify-center space-x-4 mr-16">
         <button
           className={`px-2 py-1 bg-[#297DCC] text-white rounded-lg transition-transform duration-300 ${
             filters.page === 1

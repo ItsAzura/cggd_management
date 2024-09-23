@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCreateUserMutation } from '../../redux/api/userSlice';
 import { toast } from 'react-toastify';
 import PageTitle from '../../components/Shared/PageTitle';
 import { useNavigate } from 'react-router-dom';
+import IconBtn from '../../components/Shared/IconBtn';
 
 const CreateUser = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const [createUser] = useCreateUserMutation();
+
+  useEffect(() => {
+    const isFormValid = username && email && password;
+    setIsDisabled(!isFormValid);
+  }, [username, email, password]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,12 +86,35 @@ const CreateUser = () => {
             />
           </div>
         </div>
-        <button
-          type="submit"
-          className="border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out delay-0 hover:bg-[rgba(41,125,204,0.3)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] text-white font-semibold py-2 px-2 rounded my-6"
-        >
-          Create User
-        </button>
+        <div className="h-18 flex flex-row gap-6 items-center">
+          <button
+            type="submit"
+            disabled={isDisabled}
+            className={`${
+              isDisabled ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500'
+            } p-3 text-white rounded transition-colors duration-300 ease-in-out`}
+          >
+            Create User
+          </button>
+          <button onClick={() => navigate(-1)}>
+            <IconBtn
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="2rem"
+                  height="2rem"
+                  viewBox="0 0 32 32"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M22 8v2c2.206 0 4 1.794 4 4s-1.794 4-4 4H10v-5l-6 6l6 6v-5h12c3.309 0 6-2.691 6-6s-2.691-6-6-6"
+                  />
+                </svg>
+              }
+              label={'Back'}
+            />
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -98,7 +98,7 @@ const EditProductInventory = () => {
           <div className="flex flex-col gap-4">
             <label className="text-white mb-1">Product Name</label>
             <select
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               name="product_id"
               value={productId}
               onChange={(e) => setProductId(e.target.value)}
@@ -121,7 +121,7 @@ const EditProductInventory = () => {
             <label className="text-white mb-1">Quantity</label>
             <input
               type="number"
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               placeholder="Enter quantity"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
@@ -131,7 +131,7 @@ const EditProductInventory = () => {
             <label className="text-white mb-1">Min Quantity</label>
             <input
               type="number"
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               placeholder="Enter min quantity"
               value={minQuantity}
               onChange={(e) => setMinQuantity(e.target.value)}
@@ -140,7 +140,7 @@ const EditProductInventory = () => {
           <div className="flex flex-col gap-4">
             <label className="text-white mb-1">Location</label>
             <select
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               name="location_id"
               value={locationId}
               onChange={(e) => setLocationId(e.target.value)}

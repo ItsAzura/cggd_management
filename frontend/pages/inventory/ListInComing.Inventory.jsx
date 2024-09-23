@@ -222,7 +222,7 @@ const ListInComingInventory = () => {
         )}
       </div>
 
-      <div className="mt-4 py-2 flex flex-row items-center justify-center space-x-4">
+      <div className="mt-10 py-2 flex flex-row items-center justify-center space-x-4 mr-16">
         <button
           className={`px-2 py-1 bg-[#297DCC] text-white rounded-lg transition-transform duration-300 ${
             page === 1

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   useGetAllColorsQuery,
   useGetAllCategoriesQuery,
@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { useCreateProductMutation } from '../../redux/api/productSlice';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../components/Shared/PageTitle';
+import IconBtn from '../../components/Shared/IconBtn';
 
 const CreateProduct = () => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const CreateProduct = () => {
   const [material, setMaterial] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [imagePreview, setImagePreview] = useState(null);
   const {
     data: colors,
     isLoading: colorsLoading,
@@ -53,8 +56,34 @@ const CreateProduct = () => {
     if (file) {
       setImage(file);
       console.log('Selected file:', file);
+      setImagePreview(URL.createObjectURL(file));
     }
   };
+
+  // Validate all fields are filled to enable the submit button
+  useEffect(() => {
+    const isFormValid =
+      name.trim() &&
+      sku.trim() &&
+      description.trim() &&
+      category_id &&
+      size_id &&
+      color_id &&
+      supplier_id &&
+      material.trim() &&
+      price;
+    setIsDisabled(!isFormValid);
+  }, [
+    name,
+    sku,
+    description,
+    category_id,
+    size_id,
+    color_id,
+    supplier_id,
+    material,
+    price,
+  ]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -120,7 +149,7 @@ const CreateProduct = () => {
         enctype="multipart/form-data"
       >
         <div className=" grid grid-cols-2 gap-6 mb-4">
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <label className="text-white mb-1">Name</label>
             <input
               type="text"
@@ -130,7 +159,7 @@ const CreateProduct = () => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <label className="text-white mb-1">Sku</label>
             <input
               type="text"
@@ -153,7 +182,7 @@ const CreateProduct = () => {
           />
         </div>
         <div className="grid grid-cols-2 gap-6 mb-4">
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <label className="text-white mb-1">Category</label>
             <select
               className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
@@ -177,7 +206,7 @@ const CreateProduct = () => {
               ))}
             </select>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <label className="text-white mb-1">Size</label>
             <select
               className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
@@ -203,7 +232,7 @@ const CreateProduct = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-6 mb-4">
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <label className="text-white mb-1">Color</label>
             <select
               className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
@@ -224,7 +253,7 @@ const CreateProduct = () => {
               ))}
             </select>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <label className="text-white mb-1">Supplier</label>
             <select
               className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] transition duration-300 ease-in-out"
@@ -250,7 +279,7 @@ const CreateProduct = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-6 mb-4">
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <label className="text-white mb-1">Material</label>
             <input
               type="text"
@@ -260,7 +289,7 @@ const CreateProduct = () => {
               onChange={(e) => setMaterial(e.target.value)}
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <label className="text-white mb-1">Price</label>
             <input
               type="number"
@@ -294,13 +323,45 @@ const CreateProduct = () => {
             onChange={(e) => handleImageChange(e)}
             className="hidden"
           />
+          {imagePreview && (
+            <div className="mt-4">
+              <img
+                src={imagePreview}
+                alt="Selected"
+                className="h-40 w-40 object-cover"
+              />
+            </div>
+          )}
         </div>
-        <button
-          className="border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out delay-0 hover:bg-[rgba(41,125,204,0.3)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] text-white font-semibold py-2 px-2 rounded my-6"
-          type="submit"
-        >
-          Create Product
-        </button>
+        <div className="h-18 flex flex-row gap-6 items-center">
+          <button
+            type="submit"
+            disabled={isDisabled}
+            className={`${
+              isDisabled ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500'
+            } w-36 p-3 text-white rounded transition-colors duration-300 ease-in-out`}
+          >
+            Create Product
+          </button>
+          <button onClick={() => navigate(-1)}>
+            <IconBtn
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="2rem"
+                  height="2rem"
+                  viewBox="0 0 32 32"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M22 8v2c2.206 0 4 1.794 4 4s-1.794 4-4 4H10v-5l-6 6l6 6v-5h12c3.309 0 6-2.691 6-6s-2.691-6-6-6"
+                  />
+                </svg>
+              }
+              label={'Back'}
+            />
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -76,7 +76,7 @@ const EditSupplier = () => {
             <label className="text-white mb-1">Supplier Name</label>
             <input
               type="text"
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               placeholder="Enter Supplier Name"
               value={supplierName}
               onChange={(e) => setSupplierName(e.target.value)}
@@ -86,7 +86,7 @@ const EditSupplier = () => {
             <label className="text-white mb-1">Contact Person</label>
             <input
               type="text"
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               placeholder="Enter Contact Person"
               value={contactPerson}
               onChange={(e) => setContactPerson(e.target.value)}
@@ -96,7 +96,7 @@ const EditSupplier = () => {
             <label className="text-white mb-1">Phone</label>
             <input
               type="number"
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               placeholder="Enter Phone"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -106,7 +106,7 @@ const EditSupplier = () => {
             <label className="text-white mb-1">Email</label>
             <input
               type="email"
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               placeholder="Enter Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -116,7 +116,7 @@ const EditSupplier = () => {
             <label className="text-white mb-1">Address</label>
             <input
               type="text"
-              className="p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               placeholder="Enter Address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}

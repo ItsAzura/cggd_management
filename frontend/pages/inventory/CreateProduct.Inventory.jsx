@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   useGetAllInventoryProductQuery,
   useGetAllLocationsQuery,
@@ -9,6 +9,7 @@ import PageTitle from '../../components/Shared/PageTitle';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
+import IconBtn from '../../components/Shared/IconBtn';
 
 const CreateProductInventory = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const CreateProductInventory = () => {
   const [quantity, setQuantity] = useState('');
   const [minQuantity, setMinQuantity] = useState('');
   const [locationId, setLocationId] = useState('');
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const {
     data: products,
@@ -30,6 +32,11 @@ const CreateProductInventory = () => {
   } = useGetAllLocationsQuery();
 
   const [createInventory] = useCreateInventoryMutation();
+
+  useEffect(() => {
+    const isFormValid = productId && quantity && minQuantity && locationId;
+    setIsDisabled(!isFormValid);
+  }, [productId, quantity, minQuantity, locationId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,7 +84,7 @@ const CreateProductInventory = () => {
           <div className="flex flex-col gap-2">
             <label className="text-white mb-1">Product Name</label>
             <select
-              className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               name="product_id"
               value={productId}
               onChange={(e) => setProductId(e.target.value)}
@@ -99,7 +106,7 @@ const CreateProductInventory = () => {
           <div className="flex flex-col gap-2">
             <label className="text-white mb-1">Location</label>
             <select
-              className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               name="location_id"
               value={locationId}
               onChange={(e) => setLocationId(e.target.value)}
@@ -122,7 +129,7 @@ const CreateProductInventory = () => {
             <label className="text-white mb-1">Quantity</label>
             <input
               type="number"
-              className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               placeholder="Enter quantity"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
@@ -132,19 +139,42 @@ const CreateProductInventory = () => {
             <label className="text-white mb-1">Minimum Quantity</label>
             <input
               type="number"
-              className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+              className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
               placeholder="Enter minimum quantity"
               value={minQuantity}
               onChange={(e) => setMinQuantity(e.target.value)}
             />
           </div>
         </div>
-        <button
-          className="border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out delay-0 hover:bg-[rgba(41,125,204,0.3)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] text-white font-semibold py-2 px-2 rounded my-6"
-          type="submit"
-        >
-          Create Inventory Item
-        </button>
+        <div className="h-18 flex flex-row gap-6 items-center">
+          <button
+            type="submit"
+            disabled={isDisabled}
+            className={`${
+              isDisabled ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500'
+            } p-3 text-white rounded transition-colors duration-300 ease-in-out`}
+          >
+            Create Inventory Item
+          </button>
+          <button onClick={() => navigate(-1)}>
+            <IconBtn
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="2rem"
+                  height="2rem"
+                  viewBox="0 0 32 32"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M22 8v2c2.206 0 4 1.794 4 4s-1.794 4-4 4H10v-5l-6 6l6 6v-5h12c3.309 0 6-2.691 6-6s-2.691-6-6-6"
+                  />
+                </svg>
+              }
+              label={'Back'}
+            />
+          </button>
+        </div>
       </form>
     </div>
   );

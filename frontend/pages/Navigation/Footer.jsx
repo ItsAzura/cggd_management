@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -22,36 +23,52 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3 text-gray-300">
               <li>
-                <a
-                  href="/dashboard"
+                <Link
+                  to={'/dashboard'}
                   className="hover:text-[#297DCC] transition-colors duration-200"
                 >
                   Dashboard
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/inventory"
+                <Link
+                  to={'/product'}
                   className="hover:text-[#297DCC] transition-colors duration-200"
                 >
-                  Inventory
-                </a>
+                  Product
+                </Link>
               </li>
               <li>
-                <a
-                  href="/order"
-                  className="hover:text-[#297DCC] transition-colors duration-200"
-                >
-                  Orders
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/supplier"
+                <Link
+                  to={'/supplier'}
                   className="hover:text-[#297DCC] transition-colors duration-200"
                 >
                   Supplier
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={'/inventory'}
+                  className="hover:text-[#297DCC] transition-colors duration-200"
+                >
+                  Inventory
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={'/customer'}
+                  className="hover:text-[#297DCC] transition-colors duration-200"
+                >
+                  Customer
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={'/order'}
+                  className="hover:text-[#297DCC] transition-colors duration-200"
+                >
+                  Orders
+                </Link>
               </li>
             </ul>
           </div>

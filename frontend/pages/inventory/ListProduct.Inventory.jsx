@@ -143,9 +143,9 @@ const ListProductInventory = () => {
           <Link to="/inventory/export">Export</Link>
         </button>
       </div>
-      <div className="w-[100%] grid grid-cols-4 gap-y-6 mb-4 mt-2">
+      <div className="w-[100%] grid grid-cols-4 gap-y-6 mb-4 mt-4">
         <select
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="product_id"
           value={filters.product_id}
           onChange={handleFilterChange}
@@ -164,7 +164,7 @@ const ListProductInventory = () => {
           ))}
         </select>
         <select
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="location_id"
           value={filters.location_id}
           onChange={handleFilterChange}
@@ -188,7 +188,7 @@ const ListProductInventory = () => {
           value={filters.quantity}
           onChange={handleFilterChange}
           placeholder="Max Quantity"
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
         />
         <input
           type="number"
@@ -196,7 +196,7 @@ const ListProductInventory = () => {
           value={filters.min_quantity}
           onChange={handleFilterChange}
           placeholder="Min Quantity"
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
         />
       </div>
       <div className="w-[95%] flex flex-row justify-between items-center">
@@ -317,7 +317,7 @@ const ListProductInventory = () => {
           </tbody>
         </table>
       </div>
-      <div className="mt-4 py-2 flex flex-row items-center justify-center space-x-4">
+      <div className="mt-10 py-2 flex flex-row items-center justify-center space-x-4 mr-16">
         <button
           className={`px-2 py-1 bg-[#297DCC] text-white rounded-lg transition-transform duration-300 ${
             filters.page === 1

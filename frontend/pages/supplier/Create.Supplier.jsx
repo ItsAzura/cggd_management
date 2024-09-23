@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCreateSupplierMutation } from '../../redux/api/supplierSlice';
 import { toast } from 'react-toastify';
 import PageTitle from '../../components/Shared/PageTitle';
 import { useNavigate } from 'react-router-dom';
+import IconBtn from '../../components/Shared/IconBtn';
 
 const CreateSupplier = () => {
   const navigate = useNavigate();
@@ -11,8 +12,15 @@ const CreateSupplier = () => {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const [createSupplier] = useCreateSupplierMutation();
+
+  useEffect(() => {
+    const isFormValid =
+      supplierName && contactPerson && phone && email && address;
+    setIsDisabled(!isFormValid);
+  }, [supplierName, contactPerson, phone, email, address]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -102,12 +110,35 @@ const CreateSupplier = () => {
             />
           </div>
         </div>
-        <button
-          className="border border-[rgba(41,125,204,0.5)] bg-[rgba(41,125,204,0.2)] transition ease-in-out delay-0 hover:bg-[rgba(41,125,204,0.3)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)] text-white font-semibold py-2 px-2 rounded my-6"
-          type="submit"
-        >
-          Create Supplier
-        </button>
+        <div className="h-18 flex flex-row gap-6 items-center">
+          <button
+            type="submit"
+            disabled={isDisabled}
+            className={`${
+              isDisabled ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500'
+            } w-36 p-3 text-white rounded transition-colors duration-300 ease-in-out`}
+          >
+            Create Supplier
+          </button>
+          <button onClick={() => navigate(-1)}>
+            <IconBtn
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="2rem"
+                  height="2rem"
+                  viewBox="0 0 32 32"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M22 8v2c2.206 0 4 1.794 4 4s-1.794 4-4 4H10v-5l-6 6l6 6v-5h12c3.309 0 6-2.691 6-6s-2.691-6-6-6"
+                  />
+                </svg>
+              }
+              label={'Back'}
+            />
+          </button>
+        </div>
       </form>
     </div>
   );

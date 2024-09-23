@@ -172,11 +172,11 @@ const Products = () => {
         />
       )}
       <PageTitle title="Products" />
-      <div className="w-[100%] grid grid-cols-3 gap-1 mb-4">
+      <div className="w-[100%] grid grid-cols-3 gap-1 mb-6 mt-6">
         <input
           type="text"
           placeholder="Search by name"
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="name"
           value={filters.name}
           onChange={handleFilterChange}
@@ -184,7 +184,7 @@ const Products = () => {
         <input
           type="number"
           placeholder="Min price"
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="price_min"
           value={filters.price_min}
           onChange={handleFilterChange}
@@ -192,7 +192,7 @@ const Products = () => {
         <input
           type="number"
           placeholder="Max price"
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="price_max"
           value={filters.price_max}
           onChange={handleFilterChange}
@@ -200,7 +200,7 @@ const Products = () => {
       </div>
       <div className="w-[98%] grid grid-cols-4 gap-1 mb-6 mt-6">
         <select
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="color_id"
           value={filters.color_id}
           onChange={handleFilterChange}
@@ -219,7 +219,7 @@ const Products = () => {
           ))}
         </select>
         <select
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="size_id"
           value={filters.size_id}
           onChange={handleFilterChange}
@@ -241,7 +241,7 @@ const Products = () => {
           ))}
         </select>
         <select
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="category_id"
           value={filters.category_id}
           onChange={handleFilterChange}
@@ -263,7 +263,7 @@ const Products = () => {
           ))}
         </select>
         <select
-          className="w-4/5 p-2 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
+          className="w-4/5 p-3 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]"
           name="supplier_id"
           value={filters.supplier_id}
           onChange={handleFilterChange}
@@ -415,7 +415,7 @@ const Products = () => {
           </tbody>
         </table>
       </div>
-      <div className="mt-4 py-2 flex flex-row items-center justify-center space-x-4">
+      <div className="mt-10 py-2 flex flex-row items-center justify-center space-x-4 mr-16">
         <button
           className={`px-2 py-1 bg-[#297DCC] text-white rounded-lg transition-transform duration-300 ${
             filters.page === 1
