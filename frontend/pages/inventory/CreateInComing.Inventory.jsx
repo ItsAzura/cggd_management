@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import IconBtn from '../../components/Shared/IconBtn';
 import { useGetAllInventoryProductQuery } from '../../redux/api/seletorSlice';
 import { useNavigate } from 'react-router-dom';
+import { DELAY_TIME } from '../../lib/constants';
 
 const CreateInComingInventory = () => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const CreateInComingInventory = () => {
       setLogItems([{ product_id: '', quantity: '', note: '' }]);
       setTimeout(() => {
         navigate(-1);
-      }, 2000);
+      }, DELAY_TIME);
     } catch (error) {
       toast.error(error.message);
     }

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { setCredentials } from '../../redux/feature/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { DELAY_TIME } from '../../lib/constants';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -27,7 +28,7 @@ const Login = () => {
       toast.success('Logged in successfully');
       setTimeout(() => {
         navigate('/');
-      }, 2000);
+      }, DELAY_TIME);
       setEmail('');
       setPassword('');
     } catch (error) {

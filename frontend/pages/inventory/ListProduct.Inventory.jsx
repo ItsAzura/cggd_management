@@ -14,6 +14,7 @@ import moment from 'moment';
 import DeleteModal from '../../components/Shared/DeleteModal';
 import { useDeleteInventoryMutation } from '../../redux/api/inventorySlice';
 import { toast } from 'react-toastify';
+import { DEBOUNCE_TIME } from '../../lib/constants';
 
 const ListProductInventory = () => {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ const ListProductInventory = () => {
         [name]: value,
         page: 1,
       }));
-    }, 300);
+    }, DEBOUNCE_TIME);
 
     setDebounceTimeout(newTimeout);
   };

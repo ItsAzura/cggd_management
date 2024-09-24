@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import PageTitle from '../../components/Shared/PageTitle';
 import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
+import { DELAY_TIME } from '../../lib/constants';
 
 const EditProductInventory = () => {
   const { id } = useParams();
@@ -71,7 +72,7 @@ const EditProductInventory = () => {
       toast.success('Inventory updated successfully');
       setTimeout(() => {
         navigate(-1);
-      }, 2000);
+      }, DELAY_TIME);
     } catch (error) {
       console.error('error', error);
       toast.error('Failed to update product');

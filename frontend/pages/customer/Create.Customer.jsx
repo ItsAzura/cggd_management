@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../components/Shared/PageTitle';
 import IconBtn from '../../components/Shared/IconBtn';
+import { DELAY_TIME } from '../../lib/constants';
 
 const CreateCustomer = () => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const CreateCustomer = () => {
       toast.success('Customer created successfully');
       setTimeout(() => {
         navigate(-1);
-      }, 2000);
+      }, DELAY_TIME);
       setCustomerName('');
       setEmail('');
       setPhone('');

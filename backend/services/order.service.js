@@ -1,20 +1,25 @@
 import asyncHandler from '../middlewares/asyncHandler.js';
 import db from '../db.js';
+import {
+  MAX_ITEMS_PAGE,
+  DEFAULT_SORT_BY,
+  DEFAULT_SORT_ORDER,
+} from '../lib/constants.js';
 
 const getAllOrder = asyncHandler(async (req, res) => {
   const {
     customer_id,
     status_id,
     page,
-    sort_by = 'id',
-    sort_order = 'DESC',
+    sort_by = DEFAULT_SORT_BY,
+    sort_order = DEFAULT_SORT_ORDER,
   } = req.query;
 
   if (!page || isNaN(page) || page < 1) {
     return res.status(400).json({ message: 'Page number is required' });
   }
 
-  const limit = 6;
+  const limit = MAX_ITEMS_PAGE;
   const offset = (page - 1) * limit;
 
   let query = `

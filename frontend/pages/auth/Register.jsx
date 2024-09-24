@@ -3,6 +3,7 @@ import signup_img from '../../Assets/signup.png';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useCreateUserMutation } from '../../redux/api/userSlice';
+import { DELAY_TIME } from '../../lib/constants';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -28,7 +29,7 @@ const Register = () => {
       toast.success('Account created successfully');
       setTimeout(() => {
         navigate('/login');
-      }, 2000);
+      }, DELAY_TIME);
       setUsername('');
       setEmail('');
       setPassword('');

@@ -18,6 +18,16 @@ code {
     monospace;
 }
 
+body.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.dark {
+  background-color: #040411;
+  color: #ffffff;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

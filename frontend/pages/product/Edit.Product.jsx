@@ -15,6 +15,7 @@ import ErrorPage from '../../components/error/Error';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../components/Shared/PageTitle';
+import { DELAY_TIME } from '../../lib/constants';
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -97,7 +98,7 @@ const EditProduct = () => {
       toast.success('Product updated successfully');
       setTimeout(() => {
         navigate(-1);
-      }, 2000);
+      }, DELAY_TIME);
     } catch (error) {
       console.error('error', error);
       toast.error('Failed to update product');

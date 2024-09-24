@@ -15,6 +15,7 @@ import IconBtn from '../../components/Shared/IconBtn';
 import { useDeleteProductMutation } from '../../redux/api/productSlice';
 import { toast } from 'react-toastify';
 import ProductLoader from '../../components/Product/Loader.Product';
+import { DEBOUNCE_TIME } from '../../lib/constants';
 
 const Products = () => {
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ const Products = () => {
         [name]: value,
         page: 1,
       }));
-    }, 300);
+    }, DEBOUNCE_TIME);
 
     setDebounceTimeout(newTimeout);
   };
@@ -360,14 +361,28 @@ const Products = () => {
                 key={product.id}
                 className="border-b  border-[rgba(41,125,204,0.4)] transition duration-300 ease-in-out hover:bg-[#2b4f7e] hover:scale-[1.02] hover:shadow-lg"
               >
-                <td className="p-4">{product.name}</td>
-                <td className="p-4">{product.sku}</td>
-                <td className="p-4">{product.cate_name}</td>
-                <td className="p-4">{product.size_name}</td>
-                <td className="p-4">{product.color_name}</td>
-                <td className="p-4">{product.price}</td>
-                <td className="p-4">{product.supplier_name}</td>
-                <td className="p-4">
+                <td className="p-4 border-b border-[rgba(41,125,204,0.7)]">
+                  {product.name}
+                </td>
+                <td className="p-4 border-b border-[rgba(41,125,204,0.7)]">
+                  {product.sku}
+                </td>
+                <td className="p-4 border-b border-[rgba(41,125,204,0.7)]">
+                  {product.cate_name}
+                </td>
+                <td className="p-4 border-b border-[rgba(41,125,204,0.7)]">
+                  {product.size_name}
+                </td>
+                <td className="p-4 border-b border-[rgba(41,125,204,0.7)]">
+                  {product.color_name}
+                </td>
+                <td className="p-4 border-b border-[rgba(41,125,204,0.7)]">
+                  {product.price} VNĐ
+                </td>
+                <td className="p-4 border-b border-[rgba(41,125,204,0.7)]">
+                  {product.supplier_name}
+                </td>
+                <td className="p-4 border-b border-[rgba(41,125,204,0.7)]">
                   {moment(product.updated_at).format('DD-MM-YYYY')}
                 </td>
                 <td className="p-4 flex gap-2 justify-center">

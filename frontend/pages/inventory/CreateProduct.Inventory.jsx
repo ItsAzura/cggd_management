@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import IconBtn from '../../components/Shared/IconBtn';
+import { DELAY_TIME } from '../../lib/constants';
 
 const CreateProductInventory = () => {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const CreateProductInventory = () => {
       toast.success('Inventory created successfully');
       setTimeout(() => {
         navigate(-1);
-      }, 2000);
+      }, DELAY_TIME);
       setProductId('');
       setQuantity('');
       setMinQuantity('');

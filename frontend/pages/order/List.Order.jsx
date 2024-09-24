@@ -9,8 +9,8 @@ import PageTitle from '../../components/Shared/PageTitle';
 import IconBtn from '../../components/Shared/IconBtn';
 import ErrorPage from '../../components/error/Error';
 import Loading from '../../components/loading/Loading';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { DEBOUNCE_TIME } from '../../lib/constants';
 
 const ListOrder = () => {
   const [page, setPage] = useState(1);
@@ -59,7 +59,7 @@ const ListOrder = () => {
           ...prev,
           [name]: value,
         }));
-      }, 300)
+      }, DEBOUNCE_TIME)
     );
   };
 

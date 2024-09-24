@@ -10,6 +10,7 @@ import moment from 'moment';
 import DeleteModal from '../../components/Shared/DeleteModal';
 import { useDeleteUserMutation } from '../../redux/api/userSlice';
 import { toast } from 'react-toastify';
+import { DEBOUNCE_TIME } from '../../lib/constants';
 
 const Users = () => {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ const Users = () => {
         [name]: value,
         page: 1,
       }));
-    }, 200);
+    }, DEBOUNCE_TIME);
 
     setDebounceTimeout(newTimeout);
   };

@@ -10,6 +10,7 @@ import DeleteModal from '../../components/Shared/DeleteModal';
 import { useDeleteSupplierMutation } from '../../redux/api/supplierSlice';
 import { toast } from 'react-toastify';
 import SupplierLoader from '../../components/Supplier/Loader.Supplier';
+import { DEBOUNCE_TIME } from '../../lib/constants';
 
 const Suppliers = () => {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ const Suppliers = () => {
         [name]: value,
         page: 1,
       }));
-    }, 300);
+    }, DEBOUNCE_TIME);
 
     setDebounceTimeout(newTimeout);
   };

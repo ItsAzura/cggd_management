@@ -8,6 +8,7 @@ import { useAcceptIncomingInventoryMutation } from '../../redux/api/inventorySli
 import { useRefuseIncomingExportInventoryMutation } from '../../redux/api/inventorySlice';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { DELAY_TIME } from '../../lib/constants';
 
 const ListInComingInventory = () => {
   const [page, setPage] = useState(1);
@@ -31,7 +32,7 @@ const ListInComingInventory = () => {
       toast.success('Incoming log accepted successfully');
       setTimeout(() => {
         navigate(-1);
-      }, 2000);
+      }, DELAY_TIME);
     } catch (error) {
       toast.error(error.message);
     }
@@ -43,7 +44,7 @@ const ListInComingInventory = () => {
       toast.success('Incoming log refused successfully');
       setTimeout(() => {
         navigate(-1);
-      }, 2000);
+      }, DELAY_TIME);
     } catch (error) {
       toast.error(error.message);
     }

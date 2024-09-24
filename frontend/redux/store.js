@@ -11,6 +11,7 @@ import { supplierApiSlice } from './api/supplierSlice';
 import { orderApiSlice } from './api/orderSlice';
 import { reportApiSlice } from './api/reportSlice';
 import authReducer from './feature/authSlice';
+import themeReducer from './feature/themeSlice';
 
 const slices = [
   userApiSlice,
@@ -32,6 +33,7 @@ const store = configureStore({
     {
       [apiSlice.reducerPath]: apiSlice.reducer,
       auth: authReducer,
+      theme: themeReducer,
     }
   ),
   middleware: (getDefaultMiddleware) =>

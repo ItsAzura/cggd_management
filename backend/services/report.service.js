@@ -1,5 +1,6 @@
 import asyncHandler from '../middlewares/asyncHandler.js';
 import db from '../db.js';
+import { MAX_ITEMS_PAGE } from '../lib/constants.js';
 
 const getAllReports = asyncHandler(async (req, res) => {
   const { report_type, report_title, report_summary, report_details, page } =
@@ -9,7 +10,7 @@ const getAllReports = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: 'Page number is required' });
   }
 
-  const limit = 6;
+  const limit = MAX_ITEMS_PAGE;
   const offset = (page - 1) * limit;
 
   let query = `
@@ -59,7 +60,7 @@ const getAllReports = asyncHandler(async (req, res) => {
     const [rows] = await db.query(query, [...values, limit, offset]);
 
     res.json({
-      page: parseInt(page, 6),
+      page: parseInt(page, MAX_ITEMS_PAGE),
       per_page: limit,
       total_report: total,
       total_pages: totalPages,

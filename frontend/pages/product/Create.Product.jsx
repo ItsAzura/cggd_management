@@ -13,6 +13,7 @@ import { useCreateProductMutation } from '../../redux/api/productSlice';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../components/Shared/PageTitle';
 import IconBtn from '../../components/Shared/IconBtn';
+import { DELAY_TIME } from '../../lib/constants';
 
 const CreateProduct = () => {
   const navigate = useNavigate();
@@ -113,7 +114,7 @@ const CreateProduct = () => {
       toast.success('Product created successfully');
       setTimeout(() => {
         navigate(-1);
-      }, 3000);
+      }, DELAY_TIME);
       setName('');
       setSku('');
       setDescription('');

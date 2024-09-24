@@ -1,5 +1,10 @@
 import asyncHandler from '../middlewares/asyncHandler.js';
 import db from '../db.js';
+import {
+  MAX_ITEMS_PAGE,
+  DEFAULT_SORT_BY,
+  DEFAULT_SORT_ORDER,
+} from '../lib/constants.js';
 
 const getAllProduct = asyncHandler(async (req, res) => {
   const {
@@ -11,15 +16,15 @@ const getAllProduct = asyncHandler(async (req, res) => {
     category_id,
     supplier_id,
     page,
-    sort_by = 'id',
-    sort_order = 'DESC',
+    sort_by = DEFAULT_SORT_BY,
+    sort_order = DEFAULT_SORT_ORDER,
   } = req.query;
 
   if (!page) {
     return res.status(400).json({ message: 'Page number is required' });
   }
 
-  const limit = 6;
+  const limit = MAX_ITEMS_PAGE;
   const offset = (page - 1) * limit;
 
   let query = `
@@ -100,7 +105,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
     const totalPages = Math.ceil(total / limit);
     const [rows] = await db.query(query, [...values, limit, offset]);
     res.json({
-      page: parseInt(page, 6),
+      page: parseInt(page, MAX_ITEMS_PAGE),
       per_page: limit,
       total_products: total,
       total_pages: totalPages,

@@ -10,6 +10,7 @@ import DeleteModal from '../../components/Shared/DeleteModal';
 import { useDeleteCustomerMutation } from '../../redux/api/customerSlice';
 import { toast } from 'react-toastify';
 import CustomerLoader from '../../components/Customer/Loader.Customer';
+import { DEBOUNCE_TIME } from '../../lib/constants';
 const Customers = () => {
   const navigate = useNavigate();
 
@@ -60,7 +61,7 @@ const Customers = () => {
         [name]: value,
         page: 1,
       }));
-    }, 300);
+    }, DEBOUNCE_TIME);
 
     setDebounceTimeout(newTimeout);
   };
