@@ -5,6 +5,7 @@ import {
   MAX_ITEMS_PAGE,
   DEFAULT_SORT_BY,
   DEFAULT_SORT_ORDER,
+  SALT,
 } from '../lib/constants.js';
 
 const getAllCustomer = asyncHandler(async (req, res) => {
@@ -127,7 +128,7 @@ const createCustomer = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: 'Customer already exists' });
   }
 
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(SALT);
   const hashedPassword = await bcrypt.hash(password, salt);
 
   const query =
@@ -168,7 +169,7 @@ const updateCustomer = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: 'Customer not found' });
     }
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(SALT);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const updateCustomer = {

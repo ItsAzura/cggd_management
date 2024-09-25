@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import PageTitle from '../../components/Shared/PageTitle';
 import { useNavigate } from 'react-router-dom';
 import IconBtn from '../../components/Shared/IconBtn';
-import { DELAY_TIME } from '../../lib/constants';
+import { DELAY_TIME, NAVIGATE_BACK } from '../../lib/constants';
 
 const CreateSupplier = () => {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ const CreateSupplier = () => {
       }
       toast.success('Supplier created successfully');
       setTimeout(() => {
-        navigate(-1);
+        navigate(NAVIGATE_BACK);
       }, DELAY_TIME);
       setSupplierName('');
       setContactPerson('');

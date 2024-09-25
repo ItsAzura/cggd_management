@@ -6,6 +6,9 @@ import {
   MAX_ITEMS_PAGE,
   DEFAULT_SORT_BY,
   DEFAULT_SORT_ORDER,
+  COOKIE_NAME,
+  SALT,
+  DEFAULT_ID_ROLE,
 } from '../lib/constants.js';
 
 const getAllUsers = asyncHandler(async (req, res) => {
@@ -84,7 +87,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
 const createUser = asyncHandler(async (req, res) => {
   const { email, username, user_password } = req.body;
-  const role_id = 2;
+  const role_id = DEFAULT_ID_ROLE;
 
   if (!email || !username || !user_password) {
     return res
@@ -103,7 +106,7 @@ const createUser = asyncHandler(async (req, res) => {
     });
   }
 
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(SALT);
   const hashedPassword = await bcrypt.hash(user_password, salt);
 
   try {
@@ -156,7 +159,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  res.cookie('cggd_token', '', {
+  res.cookie(COOKIE_NAME, '', {
     httpOnly: true,
     expires: new Date(0),
   });
@@ -204,7 +207,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       hashedPassword = existingPassword;
     } else {
       // Otherwise, hash the new password
-      const salt = await bcrypt.genSalt(10);
+      const salt = await bcrypt.genSalt(SALT);
       hashedPassword = await bcrypt.hash(user_password, salt);
     }
   } else {
@@ -260,7 +263,7 @@ const updateUserById = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(SALT);
     const hashedPassword = await bcrypt.hash(user_password, salt);
 
     const updateUser = {

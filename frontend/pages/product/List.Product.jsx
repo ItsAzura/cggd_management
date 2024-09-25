@@ -4,7 +4,7 @@ import {
   useGetAllCategoriesQuery,
   useGetAllSizesQuery,
   useGetAllSelectorSupplierQuery,
-} from '../../redux/api/seletorSlice';
+} from '../../redux/api/selectorSlice';
 import { useGetAllProductsQuery } from '../../redux/api/productSlice';
 import ErrorPage from '../../components/error/Error';
 import { Link, useNavigate } from 'react-router-dom';
@@ -15,13 +15,13 @@ import IconBtn from '../../components/Shared/IconBtn';
 import { useDeleteProductMutation } from '../../redux/api/productSlice';
 import { toast } from 'react-toastify';
 import ProductLoader from '../../components/Product/Loader.Product';
-import { DEBOUNCE_TIME } from '../../lib/constants';
+import { DEBOUNCE_TIME, DEFAULT_PAGE } from '../../lib/constants';
 
 const Products = () => {
   const navigate = useNavigate();
 
   const [filters, setFilters] = useState({
-    page: 1,
+    page: DEFAULT_PAGE,
     name: '',
     color_id: '',
     price_min: '',
@@ -99,7 +99,7 @@ const Products = () => {
       setFilters((prevFilters) => ({
         ...prevFilters,
         [name]: value,
-        page: 1,
+        page: DEFAULT_PAGE,
       }));
     }, DEBOUNCE_TIME);
 
@@ -159,7 +159,7 @@ const Products = () => {
 
   console.log(filters);
 
-  const totalPages = products?.total_pages || 1;
+  const totalPages = products?.total_pages || DEFAULT_PAGE;
 
   return (
     <div className="ml-[19rem] ">

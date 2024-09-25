@@ -5,7 +5,7 @@ import { apiSlice } from './api/apiSlice';
 import { userApiSlice } from './api/userSlice';
 import { customerApiSlice } from './api/customerSlice';
 import { productApiSlice } from './api/productSlice';
-import { selectorApiSlice } from './api/seletorSlice';
+import { selectorApiSlice } from './api/selectorSlice';
 import { inventoryApiSlice } from './api/inventorySlice';
 import { supplierApiSlice } from './api/supplierSlice';
 import { orderApiSlice } from './api/orderSlice';

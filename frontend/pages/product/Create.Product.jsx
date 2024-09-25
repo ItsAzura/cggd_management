@@ -5,7 +5,7 @@ import {
   useGetAllLocationsQuery,
   useGetAllSizesQuery,
   useGetAllSelectorSupplierQuery,
-} from '../../redux/api/seletorSlice';
+} from '../../redux/api/selectorSlice';
 import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import { toast } from 'react-toastify';
@@ -13,7 +13,7 @@ import { useCreateProductMutation } from '../../redux/api/productSlice';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../components/Shared/PageTitle';
 import IconBtn from '../../components/Shared/IconBtn';
-import { DELAY_TIME } from '../../lib/constants';
+import { DELAY_TIME, NAVIGATE_BACK } from '../../lib/constants';
 
 const CreateProduct = () => {
   const navigate = useNavigate();
@@ -113,7 +113,7 @@ const CreateProduct = () => {
       console.log('Create product response:', response);
       toast.success('Product created successfully');
       setTimeout(() => {
-        navigate(-1);
+        navigate(NAVIGATE_BACK);
       }, DELAY_TIME);
       setName('');
       setSku('');

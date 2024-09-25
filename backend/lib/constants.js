@@ -1,3 +1,13 @@
 export const MAX_ITEMS_PAGE = 6;
 export const DEFAULT_SORT_BY = 'id';
 export const DEFAULT_SORT_ORDER = 'DESC';
+export const EXPIRES_IN = '1h';
+export const COOKIE_NAME = 'cggd_token';
+export const DATABASE_NAME = 'cggd_db';
+export const SAME_SITE = 'strict';
+export const MAX_AGE = 3600000;
+export const SALT = 10;
+export const DEFAULT_ID_ROLE = 2;
+export const ADMIN_ID_ROLE = 3;
+export const DEFAULT_WINDOW_MS = 1000;
+export const DEFAULT_MAX = 30;

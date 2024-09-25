@@ -10,12 +10,12 @@ import DeleteModal from '../../components/Shared/DeleteModal';
 import { useDeleteSupplierMutation } from '../../redux/api/supplierSlice';
 import { toast } from 'react-toastify';
 import SupplierLoader from '../../components/Supplier/Loader.Supplier';
-import { DEBOUNCE_TIME } from '../../lib/constants';
+import { DEBOUNCE_TIME, DEFAULT_PAGE } from '../../lib/constants';
 
 const Suppliers = () => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
-    page: 1,
+    page: DEFAULT_PAGE,
     supplier_name: '',
     contact_person: '',
     phone: '',
@@ -63,7 +63,7 @@ const Suppliers = () => {
       setFilters((prevFilters) => ({
         ...prevFilters,
         [name]: value,
-        page: 1,
+        page: DEFAULT_PAGE,
       }));
     }, DEBOUNCE_TIME);
 
@@ -108,7 +108,7 @@ const Suppliers = () => {
     return <ErrorPage message={error} />;
   }
 
-  const totalPages = suppliers?.total_pages || 1;
+  const totalPages = suppliers?.total_pages || DEFAULT_PAGE;
 
   console.log(suppliers);
 

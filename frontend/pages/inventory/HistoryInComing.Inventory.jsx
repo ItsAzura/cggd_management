@@ -4,8 +4,9 @@ import { useGetHistoryIncomingInventoryQuery } from '../../redux/api/inventorySl
 import Loading from '../../components/loading/Loading';
 import IconBtn from '../../components/Shared/IconBtn';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { DEFAULT_PAGE } from '../../lib/constants';
 const HistoryInComingInventory = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(DEFAULT_PAGE);
   const navigate = useNavigate();
 
   const { data: items, isLoading } = useGetHistoryIncomingInventoryQuery({

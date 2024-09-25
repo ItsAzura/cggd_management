@@ -5,7 +5,7 @@ import {
   useGetAllCategoriesQuery,
   useGetAllSizesQuery,
   useGetAllSelectorSupplierQuery,
-} from '../../redux/api/seletorSlice';
+} from '../../redux/api/selectorSlice';
 import {
   useGetProductByIdQuery,
   useUpdateProductMutation,
@@ -15,7 +15,7 @@ import ErrorPage from '../../components/error/Error';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../components/Shared/PageTitle';
-import { DELAY_TIME } from '../../lib/constants';
+import { DELAY_TIME, NAVIGATE_BACK } from '../../lib/constants';
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -97,7 +97,7 @@ const EditProduct = () => {
       }
       toast.success('Product updated successfully');
       setTimeout(() => {
-        navigate(-1);
+        navigate(NAVIGATE_BACKs);
       }, DELAY_TIME);
     } catch (error) {
       console.error('error', error);

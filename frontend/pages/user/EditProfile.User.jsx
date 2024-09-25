@@ -9,7 +9,7 @@ import ErrorPage from '../../components/error/Error';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../../components/Shared/PageTitle';
-import { DELAY_TIME } from '../../lib/constants';
+import { DELAY_TIME, NAVIGATE_BACK } from '../../lib/constants';
 
 const EditProfileUser = () => {
   const { id } = useParams();
@@ -43,7 +43,7 @@ const EditProfileUser = () => {
       }
       toast.success('User updated successfully');
       setTimeout(() => {
-        navigate(-1);
+        navigate(NAVIGATE_BACK);
       }, DELAY_TIME);
     } catch (error) {
       console.error('Failed to update user:', error);

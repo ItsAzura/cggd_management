@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   useGetAllInventoryProductQuery,
   useGetAllLocationsQuery,
-} from '../../redux/api/seletorSlice';
+} from '../../redux/api/selectorSlice';
 import { useCreateInventoryMutation } from '../../redux/api/inventorySlice';
 import { toast } from 'react-toastify';
 import PageTitle from '../../components/Shared/PageTitle';
@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import IconBtn from '../../components/Shared/IconBtn';
-import { DELAY_TIME } from '../../lib/constants';
+import { DELAY_TIME, NAVIGATE_BACK } from '../../lib/constants';
 
 const CreateProductInventory = () => {
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ const CreateProductInventory = () => {
       }
       toast.success('Inventory created successfully');
       setTimeout(() => {
-        navigate(-1);
+        navigate(NAVIGATE_BACK);
       }, DELAY_TIME);
       setProductId('');
       setQuantity('');

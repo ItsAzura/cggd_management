@@ -5,6 +5,7 @@ import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import placeholderimg from '../../Assets/placeholder_img.png';
 import IconBtn from '../../components/Shared/IconBtn';
+import { NAVIGATE_BACK } from '../../lib/constants';
 
 const DetailProduct = () => {
   const { id } = useParams();
@@ -24,7 +25,7 @@ const DetailProduct = () => {
   return (
     <div className="pt-8 ml-[19rem] p-4 text-white">
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate(NAVIGATE_BACK)}
         className="flex flex-row gap-2 items-center md:w-auto font-semibold mb-4 py-1 px-2  "
       >
         <svg

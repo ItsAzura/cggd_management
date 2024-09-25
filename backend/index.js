@@ -13,27 +13,16 @@ import userController from './controllers/user.controller.js';
 import ReportController from './controllers/report.controller.js';
 import multer from 'multer';
 import cors from 'cors';
+import { DEFAULT_WINDOW_MS, DEFAULT_MAX } from './lib/constants.js';
 
 const port = process.env.PORT || 5000;
 dotenv.config();
 const app = express();
 
-/// Cấu hình multer cho việc upload
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads'); // Thư mục lưu trữ file upload
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname); // Tên file duy nhất
-  },
-});
-
-const upload = multer({ storage: storage });
-
 // Thiết lập rate limit
 const limiter = rateLimit({
-  windowMs: 1000,
-  max: 30,
+  windowMs: DEFAULT_WINDOW_MS,
+  max: DEFAULT_MAX,
 });
 
 app.use(limiter);
@@ -43,20 +32,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(compression());
 app.use(cors());
-
-// Endpoint để upload ảnh
-app.post('/upload', upload.single('image'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('No file uploaded.');
-  }
-
-  // Đường dẫn đầy đủ đến file đã upload
-  const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${
-    req.file.filename
-  }`;
-
-  res.json({ message: 'File uploaded successfully', imageUrl });
-});
 
 app.use('/api/orders', orderController);
 app.use('/api/customers', customerController);

@@ -4,9 +4,10 @@ import { useGetHistoryExportInventoryQuery } from '../../redux/api/inventorySlic
 import Loading from '../../components/loading/Loading';
 import IconBtn from '../../components/Shared/IconBtn';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { DEFAULT_PAGE } from '../../lib/constants';
 
 const HistoryExportInventory = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(DEFAULT_PAGE);
   const navigate = useNavigate();
 
   const { data: items, isLoading } = useGetHistoryExportInventoryQuery({
@@ -19,7 +20,7 @@ const HistoryExportInventory = () => {
 
   if (isLoading) return <Loading />;
 
-  const totalPages = items?.total_pages || 1;
+  const totalPages = items?.total_pages || DEFAULT_PAGE;
   return (
     <div className="ml-[19rem]">
       <div className="w-[96%] flex flex-row justify-between">

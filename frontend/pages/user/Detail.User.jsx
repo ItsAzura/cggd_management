@@ -5,6 +5,7 @@ import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
 import IconBtn from '../../components/Shared/IconBtn';
 import moment from 'moment';
+import { NAVIGATE_BACK } from '../../lib/constants';
 
 const DetailUser = () => {
   const { id } = useParams();
@@ -22,7 +23,7 @@ const DetailUser = () => {
   return (
     <div className="pt-8 ml-[19rem] p-4 text-white  min-h-screen">
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate(NAVIGATE_BACK)}
         className="flex flex-row gap-2 items-center md:w-auto font-semibold mb-8 py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg transition duration-300 ease-in-out shadow-lg"
       >
         <svg

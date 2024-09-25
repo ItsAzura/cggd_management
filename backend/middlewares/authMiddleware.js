@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import asyncHandler from './asyncHandler.js';
+import { ADMIN_ID_ROLE } from '../lib/constants.js';
 
 const authenticate = asyncHandler(async (req, res, next) => {
   let token;
@@ -24,7 +25,7 @@ const authenticate = asyncHandler(async (req, res, next) => {
 });
 
 const authorizeAdmin = asyncHandler(async (req, res, next) => {
-  if (req.user[0][0].role_id === 3) {
+  if (req.user[0][0].role_id == ADMIN_ID_ROLE) {
     next();
   } else {
     res.status(401);

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import {
   useGetAllInventoryProductQuery,
   useGetAllLocationsQuery,
-} from '../../redux/api/seletorSlice';
+} from '../../redux/api/selectorSlice';
 import {
   useUpdateInventoryMutation,
   useGetInventoryProductByIdQuery,
@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import PageTitle from '../../components/Shared/PageTitle';
 import Loading from '../../components/loading/Loading';
 import ErrorPage from '../../components/error/Error';
-import { DELAY_TIME } from '../../lib/constants';
+import { DELAY_TIME, NAVIGATE_BACK } from '../../lib/constants';
 
 const EditProductInventory = () => {
   const { id } = useParams();
@@ -71,7 +71,7 @@ const EditProductInventory = () => {
       }
       toast.success('Inventory updated successfully');
       setTimeout(() => {
-        navigate(-1);
+        navigate(NAVIGATE_BACK);
       }, DELAY_TIME);
     } catch (error) {
       console.error('error', error);

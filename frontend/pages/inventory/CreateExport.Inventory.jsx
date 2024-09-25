@@ -5,9 +5,9 @@ import Loading from '../../components/loading/Loading';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import IconBtn from '../../components/Shared/IconBtn';
-import { useGetAllInventoryProductQuery } from '../../redux/api/seletorSlice';
+import { useGetAllInventoryProductQuery } from '../../redux/api/selectorSlice';
 import { useNavigate } from 'react-router-dom';
-import { DELAY_TIME } from '../../lib/constants';
+import { DELAY_TIME, NAVIGATE_BACK } from '../../lib/constants';
 
 const CreateExportInventory = () => {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ const CreateExportInventory = () => {
       toast.success('Export log created successfully');
       setLogItems([{ product_id: '', quantity: '', note: '' }]);
       setTimeout(() => {
-        navigate(-1);
+        navigate(NAVIGATE_BACK);
       }, DELAY_TIME);
     } catch (error) {
       toast.error(error.message);

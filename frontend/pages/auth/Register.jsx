@@ -9,16 +9,16 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmpassword, setConfirmpassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
   const [createUser] = useCreateUserMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ username, email, password, confirmpassword });
+    console.log({ username, email, password, confirmPassword });
 
-    if (password !== confirmpassword) {
+    if (password !== confirmPassword) {
       toast.error('Passwords do not match');
       return;
     }
@@ -33,7 +33,7 @@ const Register = () => {
       setUsername('');
       setEmail('');
       setPassword('');
-      setConfirmpassword('');
+      setConfirmPassword('');
     } catch (error) {
       toast.error('An error occurred');
       return;
@@ -115,16 +115,16 @@ const Register = () => {
           </div>
           <div className="flex flex-col mb-4">
             <label
-              htmlFor="confirmpassword"
+              htmlFor="confirmPassword"
               className="mb-2 font-semibold text-white"
             >
               Confirm Password
             </label>
             <input
               type="password"
-              id="confirmpassword"
-              name="confirmpassword"
-              onChange={(e) => setConfirmpassword(e.target.value)}
+              id="confirmPassword"
+              name="confirmPassword"
+              onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm Password"
               className="py-3 px-5 border-gray-300 bg-[rgba(41,125,204,0.2)] text-white rounded focus:outline-none focus:ring-2 focus:ring-[rgba(41,125,204,0.5)] hover:shadow-md transition-shadow duration-200"
             />

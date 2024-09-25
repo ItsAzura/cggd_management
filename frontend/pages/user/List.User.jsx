@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useGetAllRoleQuery } from '../../redux/api/seletorSlice';
+import { useGetAllRoleQuery } from '../../redux/api/selectorSlice';
 import { useGetAllUsersQuery } from '../../redux/api/userSlice';
 import UserLoader from '../../components/User/Loader.User';
 import ErrorPage from '../../components/error/Error';
@@ -10,12 +10,12 @@ import moment from 'moment';
 import DeleteModal from '../../components/Shared/DeleteModal';
 import { useDeleteUserMutation } from '../../redux/api/userSlice';
 import { toast } from 'react-toastify';
-import { DEBOUNCE_TIME } from '../../lib/constants';
+import { DEBOUNCE_TIME, DEFAULT_PAGE, ADMIN_ROLE } from '../../lib/constants';
 
 const Users = () => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
-    page: 1,
+    page: DEFAULT_PAGE,
     email: '',
     username: '',
     role_id: '',
@@ -64,7 +64,7 @@ const Users = () => {
       setFilters((prevFilters) => ({
         ...prevFilters,
         [name]: value,
-        page: 1,
+        page: DEFAULT_PAGE,
       }));
     }, DEBOUNCE_TIME);
 
@@ -110,7 +110,7 @@ const Users = () => {
     return <ErrorPage />;
   }
 
-  const totalPages = users?.total_pages || 1;
+  const totalPages = users?.total_pages || DEFAULT_PAGE;
   return (
     <div className="ml-[19rem]">
       {showDeleteModal && (
@@ -239,10 +239,14 @@ const Users = () => {
                 <td className="p-4 flex gap-2 justify-center">
                   <button
                     className="px-3 py-2 bg-[#0b1c37] text-white rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-[#297dcc] hover:scale-110 transition-all duration-300"
-                    disabled={user.role_id == '3'}
+                    disabled={user.role_id == ADMIN_ROLE}
                   >
                     <Link
-                      to={`/user/${user.id}`}
+                      to={
+                        user.role_id == ADMIN_ROLE
+                          ? '/user'
+                          : `/user/${user.id}`
+                      }
                       className="flex flex-row items-center gap-2"
                     >
                       <svg
@@ -266,7 +270,7 @@ const Users = () => {
                   <button
                     className="px-2 py-2 bg-[#0b1c37] text-white p-2 rounded-full border border-[rgba(41,125,204,0.5)] hover:bg-red-500 hover:scale-110 transition-all duration-300"
                     onClick={() => openDeleteModal(user.id)}
-                    disabled={user.role_id == '3'}
+                    disabled={user.role_id == ADMIN_ROLE}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

@@ -8,10 +8,10 @@ import { useAcceptExportInventoryMutation } from '../../redux/api/inventorySlice
 import { useRefuseIncomingExportInventoryMutation } from '../../redux/api/inventorySlice';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { DELAY_TIME } from '../../lib/constants';
+import { DELAY_TIME, DEFAULT_PAGE, NAVIGATE_BACK } from '../../lib/constants';
 
 const ListExportInventory = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(DEFAULT_PAGE);
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -31,7 +31,7 @@ const ListExportInventory = () => {
       await acceptExportLog(id).unwrap();
       toast.success('Export log accepted successfully');
       setTimeout(() => {
-        navigate(-1);
+        navigate(NAVIGATE_BACK);
       }, DELAY_TIME);
     } catch (error) {
       toast.error(error.message);
@@ -43,7 +43,7 @@ const ListExportInventory = () => {
       await refuseExportLog(id).unwrap();
       toast.success('Export log refused successfully');
       setTimeout(() => {
-        navigate(-1);
+        navigate(NAVIGATE_BACK);
       }, DELAY_TIME);
     } catch (error) {
       toast.error(error.message);
@@ -52,7 +52,7 @@ const ListExportInventory = () => {
 
   if (isLoading) return <Loading />;
 
-  const totalPages = items?.total_pages || 1;
+  const totalPages = items?.total_pages || DEFAULT_PAGE;
   return (
     <div className="ml-[19rem]">
       <div className="w-[96%] flex flex-row justify-between">

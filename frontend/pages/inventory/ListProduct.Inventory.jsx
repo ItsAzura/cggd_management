@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   useGetAllInventoryProductQuery,
   useGetAllLocationsQuery,
-} from '../../redux/api/seletorSlice';
+} from '../../redux/api/selectorSlice';
 import { useGetAllInventoryQuery } from '../../redux/api/inventorySlice';
 import InventoryLoader from '../../components/Inventory/Loader.Inventory';
 import ErrorPage from '../../components/error/Error';
@@ -14,12 +14,12 @@ import moment from 'moment';
 import DeleteModal from '../../components/Shared/DeleteModal';
 import { useDeleteInventoryMutation } from '../../redux/api/inventorySlice';
 import { toast } from 'react-toastify';
-import { DEBOUNCE_TIME } from '../../lib/constants';
+import { DEBOUNCE_TIME, DEFAULT_PAGE } from '../../lib/constants';
 
 const ListProductInventory = () => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
-    page: 1,
+    page: DEFAULT_PAGE,
     product_id: '',
     quantity: '',
     min_quantity: '',
@@ -78,7 +78,7 @@ const ListProductInventory = () => {
       setFilters((prevFilters) => ({
         ...prevFilters,
         [name]: value,
-        page: 1,
+        page: DEFAULT_PAGE,
       }));
     }, DEBOUNCE_TIME);
 
@@ -123,7 +123,7 @@ const ListProductInventory = () => {
     return <ErrorPage />;
   }
 
-  const totalPages = inventory?.total_pages || 1;
+  const totalPages = inventory?.total_pages || DEFAULT_PAGE;
 
   return (
     <div className="ml-[19rem] ">

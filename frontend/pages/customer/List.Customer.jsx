@@ -10,12 +10,12 @@ import DeleteModal from '../../components/Shared/DeleteModal';
 import { useDeleteCustomerMutation } from '../../redux/api/customerSlice';
 import { toast } from 'react-toastify';
 import CustomerLoader from '../../components/Customer/Loader.Customer';
-import { DEBOUNCE_TIME } from '../../lib/constants';
+import { DEBOUNCE_TIME, DEFAULT_PAGE } from '../../lib/constants';
 const Customers = () => {
   const navigate = useNavigate();
 
   const [filters, setFilters] = useState({
-    page: 1,
+    page: DEFAULT_PAGE,
     customer_name: '',
     email: '',
     phone: '',
@@ -59,7 +59,7 @@ const Customers = () => {
       setFilters((prevFilters) => ({
         ...prevFilters,
         [name]: value,
-        page: 1,
+        page: DEFAULT_PAGE,
       }));
     }, DEBOUNCE_TIME);
 
@@ -106,7 +106,7 @@ const Customers = () => {
     return <ErrorPage message={error} />;
   }
 
-  const totalPages = customers?.total_pages || 1;
+  const totalPages = customers?.total_pages || DEFAULT_PAGE;
 
   return (
     <div className="ml-[19rem]">
@@ -274,12 +274,12 @@ const Customers = () => {
       <div className="mt-10 py-2 flex flex-row items-center justify-center space-x-4 mr-16">
         <button
           className={`px-2 py-1 bg-[#297DCC] text-white rounded-lg transition-transform duration-300 ${
-            filters.page === 1
+            filters.page === DEFAULT_PAGE
               ? 'opacity-50 cursor-not-allowed'
               : 'hover:bg-[#1d6eb1] hover:scale-105 hover:shadow-lg hover:shadow-[rgba(41,125,204,0.1)]'
           }`}
           onClick={() => handlePageChange(filters.page - 1)}
-          disabled={filters.page === 1}
+          disabled={filters.page === DEFAULT_PAGE}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

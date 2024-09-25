@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetAllInventoryProductQuery } from '../../redux/api/seletorSlice';
+import { useGetAllInventoryProductQuery } from '../../redux/api/selectorSlice';
 import {
   useGetAllOrderStatusQuery,
   useGetAllOrdersQuery,
@@ -10,10 +10,10 @@ import IconBtn from '../../components/Shared/IconBtn';
 import ErrorPage from '../../components/error/Error';
 import Loading from '../../components/loading/Loading';
 import moment from 'moment';
-import { DEBOUNCE_TIME } from '../../lib/constants';
+import { DEBOUNCE_TIME, DEFAULT_PAGE } from '../../lib/constants';
 
 const ListOrder = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(DEFAULT_PAGE);
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
     page: page,
@@ -74,7 +74,7 @@ const ListOrder = () => {
 
   if (isError) return <ErrorPage />;
 
-  const totalPages = orders?.totalPages || 1;
+  const totalPages = orders?.totalPages || DEFAULT_PAGE;
   return (
     <div className="ml-[19rem] ">
       <PageTitle title="Order" />
